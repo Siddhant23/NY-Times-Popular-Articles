@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.test.android.siddhant"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Appcompat/Support  - AndroidX
+    def support = '1.1.0'
+    implementation "androidx.appcompat:appcompat:$support"
+    implementation "androidx.recyclerview:recyclerview:$support"
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+
+    // Lifecycle - ViewModel
+    def lifecycleExt = '2.1.0'
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleExt"
+
+    // Network Call
+    def retrofit2 = '2.7.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit2"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit2"
+
+}
