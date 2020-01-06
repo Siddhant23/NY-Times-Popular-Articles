@@ -34,11 +34,11 @@ class PopularActivity : AppCompatActivity() {
     private fun initAdapter(): Pair<ArrayList<ResultsItem>, PopularAdapter> {
         val list = ArrayList<ResultsItem>()
         val adapter = PopularAdapter(list, object : ItemClickListener {
-            override fun onItemClick(obj: Any) {
-                val item = obj as ResultsItem
+            override fun onItemClick(obj: Any?) {
+                val item = obj as ResultsItem?
                 startActivity(
                     Intent(this@PopularActivity, PopularDetailActivity::class.java)
-                        .putExtra(AppConstant.KEY_INTENT_DATA, item.title)
+                        .putExtra(AppConstant.KEY_INTENT_DATA, item?.title)
                 )
             }
         })

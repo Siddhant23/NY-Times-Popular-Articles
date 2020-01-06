@@ -25,7 +25,7 @@ class PopularAdapter(
 
     class ViewHolder(private val binding: ItemPopularBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        internal fun bind(item: ResultsItem, clickListener: ItemClickListener?) {
+        internal fun bind(item: ResultsItem?, clickListener: ItemClickListener?) {
             binding.result = item
             binding.executePendingBindings()
             binding.mCardView.setOnClickListener {

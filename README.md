@@ -10,3 +10,4 @@ By Siddhant Mehta (Android Developer)
 - Arch          : MVVM (Model - View - ViewModel)
 - Network       : Retrofit
 - View Binding  : Data Binding
+- Testing       : Espresso + JUnit
