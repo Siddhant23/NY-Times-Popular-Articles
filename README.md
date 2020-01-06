@@ -11,3 +11,5 @@ By Siddhant Mehta (Android Developer)
 - Network       : Retrofit
 - View Binding  : Data Binding
 - Testing       : Espresso + JUnit
+
+Note: For Testing, Run ActivityTestSuite.kt which has all classes to run all test cases in it.
