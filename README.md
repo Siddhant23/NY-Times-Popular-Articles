@@ -1,4 +1,4 @@
-# NY TIMES MOST POPULAR ARTICLES FOR 7 DAYS
+# NY TIMES MOST POPULAR ARTICLES
 
 By Siddhant Mehta (Android Developer)
 
@@ -6,7 +6,7 @@ By Siddhant Mehta (Android Developer)
 
 ### Libraries   : All versions latest
 
-- SDK           : 29 (Android 10)
+- SDK           : 31 (Android 12)
 - Arch          : MVVM (Model - View - ViewModel)
 - Network       : Retrofit
 - View Binding  : Data Binding
