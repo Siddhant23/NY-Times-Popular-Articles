@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -21,6 +20,7 @@ android {
         }
     }
     buildFeatures {
+        dataBinding true
         viewBinding true
     }
 
@@ -62,5 +62,5 @@ dependencies {
     def androidx_test = "1.4.0"
     androidTestImplementation "androidx.test:runner:$androidx_test"
     androidTestImplementation "androidx.test:core:$androidx_test"
-    androidTestImplementation "androidx.test.ext:junit-ktx:$androidx_test"
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
 }

@@ -46,7 +46,7 @@ class PopularRepo(var application: Application) {
             ) {
                 if (response.isSuccessful && response.body() != null) {
                     val articleResponse = response.body()
-                    responseLiveData.value = (articleResponse?.results)
+                    responseLiveData.value = articleResponse?.results
                 } else {
                     responseLiveData.value = null
                     Toast.makeText(application, AppConstant.ERR_PARSING, Toast.LENGTH_LONG).show()

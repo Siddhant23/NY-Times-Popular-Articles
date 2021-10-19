@@ -45,7 +45,7 @@
                 android:layout_toEndOf="@id/viewImg"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{result.title}"
+                android:text="@{result.abstract}"
                 android:textSize="16sp" />
 
             <TextView

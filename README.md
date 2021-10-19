@@ -4,7 +4,7 @@ By Siddhant Mehta (Android Developer)
 
 ### Language    : Kotlin (Android Architecture Components)
 
-### Libraries   : All versions latest
+### Libraries
 
 - SDK           : 31 (Android 12)
 - Arch          : MVVM (Model - View - ViewModel)
