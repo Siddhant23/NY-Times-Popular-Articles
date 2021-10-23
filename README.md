@@ -9,6 +9,7 @@ By Siddhant Mehta (Android Developer)
 - SDK           : 31 (Android 12)
 - Arch          : MVVM (Model - View - ViewModel)
 - Network       : Retrofit
+- Concurrency   : Coroutine
 - View Binding  : Data Binding
 - Testing       : Espresso + JUnit
 
