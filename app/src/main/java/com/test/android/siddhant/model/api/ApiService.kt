@@ -9,5 +9,5 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET(AppConstant.POPULAR)
-    fun getPopularData(@Query(AppConstant.API_KEY) apiKey: String): Call<PopularArticleResponse>
+    suspend fun getPopularData(@Query(AppConstant.API_KEY) apiKey: String): PopularArticleResponse
 }

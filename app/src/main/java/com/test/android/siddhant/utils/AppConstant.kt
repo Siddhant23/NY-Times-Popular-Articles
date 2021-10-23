@@ -10,9 +10,6 @@ class AppConstant {
 
         const val KEY = "y9m4C7gR9I5c1ZCmj3Nno7L88VNzF2c0"
 
-        const val ERR_PARSING = "Something went wrong! Please retry later."
-        const val ERR_INTERNET_MSG = "Please check internet connection!"
-
         const val KEY_INTENT_DATA = "KEY_INTENT_DATA"
     }
 

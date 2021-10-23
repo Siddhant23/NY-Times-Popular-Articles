@@ -8,7 +8,7 @@ import com.test.android.siddhant.model.data.ResultsItem
 
 class PopularAdapter(
     private val items: List<ResultsItem>,
-    private val clickListener: ItemClickListener?
+    private val clickListener: (item: ResultsItem? ) -> Unit
 ) :
     RecyclerView.Adapter<PopularAdapter.ViewHolder>() {
 
@@ -20,16 +20,16 @@ class PopularAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position], clickListener)
+        holder.bind(items[position],clickListener)
     }
 
     class ViewHolder(private val binding: ItemPopularBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        internal fun bind(item: ResultsItem?, clickListener: ItemClickListener?) {
+        internal fun bind(item: ResultsItem?, clickListener: (item: ResultsItem?) -> Unit) {
             binding.result = item
             binding.executePendingBindings()
             binding.mCardView.setOnClickListener {
-                clickListener?.onItemClick(item)
+                clickListener(item)
             }
         }
     }

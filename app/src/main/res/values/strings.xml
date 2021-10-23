@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">NY-Times-Siddhant</string>
     <string name="titleName">NY Times Popular Articles</string>
+    <string name="error_internet">Please check your internet connection</string>
 </resources>
