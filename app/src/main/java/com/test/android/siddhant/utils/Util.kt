@@ -31,13 +31,10 @@ class Util {
                     }
                 }
             } else {
-                try {
                     val activeNetworkInfo = connectivityManager.activeNetworkInfo
                     if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
                         return true
                     }
-                } catch (e: Exception) {
-                }
             }
             return false
         }
