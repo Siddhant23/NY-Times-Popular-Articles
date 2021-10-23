@@ -1,16 +1,23 @@
 package com.test.android.siddhant.view
 
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.os.bundleOf
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.test.android.siddhant.R
+import com.test.android.siddhant.utils.AppConstant
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 class PopularActivityTest {
@@ -18,12 +25,22 @@ class PopularActivityTest {
     @get:Rule
     val activityRule = ActivityScenarioRule(PopularActivity::class.java)
 
+    @Before
+    fun setUp() {
+        Intents.init()
+    }
+
+    @After
+    fun tearDown() {
+        Intents.release()
+    }
+
     //checking Views
     @Test
     fun testViewsInPopularActivity() {
 
         onView(withId(R.id.parentPopular)).check(matches(isDisplayed()))   //parent
-        onView(withId(R.id.rvPopular)).check(matches(isDisplayed()))       //recylerview
+        onView(withId(R.id.rvPopular)).check(matches(isDisplayed()))       //recyclerview
         onView(withId(R.id.progressBar)).check(matches(isDisplayed()))     //progressBar
 
         onView(withId(R.id.rvPopular)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))  //visibility
@@ -31,7 +48,16 @@ class PopularActivityTest {
     }
 
     @Test
-    fun testItemViewClick() {
+    fun testItemViewClickOpenDetailActivity() {
+
+        val scenario = ActivityScenario.launch(PopularActivity::class.java)
         onView(withId(R.id.rvPopular)).perform(click())   //clickable
+        scenario.onActivity { activity ->
+            startActivity(
+                activity,
+                Intent(activity, PopularDetailActivity::class.java),
+                bundleOf(Pair(AppConstant.KEY_INTENT_DATA, "item"))
+            )
+        }
     }
 }

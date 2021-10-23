@@ -46,7 +46,7 @@ dependencies {
     def lifecycle = '2.3.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
-    implementation "androidx.lifecycle:lifecycle-process:$lifecycle"
+//    implementation "androidx.lifecycle:lifecycle-process:$lifecycle"
 
     //Coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
@@ -62,6 +62,7 @@ dependencies {
     // Espresso
     def androidx_test_espresso = "3.4.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$androidx_test_espresso"
 
     // androidx.test
     def androidx_test = "1.4.0"

@@ -22,7 +22,7 @@ class PopularDetailActivityTest {
         onView(ViewMatchers.withId(R.id.parentPopularDetail))  //parent
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         onView(ViewMatchers.withId(R.id.tvDetailTxt))          //Detail TextView
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            .check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
     }
 
     //checking back press to popular screen
