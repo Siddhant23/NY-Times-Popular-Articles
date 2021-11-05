@@ -6,13 +6,12 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DefaultItemAnimator
 import com.test.android.siddhant.R
 import com.test.android.siddhant.databinding.ActivityPopularBinding
 import com.test.android.siddhant.model.data.ResultsItem
-import com.test.android.siddhant.model.repository.PopularRepo
 import com.test.android.siddhant.utils.AppConstant
 import com.test.android.siddhant.utils.Resource
-import com.test.android.siddhant.utils.Util
 import com.test.android.siddhant.utils.Util.Companion.showToast
 import com.test.android.siddhant.viewmodel.PopularVM
 import com.test.android.siddhant.viewmodel.ViewModelFactory
@@ -30,6 +29,7 @@ class PopularActivity : AppCompatActivity() {
         initView()
         initAdapter()
         initVM()
+        observeResponse()
     }
 
     private fun initView() {
@@ -46,6 +46,7 @@ class PopularActivity : AppCompatActivity() {
                     }
             )
         }
+        binding.rvPopular.itemAnimator = DefaultItemAnimator()
         binding.rvPopular.adapter = adapter
     }
 
@@ -54,33 +55,26 @@ class PopularActivity : AppCompatActivity() {
     }
 
     private fun initVM() {
-        viewModel = ViewModelProvider(this,ViewModelFactory(PopularRepo())).get(PopularVM::class.java)
-
-        if (Util.isNetworkAvailable(this)){
-            lifecycleScope.launch {
-                viewModel.fetchArticlesList()
-            }
-        }else{
-            showToast(this, getString(R.string.error_internet))
+        viewModel = ViewModelProvider(this, ViewModelFactory())[PopularVM::class.java]
+        lifecycleScope.launch {
+            viewModel.fetchArticlesList()
         }
-
-        observeResponse()
     }
 
     private fun observeResponse() {
         viewModel.articlesListLiveData.observe(this, {
-            when (it.status) {
-                Resource.Status.LOADING -> {
+            when (it) {
+                is Resource.Loading -> {
                     setLoader(true)
                 }
-                Resource.Status.SUCCESS -> {
+                is Resource.Success -> {
                     setLoader(false)
                     it.data?.let { items ->
                         list.addAll(items)
+                        adapter.submitList(list)
                     }
-                    adapter.notifyDataSetChanged()
                 }
-                Resource.Status.ERROR -> {
+                is Resource.Error -> {
                     setLoader(false)
                     it.message?.let { msg -> showToast(this, msg) }
                 }

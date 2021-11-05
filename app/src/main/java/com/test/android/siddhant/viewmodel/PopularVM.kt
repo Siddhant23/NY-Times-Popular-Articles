@@ -10,20 +10,20 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PopularVM (private val popularRepo: PopularRepo) : ViewModel() {
+class PopularVM(private val popularRepo: PopularRepo) : ViewModel() {
     internal var articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
 
     internal suspend fun fetchArticlesList() {
 
         articlesListLiveData.apply {
-            postValue(Resource.loading())
+            postValue(Resource.Loading())
         }
 
         val exceptionHandler = CoroutineExceptionHandler { _, exception ->
             articlesListLiveData.apply {
                 postValue(
                     exception.message?.let {
-                        Resource.error(it)
+                        Resource.Error(it)
                     }
                 )
             }
@@ -32,7 +32,7 @@ class PopularVM (private val popularRepo: PopularRepo) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO +  exceptionHandler) {
             val results = popularRepo.getPopularData()
             articlesListLiveData.apply {
-                postValue(Resource.success(results))
+                postValue(Resource.Success(results))
             }
         }
     }
