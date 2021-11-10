@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@android:color/white"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@android:color/white"
     app:cardCornerRadius="1dp"
@@ -59,7 +58,8 @@
             android:layout_below="@id/tvByline"
             android:layout_marginTop="3dp"
             android:layout_toStartOf="@+id/tvDatePublished"
-            android:src="@drawable/ic_calendar" />
+            android:src="@mipmap/ic_calendar"
+            android:contentDescription="@string/app_name" />
 
         <TextView
             android:id="@+id/tvDatePublished"
@@ -80,8 +80,8 @@
             android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/ic_arrow_right" />
-
+            android:src="@mipmap/ic_arrow_right"
+            android:contentDescription="@string/app_name" />
 
     </RelativeLayout>
 
