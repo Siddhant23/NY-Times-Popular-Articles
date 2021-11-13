@@ -10,6 +10,7 @@ By Siddhant Mehta (Android Developer)
 - Arch          : MVVM (Model - View - ViewModel)
 - Network       : Retrofit
 - Concurrency   : Coroutine
+- DI            : Hilt-Dagger
 - UI            : View Binding
 - Testing       : Espresso + JUnit
 
