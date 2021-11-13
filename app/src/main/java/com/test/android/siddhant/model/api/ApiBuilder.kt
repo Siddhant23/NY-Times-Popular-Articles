@@ -8,26 +8,20 @@ import java.util.concurrent.TimeUnit
 
 object ApiBuilder {
 
-    private val retrofitBuilder: Retrofit.Builder by lazy {
+     val apiService: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl(AppConstant.BASE_URL)
             .client(okHttpBuilder)
             .addConverterFactory(GsonConverterFactory.create())
-    }
-
-    private val okHttpBuilder: OkHttpClient by lazy {
-        OkHttpClient().newBuilder()
-            .connectTimeout(30, TimeUnit.SECONDS)   // connect timeout
-            .readTimeout(30, TimeUnit.SECONDS)      // socket timeout
-            .retryOnConnectionFailure(true)
-            .build()
-    }
-
-
-    internal val apiService: ApiService by lazy {
-        retrofitBuilder
             .build()
             .create(ApiService::class.java)
     }
 
+    private val okHttpBuilder: OkHttpClient by lazy {
+        OkHttpClient().newBuilder()
+            .connectTimeout(15, TimeUnit.SECONDS)   // connect timeout
+            .readTimeout(15, TimeUnit.SECONDS)      // socket timeout
+            .retryOnConnectionFailure(true)
+            .build()
+    }
 }

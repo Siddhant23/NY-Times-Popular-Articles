@@ -10,9 +10,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PopularVM(private val popularRepo: PopularRepo) : ViewModel() {
-    internal var articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
+@HiltViewModel
+class PopularVM @Inject constructor(private val popularRepo: PopularRepo) : ViewModel() {
+    private var _articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
+    internal val articlesListLiveData
+        get() = _articlesListLiveData
 
     internal suspend fun fetchArticlesList() {
 

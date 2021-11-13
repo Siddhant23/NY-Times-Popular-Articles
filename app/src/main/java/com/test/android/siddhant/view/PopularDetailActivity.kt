@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.test.android.siddhant.R
 import com.test.android.siddhant.databinding.ActivityPopularDetailBinding
 import com.test.android.siddhant.utils.AppConstant
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PopularDetailActivity : AppCompatActivity() {
    private val binding by lazy { ActivityPopularDetailBinding.inflate(layoutInflater) }
 
