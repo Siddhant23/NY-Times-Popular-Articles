@@ -10,7 +10,7 @@ import com.test.android.siddhant.utils.DiffUtilRecyclerView
 
 class PopularAdapter(
     private val items: List<ResultsItem>,
-    private val clickListener: (item: ResultsItem?) -> Unit
+    private val itemClickListener: (item: ResultsItem?) -> Unit
 ) : ListAdapter<ResultsItem, PopularAdapter.ViewHolder>(DiffUtilRecyclerView()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,17 +21,17 @@ class PopularAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position],clickListener)
+        holder.bind(items[holder.bindingAdapterPosition])
     }
 
-    inner class ViewHolder(private val itemBinding: ItemPopularBinding) : RecyclerView.ViewHolder(itemBinding.root) {
-        internal fun bind(item: ResultsItem?, clickListener: (item: ResultsItem?) -> Unit) {
+      inner class ViewHolder(private val itemBinding: ItemPopularBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+        internal fun bind(item: ResultsItem?) {
             with(itemBinding) {
                 tvTitle.text = item?.abstract
                 tvByline.text = item?.byline
                 tvDatePublished.text = item?.publishedDate
                 mCardView.setOnClickListener {
-                    clickListener(item)
+                    itemClickListener(item)
                 }
             }
         }

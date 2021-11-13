@@ -1,7 +1,10 @@
 package com.test.android.siddhant.model.data
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ResultsItem(
 
     @SerializedName("id")
@@ -15,4 +18,4 @@ data class ResultsItem(
 
     @SerializedName("published_date")
     val publishedDate: String? = null
-)
+):Parcelable

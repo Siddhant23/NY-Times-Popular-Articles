@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.model.repository.PopularRepo
 import com.test.android.siddhant.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,12 +16,12 @@ class PopularVM(private val popularRepo: PopularRepo) : ViewModel() {
 
     internal suspend fun fetchArticlesList() {
 
-        articlesListLiveData.apply {
+        _articlesListLiveData.apply {
             postValue(Resource.Loading())
         }
 
         val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-            articlesListLiveData.apply {
+            _articlesListLiveData.apply {
                 postValue(
                     exception.message?.let {
                         Resource.Error(it)
@@ -31,7 +32,7 @@ class PopularVM(private val popularRepo: PopularRepo) : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO +  exceptionHandler) {
             val results = popularRepo.getPopularData()
-            articlesListLiveData.apply {
+            _articlesListLiveData.apply {
                 postValue(Resource.Success(results))
             }
         }

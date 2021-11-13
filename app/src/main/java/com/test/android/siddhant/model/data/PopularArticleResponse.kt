@@ -1,7 +1,10 @@
 package com.test.android.siddhant.model.data
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class PopularArticleResponse(
 
     @SerializedName("status")
@@ -15,4 +18,4 @@ data class PopularArticleResponse(
 
     @SerializedName("results")
     val results: ArrayList<ResultsItem>? = null
-)
+):Parcelable
