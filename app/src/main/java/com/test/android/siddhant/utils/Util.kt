@@ -4,13 +4,14 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.widget.Toast
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Util {
+@Singleton
+class Util @Inject constructor(@ApplicationContext private val context: Context) {
 
-    companion object {
-
-        fun isNetworkAvailable(context: Context?): Boolean {
-            if (context == null) return false
+        fun isNetworkAvailable(): Boolean {
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -32,8 +33,7 @@ class Util {
             return false
         }
 
-        fun showToast(context: Context,message: String, duration: Int = Toast.LENGTH_LONG) {
+        fun showToast(message: String, duration: Int = Toast.LENGTH_LONG) {
             Toast.makeText(context, message, duration).show()
         }
-    }
 }

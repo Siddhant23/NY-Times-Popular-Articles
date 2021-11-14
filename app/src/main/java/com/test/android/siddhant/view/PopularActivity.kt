@@ -3,8 +3,8 @@ package com.test.android.siddhant.view
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.test.android.siddhant.R
@@ -12,16 +12,18 @@ import com.test.android.siddhant.databinding.ActivityPopularBinding
 import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.utils.AppConstant
 import com.test.android.siddhant.utils.Resource
-import com.test.android.siddhant.utils.Util.Companion.showToast
+import com.test.android.siddhant.utils.Util
 import com.test.android.siddhant.viewmodel.PopularVM
-import com.test.android.siddhant.viewmodel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class PopularActivity : AppCompatActivity() {
     private val binding by lazy { ActivityPopularBinding.inflate(layoutInflater) }
-    private lateinit var adapter : PopularAdapter
+    private  val viewModel: PopularVM by viewModels()
+    @Inject lateinit var adapter : PopularAdapter
     private lateinit var list : ArrayList<ResultsItem>
-    private lateinit var viewModel: PopularVM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +57,6 @@ class PopularActivity : AppCompatActivity() {
     }
 
     private fun initVM() {
-        viewModel = ViewModelProvider(this, ViewModelFactory())[PopularVM::class.java]
         lifecycleScope.launch {
             viewModel.fetchArticlesList()
         }
@@ -76,7 +77,7 @@ class PopularActivity : AppCompatActivity() {
                 }
                 is Resource.Error -> {
                     setLoader(false)
-                    it.message?.let { msg -> showToast(this, msg) }
+                    it.message?.let { msg -> Util(this).showToast(msg) }
                 }
             }
         })

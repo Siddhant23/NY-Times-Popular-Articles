@@ -13,6 +13,9 @@ data class ResultsItem(
     @SerializedName("byline")
     val byline: String? = null,
 
+    @SerializedName("title")
+    val title: String? = null,
+
     @SerializedName("abstract")
     val abstract: String? = null,
 
