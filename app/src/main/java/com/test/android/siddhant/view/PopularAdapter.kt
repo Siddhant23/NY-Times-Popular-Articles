@@ -35,7 +35,7 @@ class PopularAdapter @Inject constructor(diffUtilRecyclerView: DiffUtilRecyclerV
     inner class ViewHolder(private val itemBinding: ItemPopularBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         internal fun bind(item: ResultsItem?) {
             with(itemBinding) {
-                tvTitle.text = item?.abstract
+                tvTitle.text = item?.title
                 tvByline.text = item?.byline
                 tvDatePublished.text = item?.publishedDate
                 mCardView.setOnClickListener {
