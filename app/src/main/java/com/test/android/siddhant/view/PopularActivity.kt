@@ -1,6 +1,5 @@
 package com.test.android.siddhant.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -13,6 +12,7 @@ import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.utils.AppConstant
 import com.test.android.siddhant.utils.Resource
 import com.test.android.siddhant.utils.Util
+import com.test.android.siddhant.utils.startActivity
 import com.test.android.siddhant.viewmodel.PopularVM
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -41,12 +41,9 @@ class PopularActivity : AppCompatActivity() {
     private fun initAdapter() {
         list = ArrayList()
         adapter = PopularAdapter(list) { item ->
-            startActivity(
-                Intent(this@PopularActivity, PopularDetailActivity::class.java)
-                    .apply {
-                        putExtra(AppConstant.KEY_INTENT_DATA, item?.abstract)
-                    }
-            )
+            startActivity<PopularDetailActivity> {
+                putExtra(AppConstant.KEY_INTENT_DATA, item?.abstract)
+            }
         }
         binding.rvPopular.itemAnimator = DefaultItemAnimator()
         binding.rvPopular.adapter = adapter
