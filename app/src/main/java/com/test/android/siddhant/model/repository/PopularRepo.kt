@@ -7,9 +7,7 @@ import com.test.android.siddhant.utils.AppConstant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class PopularRepo @Inject constructor(
     private val apiService: ApiService,
     @ApplicationScope private val ioScope: CoroutineScope
