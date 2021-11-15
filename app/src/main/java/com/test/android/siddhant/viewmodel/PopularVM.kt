@@ -14,9 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PopularVM @Inject constructor(private val popularRepo: PopularRepo) : ViewModel() {
-    private var _articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
-    internal val articlesListLiveData
-        get() = _articlesListLiveData
+    private val _articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
+    internal val articlesListLiveData = _articlesListLiveData
 
     internal suspend fun fetchArticlesList() {
 

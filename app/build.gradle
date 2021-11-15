@@ -13,8 +13,8 @@ android {
         applicationId "com.test.android.siddhant"
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 5
-        versionName "5.0"
+        versionCode 6
+        versionName "6.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -62,10 +62,6 @@ dependencies {
     def hilt_dagger = '2.40.1'
     implementation "com.google.dagger:hilt-android:$hilt_dagger"
     kapt "com.google.dagger:hilt-compiler:$hilt_dagger"
-
-
-    // testing
-//    testImplementation 'junit:junit:4.13.2'
 
     // Espresso
     def androidx_test_espresso = "3.4.0"
