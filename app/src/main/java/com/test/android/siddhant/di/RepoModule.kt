@@ -6,12 +6,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RepoModule {
 
     @Provides
-    fun providesPopularRepo(apiService: ApiService) = PopularRepo(apiService)
+    fun providesPopularRepo(apiService: ApiService, @ApplicationScope ioScope: CoroutineScope) =
+        PopularRepo(apiService, ioScope)
 
 }
