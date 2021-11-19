@@ -1,10 +1,11 @@
 name: Android CI
 
 on:
+
   push:
-    branches: [ master ]
+    branches: [ workflow-github, master ]
   pull_request:
-    branches: [ master ]
+    branches: [ workflow-github, master ]
 
 jobs:
   build:
