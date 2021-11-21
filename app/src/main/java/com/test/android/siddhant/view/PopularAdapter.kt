@@ -29,7 +29,7 @@ class PopularAdapter @Inject constructor(diffUtilRecyclerView: DiffUtilRecyclerV
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[holder.bindingAdapterPosition])
+        holder.bind(getItem(position))
     }
 
     inner class ViewHolder(private val itemBinding: ItemPopularBinding) : RecyclerView.ViewHolder(itemBinding.root) {
