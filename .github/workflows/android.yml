@@ -23,11 +23,16 @@ jobs:
         run: chmod +x gradlew
 
       - name: Unit Test
-        run: ./gradlew assembleDebugAndroidTest
+        run: ./gradlew assembleDebugAndroidTest --stacktrace
 
-      - name: Android Test Report
-        uses: asadmansr/android-test-report-action@v1.2.0
-        if: ${{ always() }}
+      - name: Build debug APK
+        run:  ./gradlew assembleDebug --stacktrace
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Upload APK
+        uses: actions/upload-artifact@v1
+        with:
+          name: app
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+#      - name: Build with Gradle
+#        run: ./gradlew build
