@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
@@ -19,7 +19,14 @@ jobs:
           distribution: 'adopt'
           cache: gradle
 
-      #      - name: Grant execute permission for gradlew
-      #        run: chmod +x gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+          # Execute unit tests
+               - name: Unit Test
+               run: ./gradlew testDebugUnitTest
+
+                 - name: Android Test Report
+                   uses: asadmansr/android-test-report-action@v1.2.0
+                   if: ${{ always() }} # IMPORTANT: run Android Test Report regardless
       - name: Build with Gradle
         run: ./gradlew build
