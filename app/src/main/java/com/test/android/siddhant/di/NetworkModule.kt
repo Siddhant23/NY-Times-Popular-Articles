@@ -10,27 +10,32 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =  Retrofit.Builder()
-            .baseUrl(AppConstant.BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        .baseUrl(AppConstant.BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
+    @Singleton
     @Provides
     fun providesOkHttpClient(): OkHttpClient {
         return OkHttpClient().newBuilder()
-            .connectTimeout(15, TimeUnit.SECONDS)   // connect timeout
-            .readTimeout(15, TimeUnit.SECONDS)      // socket timeout
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .callTimeout(10, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
             .build()
     }
 
+    @Singleton
     @Provides
     fun providesAPIService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
 
