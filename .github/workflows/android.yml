@@ -35,11 +35,11 @@ jobs:
           name: test-reports
           path: '**/build/reports/tests/'
 
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+#      - name: Upload Debug APK
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: APK
+#          path: app/build/outputs/apk/debug/app-debug.apk
 
 #      - name: Build with Gradle
 #        run: ./gradlew build
