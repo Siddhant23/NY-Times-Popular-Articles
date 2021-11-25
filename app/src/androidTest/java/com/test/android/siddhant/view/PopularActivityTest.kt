@@ -43,7 +43,7 @@ class PopularActivityTest {
         onView(withId(R.id.rvPopular)).check(matches(isDisplayed()))       //recyclerview
         onView(withId(R.id.progressBar)).check(matches(isDisplayed()))     //progressBar
 
-        onView(withId(R.id.rvPopular)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))  //visibility
+        (withId(R.id.rvPopular)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))  //visibility
 
     }
 
