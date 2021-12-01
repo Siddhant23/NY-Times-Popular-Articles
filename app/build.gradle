@@ -64,9 +64,6 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_dagger"
     kapt "com.google.dagger:hilt-compiler:$hilt_dagger"
 
-    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
-
-
     // Espresso
     def androidx_test_espresso = "3.4.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"

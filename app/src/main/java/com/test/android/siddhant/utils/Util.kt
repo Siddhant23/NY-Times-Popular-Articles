@@ -3,7 +3,6 @@ package com.test.android.siddhant.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.widget.Toast
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -29,9 +28,5 @@ class Util @Inject constructor(@ApplicationContext private val context: Context)
             }
         }
         return false
-    }
-
-    fun showToast(message: String, duration: Int = Toast.LENGTH_LONG) {
-        Toast.makeText(context, message, duration).show()
     }
 }

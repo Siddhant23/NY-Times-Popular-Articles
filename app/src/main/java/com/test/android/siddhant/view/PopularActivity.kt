@@ -11,7 +11,7 @@ import com.test.android.siddhant.databinding.ActivityPopularBinding
 import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.utils.AppConstant
 import com.test.android.siddhant.utils.Resource
-import com.test.android.siddhant.utils.Util
+import com.test.android.siddhant.utils.showToast
 import com.test.android.siddhant.utils.startActivity
 import com.test.android.siddhant.viewmodel.PopularVM
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,7 +74,7 @@ class PopularActivity : AppCompatActivity() {
                 }
                 is Resource.Error -> {
                     setLoader(false)
-                    it.message?.let { msg -> Util(this).showToast(msg) }
+                    it.message?.let { msg -> showToast(msg) }
                 }
             }
         })

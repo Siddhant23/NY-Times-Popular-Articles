@@ -1,5 +1,6 @@
 package com.test.android.siddhant.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,7 +21,8 @@ class PopularVM @Inject constructor(
 ) :
     ViewModel() {
     private val _articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
-    internal val articlesListLiveData = _articlesListLiveData
+    internal val articlesListLiveData: LiveData<Resource<ArrayList<ResultsItem>?>> =
+        _articlesListLiveData
 
     internal suspend fun fetchArticlesList() {
 
