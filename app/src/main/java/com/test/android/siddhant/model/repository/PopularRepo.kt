@@ -3,7 +3,6 @@ package com.test.android.siddhant.model.repository
 import com.test.android.siddhant.di.ApplicationScope
 import com.test.android.siddhant.model.api.ApiService
 import com.test.android.siddhant.model.data.ResultsItem
-import com.test.android.siddhant.utils.AppConstant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -15,7 +14,7 @@ class PopularRepo @Inject constructor(
 
     suspend fun getPopularData(): ArrayList<ResultsItem>? {
         return withContext(ioScope.coroutineContext) {
-            apiService.getPopularData(AppConstant.KEY).results
+            apiService.getPopularData().results
         }
     }
 }

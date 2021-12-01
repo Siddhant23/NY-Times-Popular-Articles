@@ -2,7 +2,6 @@ package com.test.android.siddhant.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.test.android.siddhant.NYTimesApp
 import com.test.android.siddhant.R
 import dagger.Module
 import dagger.Provides
@@ -14,13 +13,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Singleton
-    @ApplicationContext
-    @Provides
-    fun providesContext(application: NYTimesApp): Context {
-        return application.applicationContext
-    }
 
     @Singleton
     @ApplicationContext
