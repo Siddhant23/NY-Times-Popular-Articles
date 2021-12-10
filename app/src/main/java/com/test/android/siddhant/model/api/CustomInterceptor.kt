@@ -7,18 +7,19 @@ import com.test.android.siddhant.utils.AppConstant
 import com.test.android.siddhant.utils.NoConnectivityException
 import com.test.android.siddhant.utils.UnknownException
 import com.test.android.siddhant.utils.Util
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CustomInterceptor @Inject constructor(private val context: Context) : Interceptor {
+class CustomInterceptor @Inject constructor(@ApplicationContext private val context: Context) :
+    Interceptor {
 
-    @Throws(IOException::class)
+    @Throws(Exception::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        if (!Util(context).isNetworkAvailable())
+        if (!Util.isNetworkAvailable(context))
             throw NoConnectivityException(context.getString(R.string.error_internet))
 
         val request = chain.request()
