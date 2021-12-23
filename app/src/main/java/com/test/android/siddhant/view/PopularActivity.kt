@@ -1,9 +1,9 @@
 package com.test.android.siddhant.view
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.test.android.siddhant.R
@@ -16,14 +16,12 @@ import com.test.android.siddhant.utils.startActivity
 import com.test.android.siddhant.viewmodel.PopularVM
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class PopularActivity : AppCompatActivity() {
     private val binding by lazy { ActivityPopularBinding.inflate(layoutInflater) }
-    private  val viewModel: PopularVM by viewModels()
-    @Inject lateinit var adapter : PopularAdapter
-    private lateinit var list : ArrayList<ResultsItem>
+    private val viewModel: PopularVM by viewModels()
+    private var adapter = PopularAdapter(::onPopularItemClicked)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,18 +37,18 @@ class PopularActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        list = ArrayList()
-        adapter = PopularAdapter(list) { item ->
-            startActivity<PopularDetailActivity> {
-                putExtra(AppConstant.KEY_INTENT_DATA, item?.abstract)
-            }
-        }
         binding.rvPopular.itemAnimator = DefaultItemAnimator()
         binding.rvPopular.adapter = adapter
     }
 
+    private fun onPopularItemClicked(item: ResultsItem?) {
+        startActivity<PopularDetailActivity> {
+            putExtra(AppConstant.KEY_INTENT_DATA, item?.abstract)
+        }
+    }
+
     private fun setLoader(isVisible: Boolean) {
-        binding.progressBar.visibility = if (isVisible) View.VISIBLE else View.GONE
+        binding.progressBar.isVisible = if (isVisible) true else false
     }
 
     private fun initVM() {
@@ -68,8 +66,7 @@ class PopularActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     setLoader(false)
                     it.data?.let { items ->
-                        list.addAll(items)
-                        adapter.submitList(list)
+                        adapter.submitList(items)
                     }
                 }
                 is Resource.Error -> {
