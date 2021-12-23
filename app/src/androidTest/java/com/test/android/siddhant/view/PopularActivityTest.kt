@@ -10,23 +10,27 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.test.android.siddhant.R
 import com.test.android.siddhant.utils.AppConstant
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4ClassRunner::class)
+@HiltAndroidTest
 class PopularActivityTest {
 
-    @get:Rule
+    @get:Rule(order = 1)
+    var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 2)
     val activityRule = ActivityScenarioRule(PopularActivity::class.java)
 
     @Before
     fun setUp() {
+        hiltRule.inject()
         Intents.init()
     }
 
