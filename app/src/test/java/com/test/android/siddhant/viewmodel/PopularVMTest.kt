@@ -2,7 +2,6 @@ package com.test.android.siddhant.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.test.android.siddhant.TestCoroutineRule
 import com.test.android.siddhant.di.ApplicationScope
 import com.test.android.siddhant.model.data.ResultsItem
@@ -24,11 +23,12 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
+import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
+@RunWith(RobolectricTestRunner::class)
 @Config(application = HiltTestApplication::class, manifest = Config.NONE)
 class PopularVMTest {
 
