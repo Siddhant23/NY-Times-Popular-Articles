@@ -3,8 +3,6 @@ name: Test
 on:
   push:
     branches: [ workflow-github, master ]
-#  pull_request:
-#    branches: [ workflow-github, master ]
 
 jobs:
   build:
@@ -31,5 +29,5 @@ jobs:
         disable-animations: true
         script: ./gradlew connectedCheck
 
-        - name: Run Unit Tests
-          run: ./gradlew testDebugUnitTest --stacktrace
+          - name: Run Unit Tests
+            run: ./gradlew testDebugUnitTest --stacktrace

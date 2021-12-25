@@ -1,21 +1,21 @@
-version: 2
-updates:
-
-  # Maintain dependencies for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
-
-  # Maintain dependencies for Gradle
-  - package-ecosystem: "gradle"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "09:00"
-      # Use Indian Standard Time (UTC +05:30)
-      timezone: "Asia/Kolkata"
-    commit-message:
-      prefix: "Bot"
-    target-branch: "master"
-
+#version: 2
+#updates:
+#
+#  # Maintain dependencies for GitHub Actions
+#  - package-ecosystem: "github-actions"
+#    directory: "/"
+#    schedule:
+#      interval: "daily"
+#
+#  # Maintain dependencies for Gradle
+#  - package-ecosystem: "gradle"
+#    directory: "/"
+#    schedule:
+#      interval: "daily"
+#      time: "09:00"
+#      # Use Indian Standard Time (UTC +05:30)
+#      timezone: "Asia/Kolkata"
+#    commit-message:
+#      prefix: "Bot"
+#    target-branch: "master"
+#
