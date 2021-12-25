@@ -7,6 +7,7 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+
     steps:
       - uses: actions/checkout@v2.4.0
       - name: set up JDK 11
@@ -29,5 +30,5 @@ jobs:
         disable-animations: true
         script: ./gradlew connectedCheck
 
-          - name: Run Unit Tests
-            run: ./gradlew testDebugUnitTest --stacktrace
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest --stacktrace
