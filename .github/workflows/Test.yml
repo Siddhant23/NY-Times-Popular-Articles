@@ -22,11 +22,11 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Run Instrumentation Tests
-        #        run: ./gradlew connectedDebugAndroidTest --stacktrace
+        run: ./gradlew connectedDebugAndroidTest --stacktrace
       - uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30
-          script: ./gradlew :app:connectedCheck --stacktrace
+          #          script: ./gradlew :app:connectedCheck --stacktrace
           profile: Nexus 6
 
       - name: Run Unit Tests
