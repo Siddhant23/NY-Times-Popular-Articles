@@ -25,7 +25,7 @@ jobs:
         #        run: ./gradlew connectedDebugAndroidTest --stacktrace
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level }}
+          api-level: 30
           script: ./gradlew connectedAndroidTest --stacktrace
 
       - name: Run Unit Tests
