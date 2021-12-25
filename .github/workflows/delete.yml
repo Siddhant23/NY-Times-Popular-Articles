@@ -1,0 +1,2 @@
+- name: Delete workflow runs
+  uses: Mattraks/delete-workflow-runs@v1.2.3
