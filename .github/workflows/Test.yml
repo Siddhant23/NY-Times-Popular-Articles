@@ -3,8 +3,9 @@ name: Test
 on:
   push:
     branches: [ workflow-github, master ]
+
 jobs:
-  android-tests:
+  build:
     runs-on: macos-latest
     strategy:
       matrix:
