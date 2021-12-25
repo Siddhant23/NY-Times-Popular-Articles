@@ -1,7 +1,6 @@
 name: Test
 
 on:
-
   push:
     branches: [ workflow-github, master ]
   pull_request:
