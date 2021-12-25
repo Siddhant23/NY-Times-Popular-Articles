@@ -9,8 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2.4.0
 
-      - name: Build the app
-        run: ./gradlew build
+#      - name: Build the app
+#        run: ./gradlew build
 
   android_tests:
     # see https://github.com/reactivecircus/android-emulator-runner,
@@ -22,5 +22,5 @@ jobs:
       - name: Instrumentation Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 31
+          api-level: 30
           script: ./gradlew connectedCheck
