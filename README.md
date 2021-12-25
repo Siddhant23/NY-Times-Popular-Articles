@@ -1,4 +1,5 @@
-[![Android CI](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/android.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/android.yml)
+[![Build](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Build.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Build.yml)
+[![Test](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Test.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Test.yml)
 
 # NY TIMES ARTICLES (MOST POPULAR)
 
@@ -11,10 +12,10 @@ By Siddhant Mehta (Android Developer)
 - SDK           : 31 (Android 12)
 - Arch          : MVVM (Model - View - ViewModel)
 - Network       : Retrofit
-- Concurrency   : Coroutine
-- DI            : Hilt-Dagger
+- Concurrency   : Coroutines
+- DI            : Hilt
 - UI            : View Binding
-- Testing       : Espresso + JUnit
+- Testing       : Espresso + JUnit + Mockito
 - CI/CD         : Github-Actions
 
-Note: For Testing, Run [ActivityTestSuite.kt](app/src/androidTest/java/com/test/android/siddhant/view/ActivityTestSuite.kt) which has all classes to run all test cases in it.
+
