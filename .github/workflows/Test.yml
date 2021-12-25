@@ -33,11 +33,11 @@ jobs:
           java-version: 11
 
       # API 31+ emulators only have Google API, x86_64 system images.
-      - name: Get AVD info
-        uses: ./.github/actions/get-avd-info
-        id: avd-info
-        with:
-          api-level: ${{ matrix.api-level }}
+#      - name: Get AVD info
+#        uses: ./.github/actions/get-avd-info
+#        id: avd-info
+#        with:
+#          api-level: ${{ matrix.api-level }}
 
       # Create a new emulator snapshot if it isn't present in the cache.
       - name: Create AVD snapshot
