@@ -3,9 +3,9 @@ name: Build
 on:
 
   push:
-    branches: [ workflow-github, master ]
+#    branches: [ workflow-github, master ]
   pull_request:
-    branches: [ master ]
+#    branches: [ master ]
 
 jobs:
   build:
