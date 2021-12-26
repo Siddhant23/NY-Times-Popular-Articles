@@ -32,89 +32,87 @@ import org.robolectric.annotation.Config
 @Config(application = HiltTestApplication::class, manifest = Config.NONE)
 class PopularVMTest {
 
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
+	@get:Rule
+	var hiltRule = HiltAndroidRule(this)
 
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
+	@get:Rule
+	val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @get:Rule
-    val testCoroutineRule = TestCoroutineRule()
+	@get:Rule
+	val testCoroutineRule = TestCoroutineRule()
 
-    @get:Rule
-    val rule: MockitoRule = MockitoJUnit.rule()
+	@get:Rule
+	val rule: MockitoRule = MockitoJUnit.rule()
 
-    @Mock
-    private lateinit var apiResultObserver: Observer<Resource<ArrayList<ResultsItem>?>>
+	@Mock
+	private lateinit var apiResultObserver: Observer<Resource<ArrayList<ResultsItem>?>>
 
-    @Mock
-    private lateinit var viewModel: PopularVM
+	@Mock
+	private lateinit var viewModel: PopularVM
 
-    @Mock
-    private lateinit var repo: PopularRepo
+	@Mock
+	private lateinit var repo: PopularRepo
 
-    @Mock
-    private lateinit var listsItemModel: ArrayList<ResultsItem>
+	@Mock
+	private lateinit var listsItemModel: ArrayList<ResultsItem>
 
-    @ApplicationScope
-    private lateinit var testCoroutineScope: TestScope
+	@ApplicationScope
+	private lateinit var testCoroutineScope: TestScope
 
+	@Before
+	fun setUp() {
+		hiltRule.inject()
+		testCoroutineScope = TestScope()
+		viewModel = PopularVM(repo, testCoroutineScope).apply {
+			articlesListLiveData.observeForever(apiResultObserver)
+		}
+	}
 
-    @Before
-    fun setUp() {
-        hiltRule.inject()
-        testCoroutineScope = TestScope()
-        viewModel = PopularVM(repo, testCoroutineScope).apply {
-            articlesListLiveData.observeForever(apiResultObserver)
-        }
-    }
+	@After
+	fun tearDown() {
+		viewModel.articlesListLiveData.removeObserver(apiResultObserver)
+	}
 
-    @After
-    fun tearDown() {
-        viewModel.articlesListLiveData.removeObserver(apiResultObserver)
-    }
+	@Test
+	fun `check LiveData not null`() {
+		testCoroutineRule.runBlockingTest {
+			viewModel = spy(PopularVM(repo, testCoroutineScope))
+			viewModel.articlesListLiveData.observeForever(apiResultObserver)
+			launch(testCoroutineScope.coroutineContext) {
+				viewModel.fetchArticlesList()
+				assertNotNull(viewModel.articlesListLiveData)
+			}
+		}
+	}
 
-    @Test
-    fun `check LiveData not null`() {
-        testCoroutineRule.runBlockingTest {
-            viewModel = spy(PopularVM(repo, testCoroutineScope))
-            viewModel.articlesListLiveData.observeForever(apiResultObserver)
-            launch(testCoroutineScope.coroutineContext) {
-                viewModel.fetchArticlesList()
-                assertNotNull(viewModel.articlesListLiveData)
-            }
-        }
-    }
+	@Test
+	fun fetchArticlesList() {
+		testCoroutineRule.runBlockingTest {
+			// Given
+			`when`(repo.getPopularData()).thenReturn(listsItemModel)
+			launch(testCoroutineScope.coroutineContext) {
+				// When
+				viewModel.fetchArticlesList()
+				// Then
+				verify(apiResultObserver).onChanged(Resource.Loading())
+				verify(apiResultObserver).onChanged(Resource.Success(listsItemModel))
+			}
+		}
+	}
 
-    @Test
-    fun fetchArticlesList() {
-        testCoroutineRule.runBlockingTest {
-            //Given
-            `when`(repo.getPopularData()).thenReturn(listsItemModel)
-            launch(testCoroutineScope.coroutineContext) {
-                //When
-                viewModel.fetchArticlesList()
-                //Then
-                verify(apiResultObserver).onChanged(Resource.Loading())
-                verify(apiResultObserver).onChanged(Resource.Success(listsItemModel))
-            }
-        }
-
-    }
-
-    @Test(expected = Throwable::class)
-    fun `verify failure when data returns fetchArticlesList`() {
-        val errorMsg = Throwable().message
-        testCoroutineRule.runBlockingTest {
-            //Given
-            `when`(repo.getPopularData()).thenThrow(Throwable::class.java)
-            launch(testCoroutineScope.coroutineContext) {
-                //When
-                viewModel.fetchArticlesList()
-                //Then
-                verify(apiResultObserver).onChanged(Resource.Loading())
-                verify(apiResultObserver).onChanged(errorMsg?.let { Resource.Error(it) })
-            }
-        }
-    }
+	@Test(expected = Throwable::class)
+	fun `verify failure when data returns fetchArticlesList`() {
+		val errorMsg = Throwable().message
+		testCoroutineRule.runBlockingTest {
+			// Given
+			`when`(repo.getPopularData()).thenThrow(Throwable::class.java)
+			launch(testCoroutineScope.coroutineContext) {
+				// When
+				viewModel.fetchArticlesList()
+				// Then
+				verify(apiResultObserver).onChanged(Resource.Loading())
+				verify(apiResultObserver).onChanged(errorMsg?.let { Resource.Error(it) })
+			}
+		}
+	}
 }

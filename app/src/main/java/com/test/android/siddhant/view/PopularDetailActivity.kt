@@ -9,14 +9,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PopularDetailActivity : AppCompatActivity() {
-   private val binding by lazy { ActivityPopularDetailBinding.inflate(layoutInflater) }
+	private val binding by lazy { ActivityPopularDetailBinding.inflate(layoutInflater) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        supportActionBar?.title = getString(R.string.titleName)
-        intent.hasExtra(AppConstant.KEY_INTENT_DATA).apply {
-            binding.tvDetailTxt.text = intent.getStringExtra(AppConstant.KEY_INTENT_DATA)
-        }
-    }
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		setContentView(binding.root)
+		supportActionBar?.title = getString(R.string.titleName)
+		intent.hasExtra(AppConstant.KEY_INTENT_DATA).apply {
+			binding.tvDetailTxt.text = intent.getStringExtra(AppConstant.KEY_INTENT_DATA)
+		}
+	}
 }

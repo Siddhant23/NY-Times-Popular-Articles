@@ -22,46 +22,45 @@ import org.junit.Test
 @HiltAndroidTest
 class PopularActivityTest {
 
-    @get:Rule(order = 1)
-    var hiltRule = HiltAndroidRule(this)
+	@get:Rule(order = 1)
+	var hiltRule = HiltAndroidRule(this)
 
-    @get:Rule(order = 2)
-    val activityRule = ActivityScenarioRule(PopularActivity::class.java)
+	@get:Rule(order = 2)
+	val activityRule = ActivityScenarioRule(PopularActivity::class.java)
 
-    @Before
-    fun setUp() {
-        hiltRule.inject()
-        Intents.init()
-    }
+	@Before
+	fun setUp() {
+		hiltRule.inject()
+		Intents.init()
+	}
 
-    @After
-    fun tearDown() {
-        Intents.release()
-    }
+	@After
+	fun tearDown() {
+		Intents.release()
+	}
 
-    //checking Views
-    @Test
-    fun testViewsInPopularActivity() {
+	// checking Views
+	@Test
+	fun testViewsInPopularActivity() {
 
-        onView(withId(R.id.parentPopular)).check(matches(isDisplayed()))   //parent
-        onView(withId(R.id.rvPopular)).check(matches(isDisplayed()))       //recyclerview
-        onView(withId(R.id.progressBar)).check(matches(isDisplayed()))     //progressBar
+		onView(withId(R.id.parentPopular)).check(matches(isDisplayed())) // parent
+		onView(withId(R.id.rvPopular)).check(matches(isDisplayed())) // recyclerview
+		onView(withId(R.id.progressBar)).check(matches(isDisplayed())) // progressBar
 
-        onView(withId(R.id.rvPopular)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))  //visibility
+		onView(withId(R.id.rvPopular)).check(matches(withEffectiveVisibility(Visibility.VISIBLE))) // visibility
+	}
 
-    }
+	@Test
+	fun testItemViewClickOpenDetailActivity() {
 
-    @Test
-    fun testItemViewClickOpenDetailActivity() {
-
-        val scenario = ActivityScenario.launch(PopularActivity::class.java)
-        onView(withId(R.id.rvPopular)).perform(click())   //clickable
-        scenario.onActivity { activity ->
-            startActivity(
-                activity,
-                Intent(activity, PopularDetailActivity::class.java),
-                bundleOf(Pair(AppConstant.KEY_INTENT_DATA, "item"))
-            )
-        }
-    }
+		val scenario = ActivityScenario.launch(PopularActivity::class.java)
+		onView(withId(R.id.rvPopular)).perform(click()) // clickable
+		scenario.onActivity { activity ->
+			startActivity(
+				activity,
+				Intent(activity, PopularDetailActivity::class.java),
+				bundleOf(Pair(AppConstant.KEY_INTENT_DATA, "item"))
+			)
+		}
+	}
 }

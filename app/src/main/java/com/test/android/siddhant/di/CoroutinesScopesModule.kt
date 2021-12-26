@@ -12,10 +12,10 @@ import javax.inject.Singleton
 @Module
 object CoroutinesScopesModule {
 
-    @Singleton
-    @ApplicationScope
-    @Provides
-    fun providesIoCoroutineScope(
-        @IoDispatcher ioDispatcher: CoroutineDispatcher
-    ): CoroutineScope = CoroutineScope(ioDispatcher)
+	@Singleton
+	@ApplicationScope
+	@Provides
+	fun providesIoCoroutineScope(
+		@IoDispatcher ioDispatcher: CoroutineDispatcher
+	): CoroutineScope = CoroutineScope(ioDispatcher)
 }

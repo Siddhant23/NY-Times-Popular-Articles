@@ -15,32 +15,32 @@ import org.junit.Test
 @HiltAndroidTest
 class PopularDetailActivityTest {
 
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
+	@get:Rule
+	var hiltRule = HiltAndroidRule(this)
 
-    @Before
-    fun setUp() {
-        hiltRule.inject()
-    }
+	@Before
+	fun setUp() {
+		hiltRule.inject()
+	}
 
-    //checking Views
-    @Test
-    fun testViewsInDetailActivity() {
-        ActivityScenario.launch(PopularDetailActivity::class.java)
+	// checking Views
+	@Test
+	fun testViewsInDetailActivity() {
+		ActivityScenario.launch(PopularDetailActivity::class.java)
 
-        onView(ViewMatchers.withId(R.id.parentPopularDetail))  //parent
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        onView(ViewMatchers.withId(R.id.tvDetailTxt))          //Detail TextView
-            .check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-    }
+		onView(ViewMatchers.withId(R.id.parentPopularDetail)) // parent
+			.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+		onView(ViewMatchers.withId(R.id.tvDetailTxt)) // Detail TextView
+			.check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+	}
 
-    //checking back press to popular screen
-    @Test
-    fun pressBacktoPopularActivity() {
-        ActivityScenario.launch(PopularActivity::class.java)
+	// checking back press to popular screen
+	@Test
+	fun pressBacktoPopularActivity() {
+		ActivityScenario.launch(PopularActivity::class.java)
 
-        pressBack()
-        onView(ViewMatchers.withId(R.id.parentPopular))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-    }
+		pressBack()
+		onView(ViewMatchers.withId(R.id.parentPopular))
+			.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+	}
 }

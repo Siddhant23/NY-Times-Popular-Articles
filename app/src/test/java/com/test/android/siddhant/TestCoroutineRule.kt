@@ -9,22 +9,22 @@ import org.junit.runners.model.Statement
 
 @ExperimentalCoroutinesApi
 class TestCoroutineRule : TestRule {
-    private val testCoroutineDispatcher = StandardTestDispatcher()
-    private val testCoroutineScope = TestScope(testCoroutineDispatcher)
+	private val testCoroutineDispatcher = StandardTestDispatcher()
+	private val testCoroutineScope = TestScope(testCoroutineDispatcher)
 
-    override fun apply(base: Statement, description: Description?) = object : Statement() {
-        @Throws(Throwable::class)
-        override fun evaluate() {
-            Dispatchers.setMain(testCoroutineDispatcher)
+	override fun apply(base: Statement, description: Description?) = object : Statement() {
+		@Throws(Throwable::class)
+		override fun evaluate() {
+			Dispatchers.setMain(testCoroutineDispatcher)
 
-            // everything above this happens before the test
-            base.evaluate()
-            // everything below this happens after the test
-            Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+			// everything above this happens before the test
+			base.evaluate()
+			// everything below this happens after the test
+			Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
 //            testCoroutineScope.cleanupTestCoroutines()
-        }
-    }
+		}
+	}
 
-    fun runBlockingTest(block: suspend TestScope.() -> Unit) =
-        testCoroutineScope.runTest { block() }
+	fun runBlockingTest(block: suspend TestScope.() -> Unit) =
+		testCoroutineScope.runTest { block() }
 }

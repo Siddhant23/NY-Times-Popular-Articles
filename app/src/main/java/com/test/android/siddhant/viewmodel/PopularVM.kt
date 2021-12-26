@@ -16,35 +16,35 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PopularVM @Inject constructor(
-    private val popularRepo: PopularRepo,
-    @ApplicationScope private var ioScope: CoroutineScope
+	private val popularRepo: PopularRepo,
+	@ApplicationScope private var ioScope: CoroutineScope
 ) :
-    ViewModel() {
-    private val _articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
-    internal val articlesListLiveData: LiveData<Resource<ArrayList<ResultsItem>?>> =
-        _articlesListLiveData
+	ViewModel() {
+	private val _articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
+	internal val articlesListLiveData: LiveData<Resource<ArrayList<ResultsItem>?>> =
+		_articlesListLiveData
 
-    internal suspend fun fetchArticlesList() {
+	internal suspend fun fetchArticlesList() {
 
-        _articlesListLiveData.apply {
-            postValue(Resource.Loading())
-        }
+		_articlesListLiveData.apply {
+			postValue(Resource.Loading())
+		}
 
-        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-            _articlesListLiveData.apply {
-                postValue(
-                    exception.message?.let {
-                        Resource.Error(it)
-                    }
-                )
-            }
-        }
+		val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+			_articlesListLiveData.apply {
+				postValue(
+					exception.message?.let {
+						Resource.Error(it)
+					}
+				)
+			}
+		}
 
-        viewModelScope.launch(ioScope.coroutineContext + exceptionHandler) {
-            val results = popularRepo.getPopularData()
-            _articlesListLiveData.apply {
-                postValue(Resource.Success(results))
-            }
-        }
-    }
+		viewModelScope.launch(ioScope.coroutineContext + exceptionHandler) {
+			val results = popularRepo.getPopularData()
+			_articlesListLiveData.apply {
+				postValue(Resource.Success(results))
+			}
+		}
+	}
 }

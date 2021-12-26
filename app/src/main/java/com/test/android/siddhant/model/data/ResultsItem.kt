@@ -7,18 +7,18 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ResultsItem(
 
-    @SerializedName("id")
-    val id: Long? = null,
+	@SerializedName("id")
+	val id: Long? = null,
 
-    @SerializedName("byline")
-    val byline: String? = null,
+	@SerializedName("byline")
+	val byline: String? = null,
 
-    @SerializedName("title")
-    val title: String? = null,
+	@SerializedName("title")
+	val title: String? = null,
 
-    @SerializedName("abstract")
-    val abstract: String? = null,
+	@SerializedName("abstract")
+	val abstract: String? = null,
 
-    @SerializedName("published_date")
-    val publishedDate: String? = null
-):Parcelable
+	@SerializedName("published_date")
+	val publishedDate: String? = null
+) : Parcelable
