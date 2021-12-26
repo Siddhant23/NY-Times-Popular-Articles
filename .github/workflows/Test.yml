@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2.4.0
       - name: set up JDK 11
@@ -20,15 +20,10 @@ jobs:
 
       - name: Unit tests
         run: ./gradlew testDebugUnitTest  --stacktrace
-
-          #  android_tests:
-          #    runs-on: macos-latest
-          #    steps:
-          #      - uses: actions/checkout@v2
-          #
-          #      - name: Instrumentation Tests
-          #        uses: reactivecircus/android-emulator-runner@v2
-          #        with:
-          #          api-level: 26
-          #          script: ./gradlew connectedCheck
+          
+      - name: Instrumentation Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          script: ./gradlew connectedCheck
 
