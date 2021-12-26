@@ -13,8 +13,8 @@ jobs:
         id: delete-workflow-runs
         with:
           repository: Siddhant23/NY-Times-Popular-Articles
-          workflow: ".github/workflows/test.yml"
-           older-than-seconds: 3600
+          workflow: ".github/workflows/Test.yml"
+          older-than-seconds: 3600
           # created-before: "2021-12-08T16:34:00Z"
           # actor: test@test.com
           # branch: main
