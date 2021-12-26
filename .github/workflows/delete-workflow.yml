@@ -1,5 +1,7 @@
 name: Delete old workflow runs
 on:
+  push:
+    branches: [ workflow-github, master ]
   workflow_dispatch:
     inputs:
       days:
