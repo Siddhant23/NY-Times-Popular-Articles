@@ -1,26 +1,19 @@
-on: [push]
+name: Delete old workflow runs
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Number of days.'
+        required: true
+        default: "1"
 
 jobs:
-  delete-workflow-runs:
+  del_runs:
     runs-on: ubuntu-latest
-    name: A demo job to delete workflow runs
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Delete workflow runs
-        uses: MajorScruffy/delete-workflow-runs
-        id: delete-workflow-runs
+        uses: Mattraks/delete-workflow-runs@main
         with:
-          repository: Siddhant23/NY-Times-Popular-Articles
-          workflow: ".github/workflows/Test.yml"
-          older-than-seconds: 3600
-          # created-before: "2021-12-08T16:34:00Z"
-          # actor: test@test.com
-          # branch: main
-          # event: push
-          # event: completed
-          # maximum-workflow-runs-to-keep: 0
-          # what-if: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: ${{ github.event.inputs.days }}
