@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Delete workflow runs
-        uses: ./ # Uses an action in the root directory
+        uses: MajorScruffy/delete-workflow-runs
         id: delete-workflow-runs
         with:
           repository: Siddhant23/NY-Times-Popular-Articles
