@@ -4,18 +4,19 @@
 # NY TIMES ARTICLES (MOST POPULAR)
 
 By Siddhant Mehta (Android Developer)
-
-### Language    : Kotlin (Android Architecture Components)
+ 
+## (Android Architecture Components - Jetpack)
 
 ### Libraries
 
-- SDK           : 31 (Android 12)
-- Arch          : MVVM (Model - View - ViewModel)
-- Network       : Retrofit
-- Concurrency   : Coroutines
-- DI            : Hilt
-- UI            : View Binding
-- Testing       : Espresso + JUnit + Mockito
-- CI/CD         : Github-Actions
+- Language      :   Kotlin
+- SDK           :   31 (Android S)
+- Architecture  :   MVVM (Model - View - ViewModel)
+- Network       :   Retrofit
+- Concurrency   :   Coroutines
+- DI            :   Hilt
+- UI            :   View Binding
+- Testing       :   Espresso + JUnit + Mockito
+- CI/CD         :   Github-Actions
 
 
