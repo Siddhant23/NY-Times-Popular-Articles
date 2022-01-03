@@ -1,7 +1,7 @@
 [![Build](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Build.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Build.yml)
 [![Test](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Test.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Test.yml)
 
-# NY TIMES ARTICLES (MOST POPULAR)
+# NY TIMES ARTICLES
 
 By Siddhant Mehta (Android Developer)
  
@@ -16,7 +16,7 @@ By Siddhant Mehta (Android Developer)
 - Concurrency   :   Coroutines
 - DI            :   Hilt
 - UI            :   View Binding
-- Testing       :   Espresso + JUnit + Mockito
+- Testing       :   JUnit + Espresso + RoboElectric + Mockito
 - CI/CD         :   Github-Actions
 
 
