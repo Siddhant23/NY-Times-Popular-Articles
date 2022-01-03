@@ -22,5 +22,5 @@ updates:
       timezone: "Asia/Kolkata"
     commit-message:
       prefix: "Bot"
-    target-branch: "master"
+#     target-branch: "master"
 
