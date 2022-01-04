@@ -13,8 +13,8 @@ android {
         applicationId "com.test.android.siddhant"
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 11
-        versionName "11.0"
+        versionCode 12
+        versionName "12.0"
         testInstrumentationRunner "com.test.android.siddhant.HiltTestRunner"
     }
     buildTypes {
@@ -49,7 +49,6 @@ dependencies {
     // Lifecycle - ViewModel
     def lifecycle = '2.4.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
 
     //Coroutine
     def coroutine = '1.6.0'
@@ -97,7 +96,7 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.7.3"
 
     //Mockito
-    def mockito = '4.1.0'
+    def mockito = '4.2.0'
     testImplementation "org.mockito:mockito-core:$mockito"
     testImplementation "org.mockito:mockito-inline:$mockito"
 

@@ -9,17 +9,18 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+      time: "09:00"
+      timezone: "Asia/Kolkata"
     commit-message:
       prefix: "Bot"
+
   # Maintain dependencies for Gradle
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "daily"
-      time: "19:52"
-      # Use Indian Standard Time (UTC +05:30)
+      time: "09:00"
       timezone: "Asia/Kolkata"
     commit-message:
       prefix: "Bot"
 #     target-branch: "master"
-
