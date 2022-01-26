@@ -48,7 +48,7 @@ class PopularActivity : AppCompatActivity() {
 	}
 
 	private fun setLoader(isVisible: Boolean) {
-		binding.progressBar.isVisible = if (isVisible) true else false
+		binding.progressBar.isVisible = isVisible
 	}
 
 	private fun initVM() {
@@ -58,7 +58,7 @@ class PopularActivity : AppCompatActivity() {
 	}
 
 	private fun observeResponse() {
-		viewModel.articlesListLiveData.observe(this, {
+		viewModel.articlesListLiveData.observe(this) {
 			when (it) {
 				is Resource.Loading -> {
 					setLoader(true)
@@ -74,7 +74,7 @@ class PopularActivity : AppCompatActivity() {
 					it.message?.let { msg -> showToast(msg) }
 				}
 			}
-		})
+		}
 	}
 
 	override fun onBackPressed() {
