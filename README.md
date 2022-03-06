@@ -1,5 +1,6 @@
 [![Build](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Build.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Build.yml)
 [![Test](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Test.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/Test.yml)
+<a href="https://android-developers.googleblog.com/2021/07/android-studio-arctic-fox-202031-stable.html"><img alt="Android Studio Arctic Fox" src="https://img.shields.io/badge/AS%20Arctic%20Fox-2020.3.1%20Patch%204-9cf.svg"/></a>
 
 # NY TIMES ARTICLES
 
