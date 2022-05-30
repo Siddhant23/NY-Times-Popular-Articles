@@ -96,7 +96,7 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.8.1"
 
     //Mockito
-    def mockito = '4.5.1'
+    def mockito = '4.6.0'
     testImplementation "org.mockito:mockito-core:$mockito"
     testImplementation "org.mockito:mockito-inline:$mockito"
 
