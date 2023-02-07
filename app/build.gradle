@@ -74,7 +74,7 @@ dependencies {
     def androidx_test = "1.4.0"
     androidTestImplementation "androidx.test:runner:$androidx_test"
     androidTestImplementation "androidx.test:core:$androidx_test"
-    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.3'
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.5'
 
     //Hilt-kaptAndroidTest
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_dagger"
