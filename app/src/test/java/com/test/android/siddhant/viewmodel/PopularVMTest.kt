@@ -111,7 +111,7 @@ class PopularVMTest {
 				viewModel.fetchArticlesList()
 				// Then
 				verify(apiResultObserver).onChanged(Resource.Loading())
-				verify(apiResultObserver).onChanged(errorMsg?.let { Resource.Error(it) })
+				verify(apiResultObserver).onChanged(Resource.Error(errorMsg.orEmpty()))
 			}
 		}
 	}
