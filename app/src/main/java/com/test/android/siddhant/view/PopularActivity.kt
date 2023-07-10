@@ -1,6 +1,7 @@
 package com.test.android.siddhant.view
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -30,6 +31,7 @@ class PopularActivity : AppCompatActivity() {
 		initAdapter()
 		initVM()
 		observeResponse()
+		onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
 	}
 
 	private fun initView() {
@@ -69,6 +71,7 @@ class PopularActivity : AppCompatActivity() {
 						adapter.submitList(items)
 					}
 				}
+
 				is Resource.Error -> {
 					setLoader(false)
 					it.message?.let { msg -> showToast(msg) }
@@ -77,8 +80,9 @@ class PopularActivity : AppCompatActivity() {
 		}
 	}
 
-	override fun onBackPressed() {
-		super.onBackPressed()
-		finish()
+	private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+		override fun handleOnBackPressed() {
+			finish()
+		}
 	}
 }
