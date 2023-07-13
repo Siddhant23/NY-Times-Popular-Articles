@@ -11,14 +11,14 @@ android {
     defaultConfig {
         applicationId "com.test.android.siddhant"
         minSdkVersion 23
-        versionCode 17
-        versionName "17.0"
+        versionCode 18
+        versionName "18.0"
         testInstrumentationRunner "com.test.android.siddhant.HiltTestRunner"
     }
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", "\"https://api.nytimes.com/svc/\""
-            buildConfigField "String", "API_KEY", "\"y9m4C7gR9I5c1ZCmj3Nno7L88VNzF2c0\""
+            buildConfigField "String", "API_KEY", "\"VI0sPAqMaNLOVg7NVPxfngh4lp9Sx1wT\""
         }
     }
     buildFeatures {
@@ -58,8 +58,13 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit2"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2"
 
+    def okhttp3 = '4.11.0'
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttp3"
+
     //Hilt-dagger
-    def hilt_dagger = '2.45'
+    def hilt_dagger = '2.46.1'
     implementation "com.google.dagger:hilt-android:$hilt_dagger"
     kapt "com.google.dagger:hilt-compiler:$hilt_dagger"
 

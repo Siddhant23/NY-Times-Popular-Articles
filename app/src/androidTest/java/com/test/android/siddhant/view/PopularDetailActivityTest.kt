@@ -15,7 +15,7 @@ import org.junit.Test
 @HiltAndroidTest
 class PopularDetailActivityTest {
 
-	@get:Rule
+	@get:Rule(order = 1)
 	var hiltRule = HiltAndroidRule(this)
 
 	@Before
