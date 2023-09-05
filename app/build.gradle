@@ -50,7 +50,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
 
     //Coroutine
-    def coroutine = '1.6.4'
+    def coroutine = '1.7.3'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine"
 
     // Network Call
