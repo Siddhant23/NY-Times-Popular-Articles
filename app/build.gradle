@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk 33
     defaultConfig {
         applicationId "com.test.android.siddhant"
         minSdkVersion 23
-        versionCode 18
-        versionName "18.0"
+        versionCode 19
+        versionName "19.0"
         testInstrumentationRunner "com.test.android.siddhant.HiltTestRunner"
     }
     buildTypes {
