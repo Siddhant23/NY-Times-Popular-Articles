@@ -5,6 +5,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.pressBack
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.test.android.siddhant.R
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -17,6 +18,9 @@ class PopularDetailActivityTest {
 
 	@get:Rule(order = 1)
 	var hiltRule = HiltAndroidRule(this)
+
+	@get:Rule(order = 2)
+	val activityRule = ActivityScenarioRule(PopularDetailActivity::class.java)
 
 	@Before
 	fun setUp() {
