@@ -46,7 +46,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // Lifecycle - ViewModel
-    def lifecycle = '2.5.1'
+    def lifecycle = '2.6.2'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
 
     //Coroutine
