@@ -8,6 +8,10 @@ on:
   pull_request:
     branches: [ master ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,16 +26,24 @@ jobs:
           distribution: 'zulu'
           cache: gradle
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
+      # - name: Grant execute permission for gradlew
+      #   run: chmod +x ./gradlew
 
       - name: Build APK
         run:  ./gradlew assembleDebug --stacktrace
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: NYTimes APK
-          path: app/build/outputs/apk/debug/app-debug.apk
-          tag: ${{ github.ref }}
-          overwrite: true
+  # auto-merge:
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #       - uses: actions/checkout@v2
+  #       - uses: ahmadnassri/action-dependabot-auto-merge@v2
+  #         with:
+  #           github-token: ${{ secrets.mytoken }}
+          
+      # - name: Upload APK
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: NYTimes APK
+      #     path: app/build/outputs/apk/debug/app-debug.apk
+      #     tag: ${{ github.ref }}
+      #     overwrite: true
