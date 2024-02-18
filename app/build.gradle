@@ -7,22 +7,23 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "com.test.android.siddhant"
         minSdkVersion 23
-        versionCode 19
-        versionName "19.0"
+        versionCode 20
+        versionName "20.0"
         testInstrumentationRunner "com.test.android.siddhant.HiltTestRunner"
     }
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", "\"https://api.nytimes.com/svc/\""
-            buildConfigField "String", "API_KEY", "\"VI0sPAqMaNLOVg7NVPxfngh4lp9Sx1wT\""
+            buildConfigField "String", "API_KEY", "\"cpf0GcsMK5wpzsi0iz2gRntnNgTqmc0r\""
         }
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 
     compileOptions {
@@ -42,7 +43,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.recyclerview:recyclerview:1.3.2"
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.activity:activity-ktx:1.7.2'
+    implementation 'androidx.activity:activity-ktx:1.8.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // Lifecycle - ViewModel
