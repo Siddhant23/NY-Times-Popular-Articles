@@ -98,7 +98,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine"
 
     //RoboElectric
-    testImplementation "org.robolectric:robolectric:4.12"
+    testImplementation "org.robolectric:robolectric:4.12.1"
 
     //Mockito
     def mockito = '5.1.1'
