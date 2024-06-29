@@ -72,7 +72,7 @@ dependencies {
     // Instrumented Unit Tests
 
     // Espresso
-    def androidx_test_espresso = "3.5.1"
+    def androidx_test_espresso = "3.6.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$androidx_test_espresso"
 
