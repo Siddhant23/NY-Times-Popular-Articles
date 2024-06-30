@@ -10,10 +10,10 @@ on:
 
 jobs:
   test:
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [ 30 ]
+        api-level: [ 29 ]
         target: [ google_apis ]
         arch: [ x86_64 ]
 
@@ -27,10 +27,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu'
-      #          cache: gradle
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+          cache: gradle
 
       #      - name: Grant execute permission for gradlew
       #        run: chmod +x ./gradlew
@@ -40,12 +37,12 @@ jobs:
         continue-on-error: true # continue if the cache restore/upload fails
         with:
           #          cache-encryption-key: ${{ secrets.GradleEncryptionKey }}
-          dependency-graph: generate-and-submit
           path: |
             ~/.gradle/caches/modules-*
             ~/.gradle/caches/jars-*
             ~/.gradle/caches/build-cache-*
           key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
+          dependency-graph: generate-and-submit
 
       - name: AVD cache
         uses: actions/cache@v4
@@ -55,8 +52,8 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: avd-${{ matrix.api-level }} ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      #          restore-keys: |
+      #            ${{ runner.os }}-gradle-
 
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -68,17 +65,17 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
-          script: echo "Generated AVD snapshot for caching."
+          #          script: echo "Generated AVD snapshot for caching."
 
-      - name: Instrumentation tests
-        uses: reactivecircus/android-emulator-runner@v2.31.0
-        with:
-          api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
-          arch: ${{ matrix.arch }}
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
+          #      - name: Instrumentation tests
+          #        uses: reactivecircus/android-emulator-runner@v2.31.0
+          #        with:
+          #          api-level: ${{ matrix.api-level }}
+          #          target: ${{ matrix.target }}
+          #          arch: ${{ matrix.arch }}
+          #          force-avd-creation: false
+          #          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          #          disable-animations: true
           script: ./gradlew connectedCheck --stacktrace
 
       - name: Unit Tests

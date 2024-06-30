@@ -41,10 +41,10 @@ jobs:
             ~/.gradle/caches/build-cache-*
           key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          packages: ''
+      #      - name: Setup Android SDK
+      #        uses: android-actions/setup-android@v3
+      #        with:
+      #          packages: ''
 
       - name: Build APK
         run:  ./gradlew assembleDebug --stacktrace
