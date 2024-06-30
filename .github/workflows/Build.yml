@@ -33,11 +33,15 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         continue-on-error: true # continue if the cache restore/upload fails
         with:
-          path: |
-            ~/.gradle/caches/modules-*
-            ~/.gradle/caches/jars-*
-            ~/.gradle/caches/build-cache-*
-          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
+          cache-encryption-key: ${{ secrets.GradleEncryptionKey }}
+          dependency-graph: generate-and-submit
+      - run: gradle build --configuration-cache
+
+      #          path: |
+      #            ~/.gradle/caches/modules-*
+      #            ~/.gradle/caches/jars-*
+      #            ~/.gradle/caches/build-cache-*
+      #          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
