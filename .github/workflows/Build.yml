@@ -30,16 +30,16 @@ jobs:
       #   run: chmod +x ./gradlew
 
       - name: Gradle cache
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v2
         continue-on-error: true # continue if the cache restore/upload fails
         with:
           #          cache-encryption-key: ${{ secrets.GradleEncryptionKey }}
-          dependency-graph: generate-and-submit
+          #          dependency-graph: generate-and-submit
           path: |
             ~/.gradle/caches/modules-*
             ~/.gradle/caches/jars-*
             ~/.gradle/caches/build-cache-*
-          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
+      #          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
 
       #      - name: Setup Android SDK
       #        uses: android-actions/setup-android@v3

@@ -33,7 +33,7 @@ jobs:
       #        run: chmod +x ./gradlew
 
       - name: Gradle cache
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v2
         continue-on-error: true # continue if the cache restore/upload fails
         with:
           #          cache-encryption-key: ${{ secrets.GradleEncryptionKey }}
@@ -41,8 +41,8 @@ jobs:
             ~/.gradle/caches/modules-*
             ~/.gradle/caches/jars-*
             ~/.gradle/caches/build-cache-*
-          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
-          dependency-graph: generate-and-submit
+      #          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
+      #          dependency-graph: generate-and-submit
 
       - name: AVD cache
         uses: actions/cache@v4
