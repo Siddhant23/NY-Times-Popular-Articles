@@ -27,7 +27,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu'
-          cache: gradle
+      #          cache: gradle
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -39,15 +39,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         continue-on-error: true # continue if the cache restore/upload fails
         with:
-          cache-encryption-key: ${{ secrets.GradleEncryptionKey }}
+          #          cache-encryption-key: ${{ secrets.GradleEncryptionKey }}
           dependency-graph: generate-and-submit
-      - run: gradle build --configuration-cache
-
-      #          path: |
-      #            ~/.gradle/caches/modules-*
-      #            ~/.gradle/caches/jars-*
-      #            ~/.gradle/caches/build-cache-*
-      #          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
+          path: |
+            ~/.gradle/caches/modules-*
+            ~/.gradle/caches/jars-*
+            ~/.gradle/caches/build-cache-*
+          key: ${{ runner.os }}-gradle-${{ hashFiles('checksum.txt') }}
 
       - name: AVD cache
         uses: actions/cache@v4
