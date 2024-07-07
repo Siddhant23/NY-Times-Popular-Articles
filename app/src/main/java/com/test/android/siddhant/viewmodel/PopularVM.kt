@@ -24,27 +24,25 @@ class PopularVM @Inject constructor(
 	internal val articlesListLiveData: LiveData<Resource<ArrayList<ResultsItem>?>> =
 		_articlesListLiveData
 
-	internal suspend fun fetchArticlesList() {
-
-		_articlesListLiveData.apply {
-			postValue(Resource.Loading())
-		}
-
-		val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-			_articlesListLiveData.apply {
-				postValue(
-					exception.message?.let {
-						Resource.Error(it)
-					}
-				)
-			}
-		}
-
+	suspend fun fetchArticlesList() {
+		_articlesListLiveData.postValue(Resource.Loading())
 		viewModelScope.launch(ioScope.coroutineContext + exceptionHandler) {
-			val results = popularRepo.getPopularData()
-			_articlesListLiveData.apply {
-				postValue(Resource.Success(results))
+			try {
+				val result = popularRepo.getPopularData()
+				_articlesListLiveData.postValue(Resource.Success(result))
+			} catch (e: Exception) {
+				_articlesListLiveData.postValue(Resource.Error(e.message.orEmpty()))
 			}
+		}
+	}
+
+	private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+		_articlesListLiveData.apply {
+			postValue(
+				exception.message?.let {
+					Resource.Error(it)
+				}
+			)
 		}
 	}
 }

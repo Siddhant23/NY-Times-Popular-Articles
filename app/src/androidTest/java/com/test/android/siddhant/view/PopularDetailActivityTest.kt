@@ -2,9 +2,12 @@ package com.test.android.siddhant.view
 
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.pressBack
-import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.Espresso.pressBackUnconditionally
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.test.android.siddhant.R
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -27,24 +30,28 @@ class PopularDetailActivityTest {
 		hiltRule.inject()
 	}
 
-	// checking Views
+	// Checking Views in Detail Activity
 	@Test
 	fun testViewsInDetailActivity() {
 		ActivityScenario.launch(PopularDetailActivity::class.java)
 
-		onView(ViewMatchers.withId(R.id.parentPopularDetail)) // parent
-			.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-		onView(ViewMatchers.withId(R.id.tvDetailTxt)) // Detail TextView
-			.check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+		onView(withId(R.id.parentPopularDetail)) // parent
+			.check(matches(isDisplayed()))
+		onView(withId(R.id.tvDetailTxt)) // Detail TextView
+			.check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
 	}
 
 	// checking back press to popular screen
 	@Test
 	fun pressBacktoPopularActivity() {
+		// Perform back press action
+		pressBackUnconditionally()
+
+		//open PopularActivity
 		ActivityScenario.launch(PopularActivity::class.java)
 
-		pressBack()
-		onView(ViewMatchers.withId(R.id.parentPopular))
-			.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+		// Check if the parent view of PopularActivity is displayed
+		onView(withId(R.id.parentPopular))
+			.check(matches(isDisplayed()))
 	}
 }

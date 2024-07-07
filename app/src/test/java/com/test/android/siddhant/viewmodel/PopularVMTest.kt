@@ -2,6 +2,9 @@ package com.test.android.siddhant.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import com.test.android.siddhant.TestCoroutineRule
 import com.test.android.siddhant.di.ApplicationScope
 import com.test.android.siddhant.model.data.ResultsItem
@@ -13,14 +16,18 @@ import dagger.hilt.android.testing.HiltTestApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.robolectric.RobolectricTestRunner
@@ -90,29 +97,48 @@ class PopularVMTest {
 		testCoroutineRule.runBlockingTest {
 			// Given
 			`when`(repo.getPopularData()).thenReturn(listsItemModel)
-			launch(testCoroutineScope.coroutineContext) {
-				// When
-				viewModel.fetchArticlesList()
-				// Then
-				verify(apiResultObserver).onChanged(Resource.Loading())
-				verify(apiResultObserver).onChanged(Resource.Success(listsItemModel))
-			}
+
+			// Create a spy for the ViewModel
+			viewModel = spy(PopularVM(repo, testCoroutineScope))
+			viewModel.articlesListLiveData.observeForever(apiResultObserver)
+
+			// When
+			viewModel.fetchArticlesList()
+
+			// Ensure coroutine completes
+			testCoroutineScope.advanceUntilIdle()
+
+			// Capture the arguments passed to the observer
+			val captor = argumentCaptor<Resource<ArrayList<ResultsItem>?>>()
+			verify(apiResultObserver, times(2)).onChanged(captor.capture())
+
+			// Assert the captured values
+			val (loadingState, successState) = captor.allValues
+			assertTrue(
+				"Expected Resource.Loading, but got $loadingState",
+				loadingState is Resource.Loading
+			)
+			assertTrue(
+				"Expected Resource.Success, but got $successState",
+				successState is Resource.Success
+			)
+			assertEquals(successState.data, listsItemModel)
 		}
 	}
 
 	@Test(expected = Throwable::class)
-	fun `verify failure when data returns fetchArticlesList`() {
+	fun `verify failure when data returns fetchArticlesList`() = testCoroutineRule.runBlockingTest {
 		val errorMsg = Throwable().message
-		testCoroutineRule.runBlockingTest {
-			// Given
-			`when`(repo.getPopularData()).thenThrow(Throwable::class.java)
-			launch(testCoroutineScope.coroutineContext) {
-				// When
-				viewModel.fetchArticlesList()
-				// Then
-				verify(apiResultObserver).onChanged(Resource.Loading())
-				verify(apiResultObserver).onChanged(Resource.Error(errorMsg.orEmpty()))
-			}
+		// Given
+		`when`(repo.getPopularData()).thenThrow(Throwable::class.java)
+
+		// When
+		launch(testCoroutineScope.coroutineContext) {
+			viewModel.fetchArticlesList()
+
+			// Then
+			verify(apiResultObserver).onChanged(Resource.Loading())
+			verify(apiResultObserver).onChanged(Resource.Error(errorMsg.orEmpty()))
 		}
 	}
 }

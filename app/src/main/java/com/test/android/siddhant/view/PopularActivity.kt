@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class PopularActivity : AppCompatActivity() {
 	private val binding by lazy { ActivityPopularBinding.inflate(layoutInflater) }
 	private val viewModel: PopularVM by viewModels()
-	private var adapter = PopularAdapter(::onPopularItemClicked)
+	private lateinit var adapter: PopularAdapter
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -40,6 +40,7 @@ class PopularActivity : AppCompatActivity() {
 
 	private fun initAdapter() {
 		binding.rvPopular.itemAnimator = DefaultItemAnimator()
+		adapter = PopularAdapter(::onPopularItemClicked)
 		binding.rvPopular.adapter = adapter
 	}
 

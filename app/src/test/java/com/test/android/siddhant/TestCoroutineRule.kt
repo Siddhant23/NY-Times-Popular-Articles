@@ -22,9 +22,8 @@ class TestCoroutineRule : TestRule {
 				base.evaluate()
 				// everything below this happens after the test
 				Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
-//            testCoroutineScope.cleanupTestCoroutines()
 			}
-	}
+		}
 
 	fun runBlockingTest(block: suspend TestScope.() -> Unit) =
 		testCoroutineScope.runTest { block() }

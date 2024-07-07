@@ -33,6 +33,13 @@ class CustomInterceptor @Inject constructor(@ApplicationContext private val cont
 			.url(queryParams)
 			.build()
 		val response = chain.proceed(requestBuilder)
-		return if (response.isSuccessful) response else throw UnknownException(response.message)
+		return try {
+			if (!response.isSuccessful) {
+				throw UnknownException(response.message)
+			}
+			response
+		} catch (e: Exception) {
+			throw UnknownException(e.message)
+		}
 	}
 }
