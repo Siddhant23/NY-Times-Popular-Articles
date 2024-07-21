@@ -38,7 +38,7 @@ jobs:
           cache: gradle
 
       - name: Gradle cache
-        uses: gradle/actions/setup-gradle@v2
+        uses: gradle/actions/setup-gradle@v3
         continue-on-error: true # continue if the cache restore/upload fails
         with:
           path: |
