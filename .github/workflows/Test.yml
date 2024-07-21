@@ -71,7 +71,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           emulator-boot-timeout: 1000
-          emulator-port: 5559
+          emulator-port: 5560
           script: echo "Generated AVD snapshot for caching."
 
       - name: Instrumentation tests
@@ -83,7 +83,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           emulator-boot-timeout: 1000
-          emulator-port: 5561
+          emulator-port: 5562
           script: ./gradlew connectedCheck --stacktrace
 
       - name: Unit Tests
