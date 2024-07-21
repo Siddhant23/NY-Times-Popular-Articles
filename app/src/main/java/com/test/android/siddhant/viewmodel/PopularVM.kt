@@ -24,7 +24,7 @@ class PopularVM @Inject constructor(
 	internal val articlesListLiveData: LiveData<Resource<ArrayList<ResultsItem>?>> =
 		_articlesListLiveData
 
-	internal suspend fun fetchArticlesList() {
+	suspend fun fetchArticlesList() {
 
 		_articlesListLiveData.apply {
 			postValue(Resource.Loading())

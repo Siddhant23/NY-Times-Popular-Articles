@@ -47,7 +47,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // Lifecycle - ViewModel
-    def lifecycle = '2.8.2'
+    def lifecycle = '2.8.3'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
 
     //Coroutine
@@ -98,7 +98,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine"
 
     //RoboElectric
-    testImplementation "org.robolectric:robolectric:4.12.2"
+    testImplementation "org.robolectric:robolectric:4.13"
 
     //Mockito
     def mockito = '5.12.0'

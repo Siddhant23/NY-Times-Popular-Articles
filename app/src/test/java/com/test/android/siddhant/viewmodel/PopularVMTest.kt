@@ -20,7 +20,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 import org.robolectric.RobolectricTestRunner
@@ -45,19 +47,16 @@ class PopularVMTest {
 	val rule: MockitoRule = MockitoJUnit.rule()
 
 	@Mock
-	private lateinit var apiResultObserver: Observer<Resource<ArrayList<ResultsItem>?>>
+	lateinit var apiResultObserver: Observer<Resource<ArrayList<ResultsItem>?>>
 
 	@Mock
 	private lateinit var viewModel: PopularVM
 
 	@Mock
-	private lateinit var repo: PopularRepo
-
-	@Mock
-	private lateinit var listsItemModel: ArrayList<ResultsItem>
+	lateinit var repo: PopularRepo
 
 	@ApplicationScope
-	private lateinit var testCoroutineScope: TestScope
+	lateinit var testCoroutineScope: TestScope
 
 	@Before
 	fun setUp() {
@@ -88,14 +87,13 @@ class PopularVMTest {
 	@Test
 	fun fetchArticlesList() {
 		testCoroutineRule.runBlockingTest {
-			// Given
-			`when`(repo.getPopularData()).thenReturn(listsItemModel)
+			val resultItemList = arrayListOf<ResultsItem>()
+			`when`(repo.getPopularData()).thenReturn(resultItemList)
+			viewModel.articlesListLiveData.observeForever(apiResultObserver)
 			launch(testCoroutineScope.coroutineContext) {
-				// When
 				viewModel.fetchArticlesList()
-				// Then
 				verify(apiResultObserver).onChanged(Resource.Loading())
-				verify(apiResultObserver).onChanged(Resource.Success(listsItemModel))
+				verify(apiResultObserver).onChanged(Resource.Success(resultItemList))
 			}
 		}
 	}
@@ -104,6 +102,7 @@ class PopularVMTest {
 	fun `verify failure when data returns fetchArticlesList`() {
 		val errorMsg = Throwable().message
 		testCoroutineRule.runBlockingTest {
+			viewModel.articlesListLiveData.observeForever(apiResultObserver)
 			// Given
 			`when`(repo.getPopularData()).thenThrow(Throwable::class.java)
 			launch(testCoroutineScope.coroutineContext) {
