@@ -55,7 +55,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
 
     //Coroutine
-    def coroutine = '1.9.0'
+    def coroutine = '1.10.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine"
 
     // Network Call
@@ -81,7 +81,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$androidx_test_espresso"
 
     // androidx.test
-    def androidx_test = "1.6.1"
+    def androidx_test = '1.6.2'
     androidTestImplementation "androidx.test:runner:$androidx_test"
     androidTestImplementation "androidx.test:core:$androidx_test"
     androidTestImplementation 'androidx.test.ext:junit-ktx:1.2.1'
@@ -103,10 +103,10 @@ dependencies {
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine"
 
     //RoboElectric
-    testImplementation "org.robolectric:robolectric:4.14"
+    testImplementation 'org.robolectric:robolectric:4.14.1'
 
     //Mockito
-    def mockito = '5.14.2'
+    def mockito = '5.15.2'
     testImplementation "org.mockito:mockito-core:$mockito"
     testImplementation "org.mockito:mockito-inline:5.2.0"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
