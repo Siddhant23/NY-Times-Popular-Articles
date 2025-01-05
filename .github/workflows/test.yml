@@ -42,9 +42,9 @@ jobs:
         id: determine-target
         run: |
           if [ ${{ matrix.api-level }} -ge 29 ]; then
-            echo "TARGET=google_apis" >> $GITHUB_ENV
+            echo "TARGET=default" >> $GITHUB_OUTPUT
           else
-            echo "TARGET=google_apis" >> $GITHUB_ENV
+            echo "TARGET=google_apis" >> $GITHUB_OUTPUT
             fi
 
       - name: Output target
