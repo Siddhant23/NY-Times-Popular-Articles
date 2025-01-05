@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         api-level: [ 29 ]
-        shard: [ 1 ]
+        # shard: [ 1 ]
     steps:
 
       - name: Checkout
@@ -59,8 +59,8 @@ jobs:
             ~/.android/adb*
           key: avd-ubuntu-${{ matrix.api-level }}-${{ env.cache-version }}
 
-      - name: Wait for emulator to boot
-        run: adb wait-for-device
+      # - name: Wait for emulator to boot
+      #   run: adb wait-for-device
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
