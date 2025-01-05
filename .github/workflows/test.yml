@@ -50,9 +50,6 @@ jobs:
       - name: Output target
         run: echo "The TARGET is ${{ steps.determine-target.outputs.TARGET }}"
 
-      - name: Wait for emulator to boot
-        run: adb wait-for-device
-
       - name: AVD cache
         uses: actions/cache@v4
         id: avd-cache
@@ -61,6 +58,9 @@ jobs:
             ~/.android/avd/*
             ~/.android/adb*
           key: avd-ubuntu-${{ matrix.api-level }}-${{ env.cache-version }}
+
+      - name: Wait for emulator to boot
+        run: adb wait-for-device
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
