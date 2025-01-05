@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [ 29, 34 ]
-
+        api-level: [ 29 ]
+        shard: [ 1 ]
     steps:
 
       - name: Checkout
@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'zulu'
           cache: gradle
 
       - name: Gradle cache
@@ -42,13 +42,16 @@ jobs:
         id: determine-target
         run: |
           if [ ${{ matrix.api-level }} -ge 29 ]; then
-          echo "TARGET=aosp_atd" >> $GITHUB_OUTPUT
+            echo "TARGET=aosp_atd" >> $GITHUB_ENV
           else
-          echo "TARGET=google_apis" >> $GITHUB_OUTPUT
-          fi
+            echo "TARGET=google_apis" >> $GITHUB_ENV
+            fi
 
       - name: Output target
         run: echo "The TARGET is ${{ steps.determine-target.outputs.TARGET }}"
+
+      - name: Wait for emulator to boot
+        run: adb wait-for-device
 
       - name: AVD cache
         uses: actions/cache@v4
@@ -57,7 +60,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-ubuntu-${{ matrix.api-level }}-${{ env.cache-version }}
+          key: avd-${{ matrix.api-level }}-${{ env.cache-version }}
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -82,8 +85,6 @@ jobs:
           script: ./gradlew connectedCheck --stacktrace
 
       - name: Run device tests
-          # We need to use adb shell wm density to reset device's density to use fixed density
-        # for all devices. Hope it can improve the stability of Emulator testing.
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}

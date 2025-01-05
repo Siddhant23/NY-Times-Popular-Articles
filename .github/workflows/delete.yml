@@ -1,4 +1,4 @@
-name: Delete old workflow runs
+name: Delete old workflow
 on:
   push:
     branches: [ workflow-github, master ]

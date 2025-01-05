@@ -81,7 +81,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$androidx_test_espresso"
 
     // androidx.test
-    def androidx_test = '1.6.2'
+    def androidx_test = '1.6.1'
     androidTestImplementation "androidx.test:runner:$androidx_test"
     androidTestImplementation "androidx.test:core:$androidx_test"
     androidTestImplementation 'androidx.test.ext:junit-ktx:1.2.1'
