@@ -26,13 +26,13 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'zulu'
+          distribution: 'adopt'
           cache: gradle
 
       - name: Gradle cache
@@ -60,11 +60,11 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ matrix.api-level }}-${{ env.cache-version }}
+          key: avd-ubuntu-${{ matrix.api-level }}-${{ env.cache-version }}
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.33.0
         with:
           api-level: ${{ matrix.api-level }}
           target: ${{ steps.determine-target.outputs.TARGET }}
@@ -76,7 +76,7 @@ jobs:
 
       - name: Instrumentation tests
         timeout-minutes: 60
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.33.0
         with:
           api-level: ${{ matrix.api-level }}
           force-avd-creation: false
@@ -109,7 +109,7 @@ jobs:
 
       - name: Unit Tests
         run: |
-          SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew test \
+          SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew testDebugUnitTest \
           --stacktrace --continue \
           -Dorg.gradle.workers.max=2
 
