@@ -24,6 +24,7 @@ jobs:
     strategy:
       matrix:
         api-level: [ 29 ]
+        target: [ default, google_apis ]
  
     steps:
       - name: Checkout
@@ -42,14 +43,14 @@ jobs:
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Determine emulator target
-        id: determine-target
-        run: |
-          if [ ${{ matrix.api-level }} -ge 29 ]; then
-            echo "TARGET=default" >> $GITHUB_OUTPUT
-          else
-            echo "TARGET=google_apis" >> $GITHUB_OUTPUT
-            fi
+      # - name: Determine emulator target
+      #   id: determine-target
+      #   run: |
+      #     if [ ${{ matrix.api-level }} -ge 29 ]; then
+      #       echo "TARGET=default" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "TARGET=google_apis" >> $GITHUB_OUTPUT
+      #       fi
 
       - name: Output target
         run: echo "The TARGET is ${{ steps.determine-target.outputs.TARGET }}"
