@@ -15,6 +15,8 @@ concurrency:
   cancel-in-progress: true
 env:
   cache-version: v1
+  GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false"
+  timeout-minutes: 15
 
 jobs:
   build:
@@ -22,21 +24,23 @@ jobs:
     strategy:
       matrix:
         api-level: [ 29 ]
-        # shard: [ 1 ]
+ 
     steps:
-
       - name: Checkout
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2        
 
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'adopt'
           cache: gradle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
 
       - name: Gradle cache
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v4.6.0
 
       - name: Determine emulator target
         id: determine-target
@@ -50,6 +54,13 @@ jobs:
       - name: Output target
         run: echo "The TARGET is ${{ steps.determine-target.outputs.TARGET }}"
 
+      - name: enable KVM for linux runners
+        if: runner.os == 'Linux'
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+        
       - name: AVD cache
         uses: actions/cache@v4
         id: avd-cache
@@ -64,10 +75,10 @@ jobs:
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2.33.0
+        uses: ./
         with:
           api-level: ${{ matrix.api-level }}
-          target: ${{ steps.determine-target.outputs.TARGET }}
+          target: ${{ matrix.target }}
           arch: x86_64
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -76,13 +87,20 @@ jobs:
 
       - name: Instrumentation tests
         timeout-minutes: 60
-        uses: reactivecircus/android-emulator-runner@v2.33.0
+        uses: ./
         with:
           api-level: ${{ matrix.api-level }}
           force-avd-creation: false
+          avd-name: test
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew connectedCheck --stacktrace
+          pre-emulator-launch-script: |
+            echo "Running pre emulator launch script. Printing the working directory now:"
+            pwd
+          script: |
+            echo $GITHUB_REPOSITORY
+            adb devices
+            ./gradlew connectedDebugAndroidTest
 
       - name: Run device tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -112,4 +130,18 @@ jobs:
           SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew testDebugUnitTest \
           --stacktrace --continue \
           -Dorg.gradle.workers.max=2
+
+      - name: 'Upload test results'
+        uses: actions/upload-artifact@v4
+        with:
+          path: results
+          name: ${{ steps.package.outputs.artifact-name }}
+        if: always()
+
+        # This is the best way I found to abort the job with an error message
+      - name: 'Notify about test failures'
+        uses: actions/github-script@v7
+        with:
+          script: core.setFailed('${{ steps.run-tests.outputs.error-message }}')
+        if: steps.run-tests.outputs.failure == 'true'
 
