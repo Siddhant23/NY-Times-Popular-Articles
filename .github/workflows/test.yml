@@ -75,7 +75,7 @@ jobs:
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: ./
+        uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
           target: ${{ matrix.target }}
@@ -87,7 +87,7 @@ jobs:
 
       - name: Instrumentation tests
         timeout-minutes: 60
-        uses: ./
+        uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
           force-avd-creation: false
@@ -111,7 +111,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          profile: Nexus One
+          profile: Nexus One 
           script: |
             adb shell wm density 240
             SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew cAT --stacktrace -Dorg.gradle.workers.max=2
