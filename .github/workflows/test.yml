@@ -46,29 +46,14 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '23'
+          java-version: '17'
           distribution: zulu
           cache: gradle
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
-      - name: Install Android SDK
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip
-          wget https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip -O cmdline-tools.zip
-          unzip cmdline-tools.zip -d $HOME
-          mkdir -p $HOME/android-sdk/cmdline-tools
-          mv $HOME/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
-          echo "export ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
-          echo "export PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH" >> $GITHUB_ENV
-          echo "export PATH=$HOME/android-sdk/platform-tools:$PATH" >> $GITHUB_ENV
-          # Accept licenses
-          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
-          # Install platforms and build tools
-          $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-30" "build-tools;30.0.3"
-          # Verify installation
-          $HOME/android-sdk/platform-tools/adb --version
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses
 
       - name: AVD cache
         uses: actions/cache@v4
