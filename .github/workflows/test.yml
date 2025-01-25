@@ -14,12 +14,15 @@ name: Test
 concurrency:
   group: '${{ github.workflow }}-${{ github.ref }}'
   cancel-in-progress: true
-env:
-  cache-version: v1
-  JAVA_TOOL_OPTIONS: '-Xmx4g'
-  timeout-minutes: 15
-  strategy:
-    matrix:
+jobs:
+  test:
+    runs-on: '${{ matrix.os }}'
+    env: null
+    cache-version: v1
+    JAVA_TOOL_OPTIONS: '-Xmx4g'
+    timeout-minutes: 15
+    strategy:
+      matrix: null
       include:
         - os: ubuntu-22.04
           api-level: 23
