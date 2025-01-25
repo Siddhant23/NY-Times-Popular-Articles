@@ -10,9 +10,9 @@ on:
     paths-ignore:
       - '*.md'
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+#concurrency:
+#  group: ${{ github.workflow }}-${{ github.ref }}
+#  cancel-in-progress: true
 env:
   cache-version: v1
   GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false"
@@ -25,7 +25,7 @@ jobs:
       matrix:
         api-level: [ 29 ]
         target: [ default , google_apis ]
- 
+        arch: [ x86, x86_64 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2        
@@ -36,32 +36,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           cache: gradle
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
 
-      - name: Gradle cache
-        uses: gradle/actions/setup-gradle@v4
-
-      # - name: Determine emulator target
-      #   id: determine-target
-      #   run: |
-      #     if [ ${{ matrix.api-level }} -ge 29 ]; then
-      #       echo "TARGET=default" >> $GITHUB_OUTPUT
-      #     else
-      #       echo "TARGET=google_apis" >> $GITHUB_OUTPUT
-      #       fi
-
-      - name: Output target
-        run: echo "The TARGET is ${{ matrix.target }}"
-
-      - name: enable KVM for linux runners
-        if: runner.os == 'Linux'
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-        
       - name: AVD cache
         uses: actions/cache@v4
         id: avd-cache
@@ -69,10 +44,23 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-ubuntu-${{ matrix.api-level }}-${{ env.cache-version }}
+          key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}-${{ matrix.arch }}
+
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Output target
+        run: echo "The TARGET is ${{ matrix.target }}"
 
       # - name: Wait for emulator to boot
       #   run: adb wait-for-device
+
+      - name: Enable KVM for Linux runners
+        if: runner.os == 'Linux'
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -80,7 +68,8 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           target: ${{ matrix.target }}
-          arch: x86_64
+          arch: ${{ matrix.arch }}
+          profile: Galaxy Nexus
           force-avd-creation: false
           ram-size: 4096M
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -92,10 +81,14 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
+          profile: Galaxy Nexus
+          cores: 2
           force-avd-creation: false
           ram-size: 4096M
           avd-name: test
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           pre-emulator-launch-script: |
             echo "Running pre emulator launch script. Printing the working directory now:"
@@ -108,11 +101,11 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           target: ${{ matrix.target }}
-          arch: x86_64
+          arch: ${{ matrix.arch }}
           force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          profile: Nexus One 
+          profile: Nexus One
           script: |
             adb shell wm density 240
             SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew cAT --stacktrace -Dorg.gradle.workers.max=2
@@ -125,8 +118,7 @@ jobs:
           path: |
             **/build/reports/*
             **/build/outputs/*/connected/*
-          if: always()
-          
+
       - name: Unit Tests
         run: |
           SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew testDebugUnitTest \
@@ -139,6 +131,5 @@ jobs:
       - name: 'Notify about test failures'
         uses: actions/github-script@v7
         with:
-          script: core.setFailed('${{ steps.run-tests.outputs.error-message }}')
-        if: steps.run-tests.outputs.failure == 'true'
-
+          script: |
+            core.setFailed('${{ steps.run-tests.outputs.error-message }}')
