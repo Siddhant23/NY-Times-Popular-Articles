@@ -47,7 +47,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          # distribution: zulu
+          distribution: adopt
           cache: gradle
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
