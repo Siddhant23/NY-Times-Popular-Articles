@@ -52,9 +52,6 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
-      - name: Accept Android SDK licenses
-        run: yes | sdkmanager --licenses
-
       - name: AVD cache
         uses: actions/cache@v4
         id: avd-cache
@@ -70,8 +67,8 @@ jobs:
       - name: Output target
         run: echo "The TARGET is ${{ matrix.target }}"
 
-      - name: Wait for emulator to boot
-        run: adb wait-for-device
+      # - name: Wait for emulator to boot
+      #   run: adb wait-for-device
 
       - name: Enable KVM for Linux runners
         if: runner.os == 'Linux'
