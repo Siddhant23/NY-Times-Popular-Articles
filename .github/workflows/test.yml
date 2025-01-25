@@ -1,59 +1,57 @@
 name: Test
-
-on:
+'on':
   push:
-    branches: [ workflow-github, master ]
+    branches:
+      - workflow-github
+      - master
     paths-ignore:
       - '*.md'
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
     paths-ignore:
       - '*.md'
-
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: '${{ github.workflow }}-${{ github.ref }}'
   cancel-in-progress: true
 env:
   cache-version: v1
-  JAVA_TOOL_OPTIONS: -Xmx4g
+  JAVA_TOOL_OPTIONS: '-Xmx4g'
   timeout-minutes: 15
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-22.04
-            api-level: 23
-            target: default
-            arch: x86
-          - os: ubuntu-24.04
-            api-level: 24
-            target: playstore
-            arch: x86
-          - os: macos-13
-            api-level: 31
-            target: default
-            arch: x86_64
-          - os: ubuntu-24.04
-            api-level: 34
-            target: aosp_atd
-            arch: x86_64
-          - os: ubuntu-latest
-            api-level: 35
-            target: google_apis
-            arch: x86_64
- 
+  strategy:
+    matrix:
+      include:
+        - os: ubuntu-22.04
+          api-level: 23
+          target: default
+          arch: x86
+        - os: ubuntu-24.04
+          api-level: 24
+          target: playstore
+          arch: x86
+        - os: macos-13
+          api-level: 31
+          target: default
+          arch: x86_64
+        - os: ubuntu-24.04
+          api-level: 34
+          target: aosp_atd
+          arch: x86_64
+        - os: ubuntu-latest
+          api-level: 35
+          target: google_apis
+          arch: x86_64
     steps:
       - name: Checkout
-        uses: actions/checkout@v4       
-
+        uses: actions/checkout@v4
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '23'
-          distribution: 'zulu'
+          distribution: zulu
           cache: gradle
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
       - name: AVD cache
         uses: actions/cache@v4
         id: avd-cache
@@ -61,104 +59,98 @@ env:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target }}-${{ matrix.arch }}
-
-     - name: Gradle cache
+          key: >-
+            avd-${{ matrix.api-level }}-${{ matrix.os }}-${{ matrix.target
+            }}-${{ matrix.arch }}
+      - name: Gradle cache
         uses: gradle/actions/setup-gradle@v4
-
-      # - name: Determine emulator target
-      #   id: determine-target
-      #   run: |
-      #     if [ ${{ matrix.api-level }} -ge 29 ]; then
-      #       echo "TARGET=default" >> $GITHUB_OUTPUT
-      #     else
-      #       echo "TARGET=google_apis" >> $GITHUB_OUTPUT
-      #       fi
-
       - name: Output target
-        run: echo "The TARGET is ${{ matrix.target }}"
-
+        run: 'echo "The TARGET is ${{ matrix.target }}"'
       - name: Wait for emulator to boot
         run: adb wait-for-device
-
-     
-     - name: enable KVM for linux runners
+      - name: enable KVM for linux runners
         if: runner.os == 'Linux'
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
+        run: >
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666",
+          OPTIONS+="static_node=kvm"' | sudo tee
+          /etc/udev/rules.d/99-kvm4all.rules
 
+          sudo udevadm control --reload-rules
+
+          sudo udevadm trigger --name-match=kvm
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
-        with:
+        with: null
         profile: Galaxy Nexus
         cores: 2
-          api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
-          arch: ${{ matrix.arch }}
-          force-avd-creation: false
-          ram-size: 4096M
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: echo "Generated AVD snapshot for caching."
-
+        api-level: '${{ matrix.api-level }}'
+        target: '${{ matrix.target }}'
+        arch: '${{ matrix.arch }}'
+        force-avd-creation: false
+        ram-size: 4096M
+        emulator-options: >-
+          -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          -camera-back none
+        disable-animations: true
+        script: echo "Generated AVD snapshot for caching."
       - name: Instrumentation tests
         timeout-minutes: 60
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
-          arch: ${{ matrix.arch }}
+          api-level: '${{ matrix.api-level }}'
+          target: '${{ matrix.target }}'
+          arch: '${{ matrix.arch }}'
           profile: Galaxy Nexus
           cores: 2
           force-avd-creation: false
           ram-size: 4096M
           avd-name: test
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: >-
+            -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio
+            -no-boot-anim -camera-back none
           disable-animations: true
-          pre-emulator-launch-script: |
-            echo "Running pre emulator launch script. Printing the working directory now:"
+          pre-emulator-launch-script: >
+            echo "Running pre emulator launch script. Printing the working
+            directory now:"
+
             pwd
           script: |
-             adb devices
+            adb devices
             ./gradlew connectedCheck && killall -INT crashpad_handler || true
-
       - name: Run device tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
-          arch: ${{ matrix.arch }}
+          api-level: '${{ matrix.api-level }}'
+          target: '${{ matrix.target }}'
+          arch: '${{ matrix.arch }}'
           force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: >-
+            -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio
+            -no-boot-anim -camera-back none
           disable-animations: true
-          profile: Nexus One 
-          script: |
+          profile: Nexus One
+          script: >
             adb shell wm density 240
-            SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew cAT --stacktrace -Dorg.gradle.workers.max=2
 
+            SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew cAT --stacktrace
+            -Dorg.gradle.workers.max=2
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.api-level }}-${{ matrix.target }}
+          name: 'test-results-${{ matrix.api-level }}-${{ matrix.target }}'
           path: |
             **/build/reports/*
             **/build/outputs/*/connected/*
           if: always()
-          
       - name: Unit Tests
         run: |
           SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew testDebugUnitTest \
           --stacktrace --continue \
           -Dorg.gradle.workers.max=2
-
-        # This is the best way I found to abort the job with an error message
-      - name: 'Notify about test failures'
+      - name: Notify about test failures
         uses: actions/github-script@v7
         with:
-          script: core.setFailed('${{ steps.run-tests.outputs.error-message }}')
+          script: 'core.setFailed(''${{ steps.run-tests.outputs.error-message }}'')'
         if: steps.run-tests.outputs.failure == 'true'
-
