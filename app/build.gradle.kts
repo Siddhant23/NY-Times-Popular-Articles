@@ -9,9 +9,11 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    namespace = "com.test.android.siddhant"
+    compileSdk = 35
     defaultConfig {
         applicationId = "com.test.android.siddhant"
+        targetSdk = 35
         minSdk = 23
         versionCode = 25
         versionName = "25.0"
@@ -40,7 +42,6 @@ android {
     kotlinOptions {
         jvmTarget = JvmTarget.JVM_17.target
     }
-    namespace = "com.test.android.siddhant"
 }
 
 dependencies {
