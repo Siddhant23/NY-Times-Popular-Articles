@@ -17,33 +17,32 @@ concurrency:
 jobs:
   test:
     runs-on: '${{ matrix.os }}'
-    env: null
-    cache-version: v1
-    JAVA_TOOL_OPTIONS: '-Xmx4g'
+    env:
+      JAVA_TOOL_OPTIONS: '-Xmx4g'
     timeout-minutes: 15
     strategy:
-      matrix: null
-      include:
-        - os: ubuntu-22.04
-          api-level: 23
-          target: default
-          arch: x86
-        - os: ubuntu-24.04
-          api-level: 24
-          target: playstore
-          arch: x86
-        - os: macos-13
-          api-level: 31
-          target: default
-          arch: x86_64
-        - os: ubuntu-24.04
-          api-level: 34
-          target: aosp_atd
-          arch: x86_64
-        - os: ubuntu-latest
-          api-level: 35
-          target: google_apis
-          arch: x86_64
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            api-level: 23
+            target: default
+            arch: x86
+          - os: ubuntu-24.04
+            api-level: 24
+            target: playstore
+            arch: x86
+          - os: macos-13
+            api-level: 31
+            target: default
+            arch: x86_64
+          - os: ubuntu-24.04
+            api-level: 34
+            target: aosp_atd
+            arch: x86_64
+          - os: ubuntu-latest
+            api-level: 35
+            target: google_apis
+            arch: x86_64
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -81,22 +80,21 @@ jobs:
           sudo udevadm control --reload-rules
 
           sudo udevadm trigger --name-match=kvm
+          
       - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
-        with: null
-        profile: Galaxy Nexus
-        cores: 2
-        api-level: '${{ matrix.api-level }}'
-        target: '${{ matrix.target }}'
-        arch: '${{ matrix.arch }}'
-        force-avd-creation: false
-        ram-size: 4096M
-        emulator-options: >-
-          -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-          -camera-back none
-        disable-animations: true
-        script: echo "Generated AVD snapshot for caching."
+        with: 
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
+          profile: Galaxy Nexus
+          force-avd-creation: false
+          ram-size: 4096M
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: echo "Generated AVD snapshot for caching."
+        
       - name: Instrumentation tests
         timeout-minutes: 60
         uses: reactivecircus/android-emulator-runner@v2
@@ -109,14 +107,10 @@ jobs:
           force-avd-creation: false
           ram-size: 4096M
           avd-name: test
-          emulator-options: >-
-            -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio
-            -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           pre-emulator-launch-script: >
-            echo "Running pre emulator launch script. Printing the working
-            directory now:"
-
+            echo "Running pre emulator launch script. Printing the working directory now:"
             pwd
           script: |
             adb devices
@@ -128,9 +122,7 @@ jobs:
           target: '${{ matrix.target }}'
           arch: '${{ matrix.arch }}'
           force-avd-creation: false
-          emulator-options: >-
-            -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio
-            -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           profile: Nexus One
           script: >
