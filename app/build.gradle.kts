@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.cardView)
     implementation(libs.activityKtx)
     implementation(libs.constraintLayout)
+    implementation(libs.androidx.core)
 
     // Lifecycle and ViewModel
     implementation(libs.lifecycleViewModel)

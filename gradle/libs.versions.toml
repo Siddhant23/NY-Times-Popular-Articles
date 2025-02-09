@@ -10,6 +10,7 @@ recyclerView = "1.4.0"
 cardView = "1.0.0"
 activityKtx = "1.10.0"
 constraintLayout = "2.2.0"
+androidx-core = "1.16.0-alpha02"
 
 # Lifecycle Libraries
 lifecycleViewModel = "2.8.7"
@@ -43,6 +44,7 @@ recyclerView = { module = "androidx.recyclerview:recyclerview", version.ref = "r
 cardView = { module = "androidx.cardview:cardview", version.ref = "cardView" }
 activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayout" }
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
 
 # Lifecycle Libraries
 lifecycleViewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewModel" }

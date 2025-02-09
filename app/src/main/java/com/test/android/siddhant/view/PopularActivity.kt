@@ -3,7 +3,6 @@ package com.test.android.siddhant.view
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -19,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PopularActivity : AppCompatActivity() {
+class PopularActivity : BaseActivity() {
 	private val binding by lazy { ActivityPopularBinding.inflate(layoutInflater) }
 	private val viewModel: PopularVM by viewModels()
 	private lateinit var adapter: PopularAdapter
