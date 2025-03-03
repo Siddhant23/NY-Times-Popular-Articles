@@ -1,6 +1,6 @@
 # gradle/libs.versions.toml
 [versions]
-androidGradlePlugin = "8.8.1"
+androidGradlePlugin = "8.8.2"
 kotlinGradlePlugin = "2.1.10"
 hiltGradlePlugin = "2.55"
 
