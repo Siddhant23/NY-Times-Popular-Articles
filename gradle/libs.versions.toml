@@ -10,7 +10,7 @@ recyclerView = "1.4.0"
 cardView = "1.0.0"
 activityKtx = "1.10.1"
 constraintLayout = "2.2.1"
-androidx-core = "1.16.0-alpha02"
+androidx-core = "1.16.0-beta01"
 
 # Lifecycle Libraries
 lifecycleViewModel = "2.8.7"
