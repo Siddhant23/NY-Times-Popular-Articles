@@ -11,9 +11,6 @@ plugins {
 
 
 
-
-
-
 }
 
 android {
