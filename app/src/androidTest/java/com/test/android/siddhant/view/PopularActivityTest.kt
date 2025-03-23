@@ -59,9 +59,7 @@ class PopularActivityTest {
             startActivity(
                 activity,
                 Intent(activity, PopularDetailActivity::class.java),
-                bundleOf(Pair(AppConstant.KEY_INTENT_DATA, "item"))
-
-
+                bundleOf(Pair(AppConstant.KEY_INTENT_DATA, "item")),
             )
         }
     }
