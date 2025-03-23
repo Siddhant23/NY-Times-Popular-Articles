@@ -38,107 +38,108 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(application = HiltTestApplication::class, manifest = Config.NONE)
 class PopularVMTest {
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
-	@get:Rule
-	var hiltRule = HiltAndroidRule(this)
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-	@get:Rule
-	val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    val testCoroutineRule = TestCoroutineRule()
 
-	@get:Rule
-	val testCoroutineRule = TestCoroutineRule()
+    @get:Rule
+    val rule: MockitoRule = MockitoJUnit.rule()
 
-	@get:Rule
-	val rule: MockitoRule = MockitoJUnit.rule()
+    @Mock
+    private lateinit var apiResultObserver: Observer<Resource<ArrayList<ResultsItem>?>>
 
-	@Mock
-	private lateinit var apiResultObserver: Observer<Resource<ArrayList<ResultsItem>?>>
+    @Mock
+    private lateinit var viewModel: PopularVM
 
-	@Mock
-	private lateinit var viewModel: PopularVM
+    @Mock
+    private lateinit var repo: PopularRepo
 
-	@Mock
-	private lateinit var repo: PopularRepo
+    @Mock
+    private lateinit var listsItemModel: ArrayList<ResultsItem>
 
-	@Mock
-	private lateinit var listsItemModel: ArrayList<ResultsItem>
+    @ApplicationScope
+    private lateinit var testCoroutineScope: TestScope
 
-	@ApplicationScope
-	private lateinit var testCoroutineScope: TestScope
+    @Before
+    fun setUp() {
+        hiltRule.inject()
+        testCoroutineScope = TestScope()
+        viewModel =
+            PopularVM(repo, testCoroutineScope).apply {
+                articlesListLiveData.observeForever(apiResultObserver)
+            }
+    }
 
-	@Before
-	fun setUp() {
-		hiltRule.inject()
-		testCoroutineScope = TestScope()
-		viewModel = PopularVM(repo, testCoroutineScope).apply {
-			articlesListLiveData.observeForever(apiResultObserver)
-		}
-	}
+    @After
+    fun tearDown() {
+        viewModel.articlesListLiveData.removeObserver(apiResultObserver)
+    }
 
-	@After
-	fun tearDown() {
-		viewModel.articlesListLiveData.removeObserver(apiResultObserver)
-	}
+    @Test
+    fun `check LiveData not null`() {
+        testCoroutineRule.runBlockingTest {
+            viewModel = spy(PopularVM(repo, testCoroutineScope))
+            viewModel.articlesListLiveData.observeForever(apiResultObserver)
+            launch(testCoroutineScope.coroutineContext) {
+                viewModel.fetchArticlesList()
+                assertNotNull(viewModel.articlesListLiveData)
+            }
+        }
+    }
 
-	@Test
-	fun `check LiveData not null`() {
-		testCoroutineRule.runBlockingTest {
-			viewModel = spy(PopularVM(repo, testCoroutineScope))
-			viewModel.articlesListLiveData.observeForever(apiResultObserver)
-			launch(testCoroutineScope.coroutineContext) {
-				viewModel.fetchArticlesList()
-				assertNotNull(viewModel.articlesListLiveData)
-			}
-		}
-	}
+    @Test
+    fun fetchArticlesList() {
+        testCoroutineRule.runBlockingTest {
+            // Given
+            `when`(repo.getPopularData()).thenReturn(listsItemModel)
 
-	@Test
-	fun fetchArticlesList() {
-		testCoroutineRule.runBlockingTest {
-			// Given
-			`when`(repo.getPopularData()).thenReturn(listsItemModel)
+            // Create a spy for the ViewModel
+            viewModel = spy(PopularVM(repo, testCoroutineScope))
+            viewModel.articlesListLiveData.observeForever(apiResultObserver)
 
-			// Create a spy for the ViewModel
-			viewModel = spy(PopularVM(repo, testCoroutineScope))
-			viewModel.articlesListLiveData.observeForever(apiResultObserver)
+            // When
+            viewModel.fetchArticlesList()
 
-			// When
-			viewModel.fetchArticlesList()
+            // Ensure coroutine completes
+            testCoroutineScope.advanceUntilIdle()
 
-			// Ensure coroutine completes
-			testCoroutineScope.advanceUntilIdle()
+            // Capture the arguments passed to the observer
+            val captor = argumentCaptor<Resource<ArrayList<ResultsItem>?>>()
+            verify(apiResultObserver, times(2)).onChanged(captor.capture())
 
-			// Capture the arguments passed to the observer
-			val captor = argumentCaptor<Resource<ArrayList<ResultsItem>?>>()
-			verify(apiResultObserver, times(2)).onChanged(captor.capture())
+            // Assert the captured values
+            val (loadingState, successState) = captor.allValues
+            assertTrue(
+                "Expected Resource.Loading, but got $loadingState",
+                loadingState is Resource.Loading,
+            )
+            assertTrue(
+                "Expected Resource.Success, but got $successState",
+                successState is Resource.Success,
+            )
+            assertEquals(successState.data, listsItemModel)
+        }
+    }
 
-			// Assert the captured values
-			val (loadingState, successState) = captor.allValues
-			assertTrue(
-				"Expected Resource.Loading, but got $loadingState",
-				loadingState is Resource.Loading
-			)
-			assertTrue(
-				"Expected Resource.Success, but got $successState",
-				successState is Resource.Success
-			)
-			assertEquals(successState.data, listsItemModel)
-		}
-	}
+    @Test(expected = Throwable::class)
+    fun `verify failure when data returns fetchArticlesList`() =
+        testCoroutineRule.runBlockingTest {
+            val errorMsg = Throwable().message
+            // Given
+            `when`(repo.getPopularData()).thenThrow(Throwable::class.java)
 
-	@Test(expected = Throwable::class)
-	fun `verify failure when data returns fetchArticlesList`() = testCoroutineRule.runBlockingTest {
-		val errorMsg = Throwable().message
-		// Given
-		`when`(repo.getPopularData()).thenThrow(Throwable::class.java)
+            // When
+            launch(testCoroutineScope.coroutineContext) {
+                viewModel.fetchArticlesList()
 
-		// When
-		launch(testCoroutineScope.coroutineContext) {
-			viewModel.fetchArticlesList()
-
-			// Then
-			verify(apiResultObserver).onChanged(Resource.Loading())
-			verify(apiResultObserver).onChanged(Resource.Error(errorMsg.orEmpty()))
-		}
-	}
+                // Then
+                verify(apiResultObserver).onChanged(Resource.Loading())
+                verify(apiResultObserver).onChanged(Resource.Error(errorMsg.orEmpty()))
+            }
+        }
 }

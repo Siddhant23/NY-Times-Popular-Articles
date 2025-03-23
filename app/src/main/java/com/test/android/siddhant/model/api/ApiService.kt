@@ -5,7 +5,6 @@ import com.test.android.siddhant.utils.AppConstant
 import retrofit2.http.GET
 
 interface ApiService {
-
-	@GET(AppConstant.POPULAR)
-	suspend fun getPopularData(): PopularArticleResponse
+    @GET(AppConstant.POPULAR)
+    suspend fun getPopularData(): PopularArticleResponse
 }

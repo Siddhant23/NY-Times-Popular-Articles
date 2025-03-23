@@ -15,34 +15,37 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PopularVM @Inject constructor(
-	private val popularRepo: PopularRepo,
-	@ApplicationScope private var ioScope: CoroutineScope
-) :
-	ViewModel() {
-	private val _articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
-	internal val articlesListLiveData: LiveData<Resource<ArrayList<ResultsItem>?>> =
-		_articlesListLiveData
+class PopularVM
+    @Inject
+    constructor(
+        private val popularRepo: PopularRepo,
+        @ApplicationScope private var ioScope: CoroutineScope,
+    ) :
+    ViewModel() {
+        private val _articlesListLiveData = MutableLiveData<Resource<ArrayList<ResultsItem>?>>()
+        internal val articlesListLiveData: LiveData<Resource<ArrayList<ResultsItem>?>> =
+            _articlesListLiveData
 
-	suspend fun fetchArticlesList() {
-		_articlesListLiveData.postValue(Resource.Loading())
-		viewModelScope.launch(ioScope.coroutineContext + exceptionHandler) {
-			try {
-				val result = popularRepo.getPopularData()
-				_articlesListLiveData.postValue(Resource.Success(result))
-			} catch (e: Exception) {
-				_articlesListLiveData.postValue(Resource.Error(e.message.orEmpty()))
-			}
-		}
-	}
+        suspend fun fetchArticlesList() {
+            _articlesListLiveData.postValue(Resource.Loading())
+            viewModelScope.launch(ioScope.coroutineContext + exceptionHandler) {
+                try {
+                    val result = popularRepo.getPopularData()
+                    _articlesListLiveData.postValue(Resource.Success(result))
+                } catch (e: Exception) {
+                    _articlesListLiveData.postValue(Resource.Error(e.message.orEmpty()))
+                }
+            }
+        }
 
-	private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
-		_articlesListLiveData.apply {
-			postValue(
-				exception.message?.let {
-					Resource.Error(it)
-				}
-			)
-		}
-	}
-}
+        private val exceptionHandler =
+            CoroutineExceptionHandler { _, exception ->
+                _articlesListLiveData.apply {
+                    postValue(
+                        exception.message?.let {
+                            Resource.Error(it)
+                        },
+                    )
+                }
+            }
+    }

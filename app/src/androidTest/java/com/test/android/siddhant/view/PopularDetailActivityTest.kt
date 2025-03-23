@@ -18,40 +18,39 @@ import org.junit.Test
 
 @HiltAndroidTest
 class PopularDetailActivityTest {
+    @get:Rule(order = 1)
+    var hiltRule = HiltAndroidRule(this)
 
-	@get:Rule(order = 1)
-	var hiltRule = HiltAndroidRule(this)
+    @get:Rule(order = 2)
+    val activityRule = ActivityScenarioRule(PopularDetailActivity::class.java)
 
-	@get:Rule(order = 2)
-	val activityRule = ActivityScenarioRule(PopularDetailActivity::class.java)
+    @Before
+    fun setUp() {
+        hiltRule.inject()
+    }
 
-	@Before
-	fun setUp() {
-		hiltRule.inject()
-	}
+    // Checking Views in Detail Activity
+    @Test
+    fun testViewsInDetailActivity() {
+        ActivityScenario.launch(PopularDetailActivity::class.java)
 
-	// Checking Views in Detail Activity
-	@Test
-	fun testViewsInDetailActivity() {
-		ActivityScenario.launch(PopularDetailActivity::class.java)
+        onView(withId(R.id.parentPopularDetail)) // parent
+            .check(matches(isDisplayed()))
+        onView(withId(R.id.tvDetailTxt)) // Detail TextView
+            .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+    }
 
-		onView(withId(R.id.parentPopularDetail)) // parent
-			.check(matches(isDisplayed()))
-		onView(withId(R.id.tvDetailTxt)) // Detail TextView
-			.check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
-	}
+    // checking back press to popular screen
+    @Test
+    fun pressBacktoPopularActivity() {
+        // Perform back press action
+        pressBackUnconditionally()
 
-	// checking back press to popular screen
-	@Test
-	fun pressBacktoPopularActivity() {
-		// Perform back press action
-		pressBackUnconditionally()
+        // open PopularActivity
+        ActivityScenario.launch(PopularActivity::class.java)
 
-		//open PopularActivity
-		ActivityScenario.launch(PopularActivity::class.java)
-
-		// Check if the parent view of PopularActivity is displayed
-		onView(withId(R.id.parentPopular))
-			.check(matches(isDisplayed()))
-	}
+        // Check if the parent view of PopularActivity is displayed
+        onView(withId(R.id.parentPopular))
+            .check(matches(isDisplayed()))
+    }
 }

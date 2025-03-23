@@ -12,9 +12,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepoModule {
-
-	@Singleton
-	@Provides
-	fun providesPopularRepo(apiService: ApiService, @ApplicationScope ioScope: CoroutineScope) =
-		PopularRepo(apiService, ioScope)
+    @Singleton
+    @Provides
+    fun providesPopularRepo(
+        apiService: ApiService,
+        @ApplicationScope ioScope: CoroutineScope,
+    ) = PopularRepo(apiService, ioScope)
 }

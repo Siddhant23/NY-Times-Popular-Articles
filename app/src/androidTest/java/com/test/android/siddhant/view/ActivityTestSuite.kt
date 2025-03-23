@@ -7,7 +7,7 @@ import org.junit.runners.Suite
 @LargeTest
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-	PopularActivityTest::class,
-	PopularDetailActivityTest::class
+     PopularActivityTest::class,
+    PopularDetailActivityTest::class,
 )
 class ActivityTestSuite
