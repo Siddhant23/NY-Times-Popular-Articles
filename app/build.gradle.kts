@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hiltAndroid)
-    id("org.jlleitschuh.gradle.ktlint") version "12.2.0"
 }
 
 android {
