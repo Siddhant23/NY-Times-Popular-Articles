@@ -17,7 +17,7 @@ By Siddhant Mehta (Android Developer)
 - Concurrency   :   Coroutines
 - DI            :   Hilt
 - UI            :   View Binding
-- Testing       :   JUnit + Espresso + RoboElectric + Mockito
+- Testing       :   JUnit + Espresso + Robolectric + Mockito
 - CI/CD         :   Github-Actions
 
 
