@@ -2,7 +2,7 @@
 [versions]
 androidGradlePlugin = "8.9.1"
 kotlinGradlePlugin = "2.1.20"
-hiltGradlePlugin = "2.56"
+hiltGradlePlugin = "2.56.1"
 
 # AndroidX Libraries
 appcompat = "1.7.0"
@@ -10,25 +10,25 @@ recyclerView = "1.4.0"
 cardView = "1.0.0"
 activityKtx = "1.10.1"
 constraintLayout = "2.2.1"
-androidx-core = "1.16.0-beta01"
+androidx-core = "1.16.0"
 
 # Lifecycle Libraries
 lifecycleViewModel = "2.8.7"
 
 # Coroutines
-coroutines = "1.10.1"
+coroutines = "1.10.2"
 
 # Networking
 retrofit = "2.11.0"
 okhttp = "4.12.0"
 
 # Hilt Dependencies
-hilt = "2.56"
+hilt = "2.56.1"
 
 # Testing Dependencies
 espresso = "3.6.1"
 androidxTest = "1.6.1"
-mockito = "5.16.1"
+mockito = "5.17.0"
 mockitoKotlin = "2.2.0"
 mockitoInline = "5.2.0"
 robolectric = "4.14.1"
