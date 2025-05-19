@@ -19,7 +19,7 @@ lifecycleViewModel = "2.8.7"
 coroutines = "1.10.2"
 
 # Networking
-retrofit = "2.11.0"
+retrofit = "3.0.0"
 okhttp = "4.12.0"
 
 # Hilt Dependencies
