@@ -2,7 +2,7 @@
 [versions]
 androidGradlePlugin = "8.9.1"
 kotlinGradlePlugin = "2.1.20"
-hiltGradlePlugin = "2.56.1"
+hiltGradlePlugin = "2.56.2"
 
 # AndroidX Libraries
 appcompat = "1.7.0"
@@ -13,17 +13,17 @@ constraintLayout = "2.2.1"
 androidx-core = "1.16.0"
 
 # Lifecycle Libraries
-lifecycleViewModel = "2.8.7"
+lifecycleViewModel = "2.9.0"
 
 # Coroutines
 coroutines = "1.10.2"
 
 # Networking
-retrofit = "2.11.0"
+retrofit = "3.0.0"
 okhttp = "4.12.0"
 
 # Hilt Dependencies
-hilt = "2.56.1"
+hilt = "2.56.2"
 
 # Testing Dependencies
 espresso = "3.6.1"
