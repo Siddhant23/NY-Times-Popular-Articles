@@ -5,7 +5,7 @@ kotlinGradlePlugin = "2.1.21"
 hiltGradlePlugin = "2.56.2"
 
 # AndroidX Libraries
-appcompat = "1.7.0"
+appcompat = "1.7.1"
 recyclerView = "1.4.0"
 cardView = "1.0.0"
 activityKtx = "1.10.1"
@@ -13,7 +13,7 @@ constraintLayout = "2.2.1"
 androidx-core = "1.16.0"
 
 # Lifecycle Libraries
-lifecycleViewModel = "2.9.0"
+lifecycleViewModel = "2.9.1"
 
 # Coroutines
 coroutines = "1.10.2"
@@ -27,7 +27,8 @@ hilt = "2.56.2"
 
 # Testing Dependencies
 espresso = "3.6.1"
-androidxTest = "1.6.1"
+androidxTest = "1.6.2"
+androidxCoreTest = "1.6.1"
 mockito = "5.18.0"
 mockitoKotlin = "2.2.0"
 mockitoInline = "5.2.0"
@@ -72,7 +73,7 @@ core = { module = "androidx.arch.core:core-testing", version.ref = "coreTest" }
 espressoCore = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 espressoIntents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso" }
 androidxTestRunner = { module = "androidx.test:runner", version.ref = "androidxTest" }
-androidxTestCore = { module = "androidx.test:core", version.ref = "androidxTest" }
+androidxTestCore = { module = "androidx.test:core", version.ref = "androidxCoreTest" }
 junitKtx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExtJunit" }
 
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
@@ -86,5 +87,5 @@ coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ver
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradlePlugin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinGradlePlugin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlinGradlePlugin" }
+ksp = { id = "com.google.devtools.ksp", version = "2.1.21-2.0.1" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hiltGradlePlugin" }
