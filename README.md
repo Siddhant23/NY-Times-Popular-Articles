@@ -1,6 +1,11 @@
 [![Build](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/build.yml)
 [![Test](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/test.yml)
-<a href="https://android-developers.googleblog.com/2025/01/android-studio-ladybug-feature-drop-is-stable.html"><img alt="Android Studio Ladybug" src="https://img.shields.io/badge/ladybug-AA3F44?style=flat&logo=androidstudio&logoColor=white"/></a>
+<a href="https://androidstudio.googleblog.com/2025/05/android-studio-narwhal-feature-drop_29.html">
+  <img
+    alt="Android Studio Narwhal Feature Drop"
+    src="https://img.shields.io/badge/Android%20Studio%20Narwhal-2025.1.2-%232FBB4A?style=square&logo=androidstudio&logoColor=blue"
+/>
+</a>
 
 # NY TIMES ARTICLES
 
