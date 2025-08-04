@@ -26,14 +26,14 @@ okhttp = "5.1.0"
 hilt = "2.56.2"
 
 # Testing Dependencies
-espresso = "3.6.1"
-androidxTest = "1.6.2"
-androidxCoreTest = "1.6.1"
+espresso = "3.7.0"
+androidxTest = "1.7.0"
+androidxCoreTest = "1.7.0"
 mockito = "5.18.0"
 mockitoKotlin = "2.2.0"
 mockitoInline = "5.2.0"
 robolectric = "4.15.1"
-androidxTestExtJunit = "1.2.1"
+androidxTestExtJunit = "1.3.0"
 jUnit = "4.13.2"
 coreTest = "2.2.0"
 
