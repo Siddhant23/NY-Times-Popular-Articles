@@ -13,7 +13,7 @@ constraintLayout = "2.2.1"
 androidx-core = "1.17.0"
 
 # Lifecycle Libraries
-lifecycleViewModel = "2.9.2"
+lifecycleViewModel = "2.9.3"
 
 # Coroutines
 coroutines = "1.10.2"
