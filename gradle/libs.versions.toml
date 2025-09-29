@@ -23,7 +23,7 @@ retrofit = "3.0.0"
 okhttp = "5.1.0"
 
 # Hilt Dependencies
-hilt = "2.57.1"
+hilt = "2.57.2"
 
 # Testing Dependencies
 espresso = "3.7.0"
