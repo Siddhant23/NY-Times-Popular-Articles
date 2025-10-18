@@ -20,7 +20,7 @@ coroutines = "1.10.2"
 
 # Networking
 retrofit = "3.0.0"
-okhttp = "5.1.0"
+okhttp = "5.2.1"
 
 # Hilt Dependencies
 hilt = "2.57.2"
