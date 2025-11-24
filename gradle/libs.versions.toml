@@ -8,12 +8,12 @@ hiltGradlePlugin = "2.57.2"
 appcompat = "1.7.1"
 recyclerView = "1.4.0"
 cardView = "1.0.0"
-activityKtx = "1.11.0"
+activityKtx = "1.12.0"
 constraintLayout = "2.2.1"
 androidx-core = "1.17.0"
 
 # Lifecycle Libraries
-lifecycleViewModel = "2.9.4"
+lifecycleViewModel = "2.10.0"
 
 # Coroutines
 coroutines = "1.10.2"
