@@ -10,10 +10,10 @@ plugins {
 
 android {
     namespace = "com.test.android.siddhant"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         applicationId = "com.test.android.siddhant"
-        targetSdk = 35
+        targetSdk = 36
         minSdk = 23
         versionCode = 25
         versionName = "25.0"
