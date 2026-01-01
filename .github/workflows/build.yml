@@ -1,8 +1,8 @@
-name: Build
+name: Build CI
 
 on:
   push:
-    branches: [ workflow-github, master ]
+    branches: [ master ]
     paths-ignore:
       - '*.md'
   pull_request:
@@ -10,49 +10,75 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
+
+env:
+  ANDROID_SDK_ROOT: ${{ runner.temp }}/android-sdk
 
 jobs:
   build:
+    name: Build & Unit tests
     runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx3g"
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 17 and cache Gradle
-        uses: actions/setup-java@v5
+      - name: Set up JDK 17 (Temurin) and enable Gradle cache in action
+        uses: actions/setup-java@v4
         with:
+          distribution: temurin
           java-version: '17'
-          distribution: 'zulu'
           cache: gradle
 
-      - name: Cache Gradle build output
+      - name: Cache Gradle directories
         uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-            .gradle
-            build
-          key: gradle-build-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties', '**/*.gradle*', '**/settings.gradle*') }}
           restore-keys: |
-            gradle-build-${{ runner.os }}-
+            ${{ runner.os }}-gradle-
+
+      - name: Install Android SDK command-line tools and platform
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip wget
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          cd $ANDROID_SDK_ROOT
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          unzip -q cmdline-tools.zip -d cmdline-tools
+          mkdir -p cmdline-tools/latest
+          mv cmdline-tools/cmdline-tools/* cmdline-tools/latest/ || true
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
+          yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT --licenses
+          yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platform-tools" "platforms;33" "build-tools;33.0.2"
 
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace --no-daemon --parallel --build-cache
+      - name: Build and run unit tests
+        run: ./gradlew --no-daemon clean assembleDebug testDebugUnitTest -Pci --stacktrace
+
+      - name: Upload unit test results (JUnit)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: app/build/test-results/testDebugUnitTest || app/build/test-results
 
   dependabot-auto-merge:
+    name: Auto-merge Dependabot PRs (when build is green)
     needs: build
-    if: ${{ github.actor == 'dependabot[bot]' && success() }}
+    if: ${{ github.actor == 'dependabot[bot]' && needs.build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
 
       - name: Auto-merge Dependabot PR
         uses: ahmadnassri/action-dependabot-auto-merge@v2
         with:
-          github-token: ${{ secrets.mytoken }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
