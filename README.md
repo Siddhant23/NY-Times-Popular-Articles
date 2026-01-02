@@ -16,7 +16,7 @@ By Siddhant Mehta (Android Developer)
 ## Libraries
 
 - Language      :   Kotlin
-- SDK           :   35
+- SDK           :   36
 - Architecture  :   MVVM (Model - View - ViewModel)
 - Network       :   Retrofit
 - Concurrency   :   Coroutines
