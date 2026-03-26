@@ -2,8 +2,8 @@
 [![Test](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/Siddhant23/NY-Times-Popular-Articles/actions/workflows/test.yml)
 <a href="https://androidstudio.googleblog.com/">
   <img
-    alt="Android Studio Otter 2"
-    src="https://img.shields.io/badge/Android%20Studio%20Otter%202-2025.2-%233DDC84?style=square&logo=androidstudio&logoColor=white"
+    alt="Android Studio Panda 2"
+    src="https://img.shields.io/badge/Android%20Studio%20Panda%202-2025.3.2-%233DDC84?style=square&logo=androidstudio&logoColor=white"
   />
 </a>
 
