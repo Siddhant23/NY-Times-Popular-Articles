@@ -2,7 +2,7 @@
 [versions]
 androidGradlePlugin = "9.0.0"
 kotlinGradlePlugin = "2.3.10"
-hiltGradlePlugin = "2.59"
+hiltGradlePlugin = "2.59.2"
 
 # AndroidX Libraries
 appcompat = "1.7.1"
