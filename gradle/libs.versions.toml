@@ -1,7 +1,7 @@
 # gradle/libs.versions.toml
 [versions]
 androidGradlePlugin = "9.1.0"
-kotlinGradlePlugin = "2.3.10"
+kotlinGradlePlugin = "2.3.20"
 hiltGradlePlugin = "2.59.2"
 
 # AndroidX Libraries
@@ -29,7 +29,7 @@ hilt = "2.59.2"
 espresso = "3.7.0"
 androidxTest = "1.7.0"
 androidxCoreTest = "1.7.0"
-mockito = "5.22.0"
+mockito = "5.23.0"
 mockitoKotlin = "2.2.0"
 mockitoInline = "5.2.0"
 robolectric = "4.16.1"
