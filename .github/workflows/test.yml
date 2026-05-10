@@ -94,7 +94,9 @@ jobs:
             echo "Running pre emulator launch script. Printing the working directory now:"
             pwd
           script: |
-            ./gradlew connectedCheck && killall -INT crashpad_handler || true
+            ./gradlew connectedCheck -i 2>&1 | tee test-output.log
+            adb logcat -d > logcat.log || true
+            killall -INT crashpad_handler || true
 
       - name: Run device tests
         uses: reactivecircus/android-emulator-runner@v2
