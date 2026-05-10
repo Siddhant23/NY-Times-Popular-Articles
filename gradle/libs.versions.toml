@@ -16,7 +16,7 @@ androidx-core = "1.18.0"
 lifecycleViewModel = "2.10.0"
 
 # Coroutines
-coroutines = "1.10.2"
+coroutines = "1.11.0"
 
 # Networking
 retrofit = "3.0.0"
