@@ -4,12 +4,19 @@ androidGradlePlugin = "9.2.1"
 kotlinGradlePlugin = "2.3.21"
 hiltGradlePlugin = "2.59.2"
 
-# AndroidX Libraries
-appcompat = "1.7.1"
-recyclerView = "1.4.0"
-cardView = "1.0.0"
-activityKtx = "1.13.0"
-constraintLayout = "2.2.1"
+# Compose
+composeBom = "2026.05.00"
+activityCompose = "1.13.0"
+lifecycleCompose = "2.10.0"
+
+# Navigation 3
+navigation3 = "1.1.2"
+navigationEvent = "1.1.1"
+
+# Kotlin Serialization
+kotlinSerialization = "2.3.21"
+
+# AndroidX Libraries (kept for non-UI usage)
 androidx-core = "1.18.0"
 
 # Lifecycle Libraries
@@ -39,12 +46,30 @@ coreTest = "2.2.0"
 
 [libraries]
 
-# AndroidX Libraries
-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-recyclerView = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerView" }
-cardView = { module = "androidx.cardview:cardview", version.ref = "cardView" }
-activityKtx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
-constraintLayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayout" }
+# Compose BOM
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
+# Activity & Lifecycle Compose
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleCompose" }
+lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleCompose" }
+
+# Navigation 3
+navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
+navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
+navigationevent-compose = { group = "androidx.navigationevent", name = "navigationevent-compose", version.ref = "navigationEvent" }
+
+# Kotlin Serialization
+kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.8.1" }
+
+# Core AndroidX (still needed for ComponentActivity, core-ktx)
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
 
 # Lifecycle Libraries
@@ -67,24 +92,23 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 
 # Testing Dependencies
 junit = { module = "junit:junit", version.ref = "jUnit" }
-
 core = { module = "androidx.arch.core:core-testing", version.ref = "coreTest" }
-
 espressoCore = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 espressoIntents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso" }
 androidxTestRunner = { module = "androidx.test:runner", version.ref = "androidxTest" }
 androidxTestCore = { module = "androidx.test:core", version.ref = "androidxCoreTest" }
 junitKtx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExtJunit" }
-
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 mockitoCore = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockitoKotlin = { module = "com.nhaarman.mockitokotlin2:mockito-kotlin", version.ref = "mockitoKotlin" }
 mockitoInline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
 coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGradlePlugin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinGradlePlugin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinGradlePlugin" }
 ksp = { id = "com.google.devtools.ksp", version = "2.3.8" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hiltGradlePlugin" }

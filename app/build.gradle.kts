@@ -2,9 +2,11 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hiltAndroid)
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 android {
@@ -29,7 +31,7 @@ android {
         }
     }
     buildFeatures {
-        viewBinding = true
+        compose = true
         buildConfig = true
     }
 
@@ -46,16 +48,44 @@ kotlin {
 }
 
 dependencies {
-    // AndroidX Libraries
-    implementation(libs.appcompat)
-    implementation(libs.recyclerView)
-    implementation(libs.cardView)
-    implementation(libs.activityKtx)
-    implementation(libs.constraintLayout)
+    // Core AndroidX
     implementation(libs.androidx.core)
 
-    // Lifecycle and ViewModel
+    // Compose BOM — keeps all Compose versions in sync
+    val composeBom = platform(libs.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    // Compose UI
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.material.icons.extended)
+    implementation("com.google.android.material:material:1.12.0")
+
+    // Material 3
+    implementation(libs.compose.material3)
+
+    // Compose UI testing
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
+
+    // Activity Compose
+    implementation(libs.activity.compose)
+    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+
+    // Lifecycle + ViewModel Compose
     implementation(libs.lifecycleViewModel)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.runtime.compose)
+
+    // Navigation 3
+    implementation(libs.navigation3.runtime)
+    implementation(libs.navigation3.ui)
+    implementation(libs.navigationevent.compose)
+
+    // Kotlin Serialization (for NavKey routes)
+    implementation(libs.kotlin.serialization.json)
 
     // Coroutines
     implementation(libs.coroutinesAndroid)
@@ -87,7 +117,6 @@ dependencies {
     testImplementation(libs.mockitoInline)
     testImplementation(libs.core)
     testImplementation(libs.coroutinesTest)
-
     testImplementation(libs.hilt.android.testing)
     kspTest(libs.hilt.android.compiler)
 }
