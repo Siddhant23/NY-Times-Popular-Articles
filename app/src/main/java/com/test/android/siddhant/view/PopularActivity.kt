@@ -3,7 +3,10 @@ package com.test.android.siddhant.view
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.test.android.siddhant.R
@@ -35,6 +38,16 @@ class PopularActivity : BaseActivity() {
 
     private fun initView() {
         supportActionBar?.title = getString(R.string.titleName)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.rvPopular) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(
+                top = systemBars.top,
+                bottom = systemBars.bottom,
+                left = systemBars.left,
+                right = systemBars.right,
+            )
+            insets
+        }
     }
 
     private fun initAdapter() {
