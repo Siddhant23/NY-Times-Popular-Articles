@@ -67,7 +67,7 @@ navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", vers
 navigationevent-compose = { group = "androidx.navigationevent", name = "navigationevent-compose", version.ref = "navigationEvent" }
 
 # Kotlin Serialization
-kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.8.1" }
+kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.11.0" }
 
 # Core AndroidX (still needed for ComponentActivity, core-ktx)
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
