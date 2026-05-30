@@ -5,7 +5,7 @@ kotlinGradlePlugin = "2.3.21"
 hiltGradlePlugin = "2.59.2"
 
 # Compose
-composeBom = "2026.05.00"
+composeBom = "2026.05.01"
 activityCompose = "1.13.0"
 lifecycleCompose = "2.10.0"
 
@@ -67,7 +67,7 @@ navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", vers
 navigationevent-compose = { group = "androidx.navigationevent", name = "navigationevent-compose", version.ref = "navigationEvent" }
 
 # Kotlin Serialization
-kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.8.1" }
+kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.11.0" }
 
 # Core AndroidX (still needed for ComponentActivity, core-ktx)
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
@@ -110,5 +110,5 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinGra
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinGradlePlugin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinGradlePlugin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.3.8" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.9" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hiltGradlePlugin" }
