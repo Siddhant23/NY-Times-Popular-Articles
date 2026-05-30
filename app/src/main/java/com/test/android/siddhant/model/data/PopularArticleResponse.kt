@@ -1,17 +1,19 @@
 package com.test.android.siddhant.model.data
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Parcelize
 data class PopularArticleResponse(
-    @SerializedName("status")
+    @SerialName("status")
     val status: String? = null,
-    @SerializedName("copyright")
+    @SerialName("copyright")
     val copyright: String? = null,
-    @SerializedName("num_results")
+    @SerialName("num_results")
     val numResults: Int? = null,
-    @SerializedName("results")
+    @SerialName("results")
     val results: ArrayList<ResultsItem>? = null,
 ) : Parcelable
