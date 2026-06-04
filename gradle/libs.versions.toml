@@ -2,7 +2,7 @@
 [versions]
 androidGradlePlugin = "9.2.1"
 hiltNavigationCompose = "1.3.0"
-kotlinGradlePlugin = "2.3.21"
+kotlinGradlePlugin = "2.4.0"
 hiltGradlePlugin = "2.59.2"
 
 # Compose
