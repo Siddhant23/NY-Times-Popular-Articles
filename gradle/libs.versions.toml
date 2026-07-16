@@ -1,6 +1,6 @@
 # gradle/libs.versions.toml
 [versions]
-androidGradlePlugin = "9.2.1"
+androidGradlePlugin = "9.3.0"
 hiltNavigationCompose = "1.4.0"
 kotlinGradlePlugin = "2.4.10"
 hiltGradlePlugin = "2.60.1"
