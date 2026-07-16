@@ -15,7 +15,7 @@ navigation3 = "1.1.4"
 navigationEvent = "1.1.2"
 
 # Kotlin Serialization
-kotlinSerialization = "2.4.0"
+kotlinSerialization = "2.4.10"
 
 # AndroidX Libraries (kept for non-UI usage)
 androidx-core = "1.19.0"
