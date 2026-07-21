@@ -11,14 +11,14 @@ plugins {
 
 android {
     namespace = "com.test.android.siddhant"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.test.android.siddhant"
-        targetSdk = 36
+        targetSdk = 37
         minSdk = 23
-        versionCode = 27
-        versionName = "27.0"
+        versionCode = 28
+        versionName = "28.0"
         testInstrumentationRunner = "com.test.android.siddhant.HiltTestRunner"
 
         // Use local.properties to avoid hardcoding secrets
@@ -42,14 +42,14 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 
