@@ -15,5 +15,5 @@ data class PopularArticleResponse(
     @SerialName("num_results")
     val numResults: Int? = null,
     @SerialName("results")
-    val results: ArrayList<ResultsItem>? = null,
+    val results: List<ResultsItem>? = null,
 ) : Parcelable
