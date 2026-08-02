@@ -1,4 +1,14 @@
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+// Read secrets from local.properties (git-ignored) with an env-var fallback for CI.
+val nytApiKey: String =
+    Properties().apply {
+        val f = rootProject.file("local.properties")
+        if (f.exists()) f.inputStream().use { load(it) }
+    }.getProperty("NYT_API_KEY")
+        ?: System.getenv("NYT_API_KEY")
+        ?: ""
 
 plugins {
     alias(libs.plugins.android.application)
@@ -21,9 +31,9 @@ android {
         versionName = "28.0"
         testInstrumentationRunner = "com.test.android.siddhant.HiltTestRunner"
 
-        // Use local.properties to avoid hardcoding secrets
+        // BASE_URL is not a secret; API_KEY is read from local.properties / NYT_API_KEY env var.
         buildConfigField("String", "BASE_URL", "\"https://api.nytimes.com/svc/\"")
-        buildConfigField("String", "API_KEY", "\"cpf0GcsMK5wpzsi0iz2gRntnNgTqmc0r\"")
+        buildConfigField("String", "API_KEY", "\"$nytApiKey\"")
     }
 
     buildTypes {
