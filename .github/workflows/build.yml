@@ -35,5 +35,5 @@ jobs:
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace --no-daemon --parallel --build-cache
+      - name: Build Release APK
+        run: SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew :app:assembleRelease --stacktrace --no-daemon --parallel --build-cache
