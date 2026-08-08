@@ -1,5 +1,7 @@
 package com.test.android.siddhant.viewmodel
 
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.test.android.siddhant.TestCoroutineRule
 import com.test.android.siddhant.model.data.ResultsItem
@@ -20,7 +22,7 @@ import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE)
+@Config(manifest = Config.NONE, sdk = [35])
 class PopularVMTest {
     @get:Rule
     val testCoroutineRule = TestCoroutineRule()
@@ -50,6 +52,34 @@ class PopularVMTest {
             val state = viewModel.uiState.value
             assertTrue("Expected Success, got $state", state is Resource.Success)
             assertEquals(articles, state.data)
+        }
+
+    @Test
+    fun `retry re-fetches and recovers from an earlier failure`() =
+        testCoroutineRule.runBlockingTest {
+            // Given — the initial fetch fails, the next one succeeds.
+            val articles = listOf(ResultsItem(id = 7L, title = "Recovered"))
+            whenever(repo.getPopularData())
+                .thenThrow(RuntimeException("network down"))
+                .thenReturn(articles)
+
+            // When — init{} runs the failing fetch...
+            val viewModel = PopularVM(repo)
+            advanceUntilIdle()
+            assertTrue(
+                "Expected Error after the first fetch, got ${viewModel.uiState.value}",
+                viewModel.uiState.value is Resource.Error,
+            )
+
+            // ...and retry() runs a second one.
+            viewModel.retry()
+            advanceUntilIdle()
+
+            // Then
+            val state = viewModel.uiState.value
+            assertTrue("Expected Success after retry, got $state", state is Resource.Success)
+            assertEquals(articles, state.data)
+            verify(repo, times(2)).getPopularData()
         }
 
     @Test

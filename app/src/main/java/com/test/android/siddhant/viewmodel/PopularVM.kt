@@ -25,6 +25,11 @@ class PopularVM
             fetchArticlesList()
         }
 
+        /** Re-runs the fetch after a failure. */
+        fun retry() {
+            fetchArticlesList()
+        }
+
         private fun fetchArticlesList() {
             viewModelScope.launch {
                 _uiState.value = Resource.Loading()

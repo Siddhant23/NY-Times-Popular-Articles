@@ -1,5 +1,5 @@
-import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 // Read secrets from local.properties (git-ignored) with an env-var fallback for CI.
 val nytApiKey: String =
@@ -18,6 +18,13 @@ plugins {
     alias(libs.plugins.hiltAndroid)
     alias(libs.plugins.kotlin.parcelize)
 }
+
+val mockitoAgent =
+    configurations.create("mockitoAgent") {
+        isCanBeConsumed = false
+        isCanBeResolved = true
+        isTransitive = false
+    }
 
 android {
     namespace = "com.test.android.siddhant"
@@ -41,7 +48,8 @@ android {
             isDebuggable = true
         }
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -51,10 +59,22 @@ android {
         buildConfig = true
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
+}
+
+tasks.withType<Test>().configureEach {
+    jvmArgumentProviders.add(
+        CommandLineArgumentProvider {
+            listOf("-javaagent:${mockitoAgent.singleFile.absolutePath}")
+        },
+    )
 }
 
 kotlin {
@@ -114,8 +134,10 @@ dependencies {
     testImplementation(libs.mockitoCore)
     testImplementation(libs.mockitoKotlin)
     testImplementation(libs.mockitoInline)
+    mockitoAgent(libs.mockitoCore)
     testImplementation(libs.core)
     testImplementation(libs.coroutinesTest)
     testImplementation(libs.hilt.android.testing)
+    testImplementation(libs.compose.ui.test.junit4)
     kspTest(libs.hilt.android.compiler)
 }

@@ -37,80 +37,23 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: AVD cache
-        uses: actions/cache@v6
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-${{ matrix.api-level }}-${{ matrix.target }}-${{ matrix.arch }}
-
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v6
 
       - name: Output target
         run: echo "The TARGET is ${{ matrix.target }}"
 
-      # - name: Wait for emulator to boot
-      #   run: adb wait-for-device
-
-      - name: Enable KVM for Linux runners
-        if: runner.os == 'Linux'
+      - name: Unit and Robolectric UI Tests
         run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
+          SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew testDebugUnitTest \
+          --stacktrace --continue \
+          -Dorg.gradle.workers.max=2
 
-      - name: Create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
-          arch: ${{ matrix.arch }}
-          profile: Galaxy Nexus
-          force-avd-creation: false
-          ram-size: 4096M
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: echo "Generated AVD snapshot for caching."
-
-      - name: Instrumentation tests
-        timeout-minutes: 60
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
-          arch: ${{ matrix.arch }}
-          profile: Galaxy Nexus
-          cores: 2
-          force-avd-creation: false
-          ram-size: 4096M
-          avd-name: test
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          pre-emulator-launch-script: |
-            echo "Running pre emulator launch script. Printing the working directory now:"
-            pwd
-          script: |
-            ./gradlew connectedCheck -i 2>&1 | tee test-output.log
-            adb logcat -d > logcat.log || true
-            killall -INT crashpad_handler || true
-
-      - name: Run device tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
-          arch: ${{ matrix.arch }}
-          force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          profile: Nexus One
-          script: |
-            adb shell wm density 240
-            SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew cAT --stacktrace -Dorg.gradle.workers.max=2
+      - name: Release Build
+        run: |
+          SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew :app:assembleRelease \
+          --stacktrace \
+          -Dorg.gradle.workers.max=2
 
       - name: Upload test results
         if: always()
@@ -120,12 +63,6 @@ jobs:
           path: |
             **/build/reports/*
             **/build/outputs/*/connected/*
-
-      - name: Unit Tests
-        run: |
-          SKIP_ERRORPRONE=true SKIP_JAVADOC=true ./gradlew testDebugUnitTest \
-          --stacktrace --continue \
-          -Dorg.gradle.workers.max=2
 
 
 

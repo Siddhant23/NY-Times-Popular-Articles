@@ -4,7 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
@@ -42,13 +42,13 @@ private fun PopularApp() {
                     PopularListScreen(
                         viewModel = vm,
                         onArticleClick = { item ->
-                            backStack.add(PopularDetailRoute(item.abstract.orEmpty()))
+                            backStack.add(PopularDetailRoute(item))
                         },
                     )
                 }
                 entry<PopularDetailRoute> { route ->
                     PopularDetailScreen(
-                        articleAbstract = route.articleAbstract,
+                        article = route.article,
                         onBack = { if (backStack.size > 1) backStack.removeAt(backStack.lastIndex) },
                     )
                 }

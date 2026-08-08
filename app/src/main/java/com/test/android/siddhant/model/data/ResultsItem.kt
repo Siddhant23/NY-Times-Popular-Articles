@@ -19,3 +19,5 @@ data class ResultsItem(
     @SerialName("published_date")
     val publishedDate: String? = null,
 ) : Parcelable
+
+fun ResultsItem.listKey(index: Int): String = id?.let { "id:$it" } ?: "position:$index"
