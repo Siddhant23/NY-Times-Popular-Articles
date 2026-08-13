@@ -111,5 +111,5 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinGradlePlugin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinGradlePlugin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.3.10" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.11" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hiltGradlePlugin" }
