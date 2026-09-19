@@ -2,11 +2,11 @@
 [versions]
 androidGradlePlugin = "9.4.0"
 hiltNavigationCompose = "1.4.0"
-kotlinGradlePlugin = "2.4.10"
+kotlinGradlePlugin = "2.4.20"
 hiltGradlePlugin = "2.60.1"
 
 # Compose
-composeBom = "2026.08.00"
+composeBom = "2026.09.00"
 activityCompose = "1.13.0"
 lifecycleCompose = "2.11.0"
 
@@ -15,7 +15,7 @@ navigation3 = "1.1.5"
 navigationEvent = "1.1.2"
 
 # Kotlin Serialization
-kotlinSerialization = "2.4.10"
+kotlinSerialization = "2.4.20"
 
 # AndroidX Libraries (kept for non-UI usage)
 androidx-core = "1.19.0"
@@ -40,7 +40,7 @@ androidxCoreTest = "1.7.0"
 mockito = "5.23.0"
 mockitoKotlin = "2.2.0"
 mockitoInline = "5.2.0"
-robolectric = "4.16.1"
+robolectric = "4.17"
 androidxTestExtJunit = "1.3.0"
 jUnit = "4.13.2"
 coreTest = "2.2.0"
@@ -111,5 +111,5 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinGradlePlugin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinGradlePlugin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.3.11" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.12" }
 hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hiltGradlePlugin" }
