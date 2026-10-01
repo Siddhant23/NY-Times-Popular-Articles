@@ -18,7 +18,7 @@ navigationEvent = "1.1.2"
 kotlinSerialization = "2.4.20"
 
 # AndroidX Libraries (kept for non-UI usage)
-androidx-core = "1.19.0"
+androidx-core = "1.19.1"
 
 # Lifecycle Libraries
 lifecycleViewModel = "2.11.0"
