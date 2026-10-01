@@ -18,7 +18,7 @@ navigationEvent = "1.1.2"
 kotlinSerialization = "2.4.20"
 
 # AndroidX Libraries (kept for non-UI usage)
-androidx-core = "1.19.0"
+androidx-core = "1.19.1"
 
 # Lifecycle Libraries
 lifecycleViewModel = "2.11.0"
@@ -37,7 +37,7 @@ hilt = "2.60.1"
 espresso = "3.7.0"
 androidxTest = "1.7.0"
 androidxCoreTest = "1.7.0"
-mockito = "5.23.0"
+mockito = "5.24.0"
 mockitoKotlin = "2.2.0"
 mockitoInline = "5.2.0"
 robolectric = "4.17"
