@@ -12,7 +12,7 @@ lifecycleCompose = "2.11.0"
 
 # Navigation 3
 navigation3 = "1.1.5"
-navigationEvent = "1.1.2"
+navigationEvent = "1.2.0"
 
 # Kotlin Serialization
 kotlinSerialization = "2.4.20"
