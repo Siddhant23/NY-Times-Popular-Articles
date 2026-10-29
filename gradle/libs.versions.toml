@@ -1,6 +1,6 @@
 # gradle/libs.versions.toml
 [versions]
-androidGradlePlugin = "9.4.1"
+androidGradlePlugin = "9.5.0"
 hiltNavigationCompose = "1.4.0"
 kotlinGradlePlugin = "2.4.21"
 hiltGradlePlugin = "2.60.1"
@@ -28,7 +28,7 @@ coroutines = "1.11.0"
 
 # Networking
 retrofit = "3.0.0"
-okhttp = "5.5.0"
+okhttp = "5.5.1"
 
 # Hilt Dependencies
 hilt = "2.60.1"
@@ -69,7 +69,7 @@ navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", vers
 navigationevent-compose = { group = "androidx.navigationevent", name = "navigationevent-compose", version.ref = "navigationEvent" }
 
 # Kotlin Serialization
-kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.11.0" }
+kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.12.0" }
 
 # Core AndroidX (still needed for ComponentActivity, core-ktx)
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
