@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.model.repository.PopularRepo
 import com.test.android.siddhant.utils.Resource
+import com.test.android.siddhant.utils.toMessageRes
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,10 +35,13 @@ class PopularVM
         private fun fetchArticlesList() {
             viewModelScope.launch {
                 _uiState.value = Resource.Loading()
-                runCatching { popularRepo.getPopularData() }
-                    .onSuccess { result -> _uiState.value = Resource.Success(result) }
-                    .onFailure { throwable ->
-                        _uiState.value = Resource.Error(throwable.message.orEmpty())
+                _uiState.value =
+                    try {
+                        Resource.Success(popularRepo.getPopularData())
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        Resource.Error(e.toMessageRes())
                     }
             }
         }

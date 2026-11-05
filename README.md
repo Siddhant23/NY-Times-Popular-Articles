@@ -25,7 +25,7 @@ It uses the [NYT Most Popular API](https://developer.nytimes.com/docs/most-popul
 | DI | Hilt (KSP) |
 | Network | Retrofit 3 + OkHttp 5 + kotlinx.serialization |
 | Concurrency | Coroutines / Flow |
-| Testing | JUnit 4, Robolectric, Compose UI tests, Mockito, Espresso + Hilt (instrumented) |
+| Testing | JUnit 4, Robolectric, Compose UI tests, Mockito + mockito-kotlin, OkHttp MockWebServer, Hilt (instrumented) |
 | CI/CD | GitHub Actions (Build, Test), Dependabot |
 | SDK | minSdk 24 · targetSdk / compileSdk 37 · JDK 21 |
 

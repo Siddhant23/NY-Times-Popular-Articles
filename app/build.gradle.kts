@@ -16,7 +16,6 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hiltAndroid)
-    alias(libs.plugins.kotlin.parcelize)
 }
 
 val mockitoAgent =
@@ -70,9 +69,11 @@ android {
 }
 
 tasks.withType<Test>().configureEach {
+    // Bind to a local so the provider doesn't capture the build script (configuration cache).
+    val agent: FileCollection = mockitoAgent
     jvmArgumentProviders.add(
         CommandLineArgumentProvider {
-            listOf("-javaagent:${mockitoAgent.singleFile.absolutePath}")
+            listOf("-javaagent:${agent.singleFile.absolutePath}")
         },
     )
 }
@@ -100,9 +101,9 @@ dependencies {
     debugImplementation(libs.compose.ui.test.manifest)
 
     implementation(libs.activity.compose)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
 
-    implementation(libs.lifecycleViewModel)
+    implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
 
@@ -114,7 +115,7 @@ dependencies {
     implementation(libs.coroutinesAndroid)
 
     implementation(libs.retrofit)
-    implementation(libs.kotlinx.serialization.converter)
+    implementation(libs.retrofit.kotlinx.serialization.converter)
     implementation(libs.okhttp)
     implementation(libs.loggingInterceptor)
 
@@ -122,7 +123,6 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     androidTestImplementation(libs.espressoCore)
-    androidTestImplementation(libs.espressoIntents)
     androidTestImplementation(libs.androidxTestRunner)
     androidTestImplementation(libs.androidxTestCore)
     androidTestImplementation(libs.junitKtx)
@@ -133,10 +133,9 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.mockitoCore)
     testImplementation(libs.mockitoKotlin)
-    testImplementation(libs.mockitoInline)
     mockitoAgent(libs.mockitoCore)
-    testImplementation(libs.core)
     testImplementation(libs.coroutinesTest)
+    testImplementation(libs.mockwebserver)
     testImplementation(libs.hilt.android.testing)
     testImplementation(libs.compose.ui.test.junit4)
     kspTest(libs.hilt.android.compiler)

@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">NY-Times-Siddhant</string>
-    <string name="titleName">NY Times Popular Articles</string>
+
+    <string name="title_most_popular">Most Popular</string>
+    <string name="title_article">Article</string>
+    <string name="action_back">Back</string>
+    <string name="action_retry">Retry</string>
+
+    <string name="error_load_title">Unable to load articles</string>
     <string name="error_internet">Please check your internet connection</string>
+    <string name="error_api_key">The NYT API key is missing or invalid</string>
+    <string name="error_rate_limited">Too many requests. Please wait a minute and try again</string>
+    <string name="error_server">The New York Times service is unavailable. Please try again later</string>
+    <string name="error_unknown">Something went wrong. Please try again</string>
 </resources>
