@@ -1,12 +1,9 @@
 package com.test.android.siddhant.model.data
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@Parcelize
 data class PopularArticleResponse(
     @SerialName("status")
     val status: String? = null,
@@ -16,4 +13,4 @@ data class PopularArticleResponse(
     val numResults: Int? = null,
     @SerialName("results")
     val results: List<ResultsItem>? = null,
-) : Parcelable
+)

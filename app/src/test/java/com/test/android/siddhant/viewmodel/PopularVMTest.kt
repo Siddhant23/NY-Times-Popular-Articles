@@ -1,11 +1,12 @@
 package com.test.android.siddhant.viewmodel
 
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import com.test.android.siddhant.TestCoroutineRule
 import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.model.repository.PopularRepo
+import com.test.android.siddhant.utils.NoConnectivityException
 import com.test.android.siddhant.utils.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -83,10 +84,10 @@ class PopularVMTest {
         }
 
     @Test
-    fun `uiState becomes Error when repo throws`() =
+    fun `uiState becomes Error with the typed network message when repo throws NoConnectivityException`() =
         testCoroutineRule.runBlockingTest {
-            // Given
-            whenever(repo.getPopularData()).thenThrow(RuntimeException("network down"))
+            // Given (thenAnswer: Mockito rejects checked exceptions in thenThrow for suspend funs)
+            whenever(repo.getPopularData()).thenAnswer { throw NoConnectivityException("Please check your internet connection") }
 
             // When
             val viewModel = PopularVM(repo)
@@ -95,6 +96,39 @@ class PopularVMTest {
             // Then
             val state = viewModel.uiState.value
             assertTrue("Expected Error, got $state", state is Resource.Error)
-            assertEquals("network down", (state as Resource.Error).message)
+            assertEquals("Please check your internet connection", (state as Resource.Error).message)
+        }
+
+    @Test
+    fun `untyped exception message is not shown to the user`() =
+        testCoroutineRule.runBlockingTest {
+            // Given — e.g. a JSON parse error from a captive-portal HTML page.
+            whenever(repo.getPopularData()).thenThrow(IllegalStateException("Unexpected JSON token: <html>"))
+
+            // When
+            val viewModel = PopularVM(repo)
+            advanceUntilIdle()
+
+            // Then — blank message makes the UI fall back to its generic error text.
+            val state = viewModel.uiState.value
+            assertTrue("Expected Error, got $state", state is Resource.Error)
+            assertEquals("", (state as Resource.Error).message)
+        }
+
+    @Test
+    fun `retry while a fetch is in flight does not start a second request`() =
+        testCoroutineRule.runBlockingTest {
+            // Given — the init{} fetch is queued but has not completed yet.
+            whenever(repo.getPopularData()).thenReturn(emptyList())
+            val viewModel = PopularVM(repo)
+
+            // When — the user taps Retry twice before the first fetch finishes.
+            viewModel.retry()
+            viewModel.retry()
+            advanceUntilIdle()
+
+            // Then
+            verify(repo, times(1)).getPopularData()
+            assertTrue(viewModel.uiState.value is Resource.Success)
         }
 }

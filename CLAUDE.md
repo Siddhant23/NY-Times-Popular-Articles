@@ -40,12 +40,14 @@ ui (Compose screens) → viewmodel (StateFlow<Resource<T>>) → model/repository
 | `ui/screens/`, `ui/components/`, `ui/theme/` | Compose UI; each screen has a stateless overload used by tests |
 | `viewmodel/PopularVM.kt` | `@HiltViewModel`, exposes `uiState: StateFlow<Resource<List<ResultsItem>>>` |
 | `model/repository/PopularRepo.kt` | Calls API on `@IoDispatcher` |
-| `model/api/` | `ApiService` + `CustomInterceptor` (adds `api-key` query param, connectivity check, error mapping) |
+| `model/api/` | `ApiService` + `CustomInterceptor` (adds the `api-key` query param; throws `NoConnectivityException` when offline or on DNS failure, and `ApiException(code)` on non-2xx after closing the response) |
 | `model/data/` | Network DTOs (also used directly by UI and navigation today) |
 | `di/` | `NetworkModule`, `CoroutinesDispatchersModule`, qualifiers |
 | `utils/` | `Resource`, exceptions, constants, connectivity helper |
 
-Tests: `app/src/test` (Robolectric, Compose UI tests, ViewModel tests with `TestCoroutineRule`) and `app/src/androidTest` (Compose instrumentation, `HiltTestRunner`).
+Tests:
+- `app/src/test`: Robolectric, Compose UI tests, ViewModel tests with `TestCoroutineRule`, and network tests with `mockwebserver3` (`CustomInterceptorTest`)
+- `app/src/androidTest`: Compose instrumentation with `HiltTestRunner`
 
 ## Conventions
 
@@ -54,7 +56,7 @@ Tests: `app/src/test` (Robolectric, Compose UI tests, ViewModel tests with `Test
 - Inject dispatchers via `@IoDispatcher`; never hardcode `Dispatchers.IO` in classes.
 - Collect flows in UI with `collectAsStateWithLifecycle()`.
 - In coroutines, don't swallow `CancellationException` (avoid bare `runCatching` around suspend calls; rethrow cancellation).
-- User-visible text goes in `res/values/strings.xml`, not string literals (existing hardcoded strings are tech debt).
+- User-visible text goes in `res/values/strings.xml`, never in string literals.
 - Use theme colors (`MaterialTheme.colorScheme.*`), not `Color.Gray` and the like.
 - New dependencies go through `libs.versions.toml`, never inline coordinates in `build.gradle.kts`.
 - Every bug fix or behaviour change adds or updates a unit test in `app/src/test`.
@@ -70,9 +72,15 @@ Tests: `app/src/test` (Robolectric, Compose UI tests, ViewModel tests with `Test
 ## CI & dependency gotchas
 
 - Workflows: `build.yml` (release APK), `test.yml` (unit tests + instrumentation on API 29), `dependabot-auto-merge.yml`, `delete.yml` (prunes old runs).
-- `dependabot-auto-merge.yml` enables auto-merge on **every** Dependabot PR, and master has no required checks, so PRs with red CI get merged. Before trusting master, check that the latest Build/Test runs passed.
+- `dependabot-auto-merge.yml` auto-merges only patch and minor bumps (#380). `--auto` waits for CI only if master's branch protection requires the Build/Test checks. Until that's confirmed, check that the latest Build/Test runs passed before trusting master.
 - Library bumps can raise the effective `minSdk` (e.g. `androidx.navigationevent` 1.2.0 needs 24). On a manifest-merger "minSdkVersion … cannot be smaller" error, raise `minSdk`; don't use `tools:overrideLibrary`.
-- Known outdated or redundant artifacts (Nov 2026 review): `hilt-navigation-compose` (pulls in Nav2; use `hilt-lifecycle-viewmodel-compose`), `com.jakewharton…retrofit2-kotlinx-serialization-converter` (use the official `com.squareup.retrofit2:converter-kotlinx-serialization`), `com.nhaarman.mockitokotlin2`, `mockito-inline`, `lifecycle-viewmodel-ktx`, the unused espresso/`core-testing` deps, and `material-icons-extended`.
+- Don't reintroduce these artifacts, which were replaced or removed in the Nov 2026 cleanup (see `docs/REVIEW-2026-11.md`):
+  - `hilt-navigation-compose` (use `hilt-lifecycle-viewmodel-compose`)
+  - `com.jakewharton…retrofit2-kotlinx-serialization-converter` (use `com.squareup.retrofit2:converter-kotlinx-serialization`)
+  - `com.nhaarman.mockitokotlin2` (use `org.mockito.kotlin`)
+  - `mockito-inline`, `lifecycle-viewmodel-ktx`, espresso, `core-testing`
+  - `material-icons-extended`: add icons as vector drawables in `res/drawable/`
+  - `kotlin-parcelize`: nav keys use kotlinx.serialization
 
 ## Claude Code setup in this repo
 

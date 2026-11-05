@@ -10,13 +10,16 @@ val nytApiKey: String =
         ?: System.getenv("NYT_API_KEY")
         ?: ""
 
+if (nytApiKey.isBlank()) {
+    logger.warn("w: NYT_API_KEY is not set in local.properties or the environment; API calls will fail with HTTP 401.")
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hiltAndroid)
-    alias(libs.plugins.kotlin.parcelize)
 }
 
 val mockitoAgent =
@@ -93,16 +96,14 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
-    implementation(libs.compose.material.icons.extended)
     implementation(libs.compose.material3)
 
     androidTestImplementation(libs.compose.ui.test.junit4)
     debugImplementation(libs.compose.ui.test.manifest)
 
     implementation(libs.activity.compose)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
 
-    implementation(libs.lifecycleViewModel)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
 
@@ -121,11 +122,7 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    androidTestImplementation(libs.espressoCore)
-    androidTestImplementation(libs.espressoIntents)
     androidTestImplementation(libs.androidxTestRunner)
-    androidTestImplementation(libs.androidxTestCore)
-    androidTestImplementation(libs.junitKtx)
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
 
@@ -133,10 +130,9 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.mockitoCore)
     testImplementation(libs.mockitoKotlin)
-    testImplementation(libs.mockitoInline)
     mockitoAgent(libs.mockitoCore)
-    testImplementation(libs.core)
     testImplementation(libs.coroutinesTest)
+    testImplementation(libs.mockWebServer)
     testImplementation(libs.hilt.android.testing)
     testImplementation(libs.compose.ui.test.junit4)
     kspTest(libs.hilt.android.compiler)

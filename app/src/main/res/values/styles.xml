@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--
-      Base application theme.
-      This is kept minimal to allow Jetpack Compose to take full control
-      over all visuals, colors, and system bar behaviors.
+      Base application theme. Kept minimal so Jetpack Compose controls all visuals.
+      System bars are handled by enableEdgeToEdge() in MainActivity; the deprecated
+      windowTranslucentStatus/Navigation flags are intentionally not used.
+      values-night/styles.xml provides the dark variant so the launch window
+      matches the system theme instead of flashing white.
     -->
-    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
+    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
