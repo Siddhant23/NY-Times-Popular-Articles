@@ -1,11 +1,14 @@
 package com.test.android.siddhant.viewmodel
 
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
+import com.test.android.siddhant.R
 import com.test.android.siddhant.TestCoroutineRule
 import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.model.repository.PopularRepo
+import com.test.android.siddhant.utils.InvalidApiKeyException
 import com.test.android.siddhant.utils.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -83,10 +86,10 @@ class PopularVMTest {
         }
 
     @Test
-    fun `uiState becomes Error when repo throws`() =
+    fun `uiState becomes Error with generic message when repo throws an unexpected exception`() =
         testCoroutineRule.runBlockingTest {
             // Given
-            whenever(repo.getPopularData()).thenThrow(RuntimeException("network down"))
+            whenever(repo.getPopularData()).thenThrow(RuntimeException("boom"))
 
             // When
             val viewModel = PopularVM(repo)
@@ -95,6 +98,22 @@ class PopularVMTest {
             // Then
             val state = viewModel.uiState.value
             assertTrue("Expected Error, got $state", state is Resource.Error)
-            assertEquals("network down", (state as Resource.Error).message)
+            assertEquals(R.string.error_unknown, (state as Resource.Error).messageRes)
+        }
+
+    @Test
+    fun `uiState maps an invalid API key to the API key message`() =
+        testCoroutineRule.runBlockingTest {
+            // Given — suspend functions may throw checked exceptions, so stub with doAnswer.
+            whenever(repo.getPopularData()).doAnswer { throw InvalidApiKeyException(401) }
+
+            // When
+            val viewModel = PopularVM(repo)
+            advanceUntilIdle()
+
+            // Then
+            val state = viewModel.uiState.value
+            assertTrue("Expected Error, got $state", state is Resource.Error)
+            assertEquals(R.string.error_api_key, (state as Resource.Error).messageRes)
         }
 }

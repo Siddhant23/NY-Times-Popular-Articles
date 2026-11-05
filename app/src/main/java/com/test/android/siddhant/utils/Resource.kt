@@ -1,9 +1,12 @@
 package com.test.android.siddhant.utils
 
-sealed class Resource<T>(val data: T? = null, val message: String? = null) {
+import androidx.annotation.StringRes
+
+sealed class Resource<T>(val data: T? = null) {
     class Success<T>(data: T) : Resource<T>(data)
 
-    class Error<T>(message: String, data: T? = null) : Resource<T>(data, message)
+    /** [messageRes] is a user-facing string resource; see [toMessageRes]. */
+    class Error<T>(@StringRes val messageRes: Int, data: T? = null) : Resource<T>(data)
 
     class Loading<T> : Resource<T>()
 }
