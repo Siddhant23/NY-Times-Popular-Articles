@@ -22,8 +22,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.test.android.siddhant.R
 import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.model.data.listKey
 import com.test.android.siddhant.ui.components.ArticleCard
@@ -62,7 +64,7 @@ fun PopularListScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = { Text(text = "Most Popular") })
+            CenterAlignedTopAppBar(title = { Text(text = stringResource(R.string.title_most_popular)) })
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { paddingValues ->
@@ -107,11 +109,11 @@ fun PopularListScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
                         Text(
-                            text = "Unable to load articles",
+                            text = stringResource(R.string.error_load_articles),
                             style = MaterialTheme.typography.bodyLarge,
                         )
                         Button(onClick = onRetry) {
-                            Text(text = "Retry")
+                            Text(text = stringResource(R.string.action_retry))
                         }
                     }
                 }

@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">NY-Times-Siddhant</string>
-    <string name="titleName">NY Times Popular Articles</string>
+    <string name="title_most_popular">Most Popular</string>
+    <string name="title_article">Article</string>
+    <string name="action_back">Back</string>
+    <string name="action_retry">Retry</string>
+    <string name="error_load_articles">Unable to load articles</string>
     <string name="error_internet">Please check your internet connection</string>
 </resources>
