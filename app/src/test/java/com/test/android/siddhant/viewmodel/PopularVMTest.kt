@@ -1,8 +1,8 @@
 package com.test.android.siddhant.viewmodel
 
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import com.test.android.siddhant.TestCoroutineRule
 import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.model.repository.PopularRepo
