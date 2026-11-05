@@ -96,7 +96,6 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
-    implementation(libs.compose.material.icons.extended)
     implementation(libs.compose.material3)
 
     androidTestImplementation(libs.compose.ui.test.junit4)
