@@ -58,6 +58,7 @@ object NetworkModule {
         if (BuildConfig.DEBUG) {
             val logging = HttpLoggingInterceptor()
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+            logging.redactQueryParams("api-key")
             builder.addInterceptor(logging)
         }
 
