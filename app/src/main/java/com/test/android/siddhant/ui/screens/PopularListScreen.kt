@@ -13,16 +13,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.test.android.siddhant.R
@@ -53,20 +53,10 @@ fun PopularListScreen(
     onArticleClick: (ResultsItem) -> Unit,
     onRetry: () -> Unit,
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    LaunchedEffect(uiState) {
-        val state = uiState
-        if (state is Resource.Error) {
-            snackbarHostState.showSnackbar(state.message.orEmpty())
-        }
-    }
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text(text = stringResource(R.string.title_most_popular)) })
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { paddingValues ->
         when (val state = uiState) {
             is Resource.Loading -> {
@@ -104,7 +94,13 @@ fun PopularListScreen(
                         .padding(paddingValues),
                     contentAlignment = Alignment.Center,
                 ) {
+                    // The cause is shown inline (previously it was duplicated in a snackbar).
+                    // Polite live region so TalkBack announces the failure, as the snackbar did.
                     Column(
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 24.dp)
+                                .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite },
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
@@ -112,6 +108,14 @@ fun PopularListScreen(
                             text = stringResource(R.string.error_load_articles),
                             style = MaterialTheme.typography.bodyLarge,
                         )
+                        if (!state.message.isNullOrBlank()) {
+                            Text(
+                                text = state.message,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                textAlign = TextAlign.Center,
+                            )
+                        }
                         Button(onClick = onRetry) {
                             Text(text = stringResource(R.string.action_retry))
                         }
