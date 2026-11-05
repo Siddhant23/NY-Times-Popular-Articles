@@ -16,7 +16,6 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hiltAndroid)
-    alias(libs.plugins.kotlin.parcelize)
 }
 
 val mockitoAgent =
