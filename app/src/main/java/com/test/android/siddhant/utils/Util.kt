@@ -3,11 +3,10 @@ package com.test.android.siddhant.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 object Util {
     fun isNetworkAvailable(
-        @ApplicationContext context: Context,
+        context: Context,
     ): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
