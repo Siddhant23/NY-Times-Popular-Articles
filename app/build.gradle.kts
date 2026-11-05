@@ -33,7 +33,7 @@ android {
     defaultConfig {
         applicationId = "com.test.android.siddhant"
         targetSdk = 37
-        minSdk = 23
+        minSdk = 24
         versionCode = 28
         versionName = "28.0"
         testInstrumentationRunner = "com.test.android.siddhant.HiltTestRunner"
