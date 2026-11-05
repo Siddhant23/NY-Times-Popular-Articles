@@ -5,27 +5,16 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
 object Util {
-    fun isNetworkAvailable(
-        context: Context,
-    ): Boolean {
+    /**
+     * True when the active network claims internet capability. This covers Wi-Fi, cellular,
+     * Ethernet, VPN, and other transports alike, instead of allow-listing a few transports.
+     */
+    fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (capabilities != null) {
-            when {
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                    return true
-                }
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-                    return true
-                }
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
-                    return true
-                }
-            }
-        }
-        return false
+                ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }

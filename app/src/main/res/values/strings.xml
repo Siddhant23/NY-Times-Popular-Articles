@@ -6,4 +6,8 @@
     <string name="action_retry">Retry</string>
     <string name="error_load_articles">Unable to load articles</string>
     <string name="error_internet">Please check your internet connection</string>
+    <string name="error_unauthorized">The NY Times API key is missing or invalid.</string>
+    <string name="error_rate_limited">Too many requests. Please try again in a minute.</string>
+    <string name="error_server">The NY Times service is unavailable. Please try again later.</string>
+    <string name="error_http">Request failed (HTTP %1$d).</string>
 </resources>

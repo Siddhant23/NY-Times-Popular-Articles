@@ -132,6 +132,7 @@ dependencies {
     testImplementation(libs.mockitoKotlin)
     mockitoAgent(libs.mockitoCore)
     testImplementation(libs.coroutinesTest)
+    testImplementation(libs.mockWebServer)
     testImplementation(libs.hilt.android.testing)
     testImplementation(libs.compose.ui.test.junit4)
     kspTest(libs.hilt.android.compiler)
