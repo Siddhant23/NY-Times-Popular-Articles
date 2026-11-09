@@ -78,6 +78,7 @@ Open work is tracked in `REMAINING_WORK.md`.
 - `dependabot-auto-merge.yml` auto-merges only patch and minor bumps. `--auto` waits for CI only if `master`'s branch protection requires the Build and Test checks (`REMAINING_WORK.md` P0). Until that's in place, check that the latest Build and Test runs passed before trusting `master`.
 - Third-party actions are pinned to commit SHAs with a `# vX.Y.Z` comment. Keep that format when you edit a workflow.
 - Library bumps can raise the effective `minSdk` (currently 26). On a manifest-merger "minSdkVersion … cannot be smaller" error, raise `minSdk`; don't use `tools:overrideLibrary`.
+- Keep `espresso-core` 3.7.0+ as an explicit `androidTestImplementation`. Without it, Compose ui-test resolves espresso-core 3.5.0, which crashes every instrumented test on API 37 (`NoSuchMethodException: InputManager.getInstance`).
 - The Gradle configuration cache is on. Build-script code must not capture script objects in task actions or providers.
 - Don't reintroduce these artifacts, removed in the Nov 2026 cleanup:
   - `hilt-navigation-compose` (it pulls in Nav2)
@@ -85,7 +86,7 @@ Open work is tracked in `REMAINING_WORK.md`.
   - `com.nhaarman.mockitokotlin2`
   - `mockito-inline`
   - `lifecycle-viewmodel-ktx`
-  - espresso, `core-testing`
+  - `espresso-intents`, `core-testing`
   - `material-icons-extended`
   - `kotlin-parcelize`
 

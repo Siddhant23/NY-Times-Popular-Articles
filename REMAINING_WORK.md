@@ -69,7 +69,7 @@ This is the single tracking file. The old `docs/REVIEW-2026-11.md` from the firs
 - [ ] **Fix the Test timeout.** In `test.yml`, `timeout-minutes: 15` sits under `env:`, so it does nothing. Move it to the job level.
 - [ ] **Make the two workflows consistent.** Build uses `zulu` and Test uses `temurin`, and only Test uses `gradle/actions/setup-gradle`. Pick one setup for both.
 - [ ] **Keep CI history longer.** `delete.yml` deletes runs older than 7 days on every push to master. That removed the history that would have shown when master broke. Run it on a weekly schedule and/or keep runs for 30 days.
-- [ ] Optional: run the emulator tests on API 26 (the current minSdk) as well as API 29.
+- [ ] Run the emulator tests on API 37 (targetSdk) as well as API 29. CI on API 29 alone missed the espresso 3.5.0 crash that only shows on API 37. Optionally add API 26 (minSdk) too.
 - [x] Third-party actions are pinned to commit SHAs (done in #382, see P6).
 - [ ] Optional: `assembleRelease` in CI has no `NYT_API_KEY` and no signing config, so it only proves the build compiles. Add release signing from secrets only if you plan to publish.
 
@@ -93,7 +93,8 @@ This is the single tracking file. The old `docs/REVIEW-2026-11.md` from the firs
 - [x] **Gradle:**
   - repositories moved into `dependencyResolutionManagement` (`FAIL_ON_PROJECT_REPOS`)
   - removed three `gradle.properties` flags that are now defaults
-  - removed the unused androidTest deps (espresso-core, `androidx.test:core`, junit-ktx)
+  - removed the unused androidTest deps (`androidx.test:core`, junit-ktx)
+  - `espresso-core` 3.7.0 stays explicit. Without it, Compose ui-test pulls in 3.5.0, which crashes instrumented tests on API 37.
   - a configuration-time warning when `NYT_API_KEY` is missing
 - [x] `TestCoroutineRule` restores `Dispatchers.Main` in a `finally` block.
 - [x] **CI:** the third-party actions are pinned to commit SHAs: delete-workflow-runs, fetch-metadata, setup-gradle, and android-emulator-runner.

@@ -125,6 +125,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    // Explicit: compose ui-test-junit4 only brings espresso-core 3.5.0, which crashes on API 37
+    // (InputManager.getInstance was removed).
+    androidTestImplementation(libs.espressoCore)
     androidTestImplementation(libs.androidxTestRunner)
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
