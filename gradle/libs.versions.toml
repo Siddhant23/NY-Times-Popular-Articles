@@ -50,7 +50,6 @@ compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 # Activity & Lifecycle
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
