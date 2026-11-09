@@ -4,7 +4,8 @@
       Base application theme.
       This is kept minimal to allow Jetpack Compose to take full control
       over all visuals, colors, and system bar behaviors
-      (MainActivity calls enableEdgeToEdge()).
+      (MainActivity calls enableEdgeToEdge()). values-night/styles.xml is the
+      dark variant, so the launch window does not flash white in dark mode.
     -->
     <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
