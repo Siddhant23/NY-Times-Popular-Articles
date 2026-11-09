@@ -20,6 +20,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -102,8 +105,13 @@ fun PopularListScreen(
                         .padding(paddingValues),
                     contentAlignment = Alignment.Center,
                 ) {
+                    // Polite live region so TalkBack announces the failure
+                    // (the snackbar used to do this before it was removed).
                     Column(
-                        modifier = Modifier.padding(horizontal = 32.dp),
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 32.dp)
+                                .semantics(mergeDescendants = true) { liveRegion = LiveRegionMode.Polite },
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {

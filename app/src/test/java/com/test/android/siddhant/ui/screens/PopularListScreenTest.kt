@@ -1,5 +1,9 @@
 package com.test.android.siddhant.ui.screens
 
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -84,5 +88,22 @@ class PopularListScreenTest {
         composeRule.onNodeWithText("Second zero id").assertExists()
         composeRule.onNodeWithText("Duplicate id 1").assertExists()
         composeRule.onNodeWithText("Duplicate id 2").assertExists()
+    }
+
+    @Test
+    fun `error block is a polite live region so TalkBack announces it`() {
+        composeRule.setContent {
+            NYTimesTheme {
+                PopularListScreen(
+                    uiState = Resource.Error(R.string.error_internet),
+                    onArticleClick = {},
+                    onRetry = {},
+                )
+            }
+        }
+
+        composeRule
+            .onNodeWithText("Unable to load articles")
+            .assert(SemanticsMatcher.expectValue(SemanticsProperties.LiveRegion, LiveRegionMode.Polite))
     }
 }
