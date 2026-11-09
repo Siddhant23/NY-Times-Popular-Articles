@@ -1,13 +1,16 @@
-name: Delete old workflow
+name: Delete old workflow runs
+
+# Weekly instead of on every push, and 30 days of history by default, so there is
+# enough CI history to see when master broke.
 on:
-  push:
-    branches: [ workflow-github, master ]
+  schedule:
+    - cron: '30 3 * * 1' # Mondays 03:30 UTC (09:00 IST)
   workflow_dispatch:
     inputs:
       days:
-        description: 'Number of days.'
+        description: 'Keep runs from the last N days.'
         required: true
-        default: "7"
+        default: "30"
 
 permissions:
   actions: write
@@ -15,10 +18,11 @@ permissions:
 jobs:
   del_runs:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@b3018382ca039b53d238908238bd35d1fb14f8ee # v2.1.0
         with:
           token: ${{ github.token }}
           repository: ${{ github.repository }}
-          retain_days: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.days || 7 }}
+          retain_days: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.days || 30 }}

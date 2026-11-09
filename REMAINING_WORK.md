@@ -10,7 +10,7 @@ This is the single tracking file. The old `docs/REVIEW-2026-11.md` from the firs
 - **#383:** list keys can no longer crash on zero or duplicate IDs; minSdk is now 26.
 - **#382 (rebuilt on master):** the follow-ups in P6 below.
 
-**Still open:** P0 (repo settings and key revocation), P4 (CI workflows), and P7 (later decisions).
+**Still open:** P0 (repo settings and key revocation), one P4 follow-up (making API 37 a required check), and P7 (later decisions).
 
 ---
 
@@ -18,7 +18,7 @@ This is the single tracking file. The old `docs/REVIEW-2026-11.md` from the firs
 
 - [ ] **Confirm CI is green on master.** Run `gh run list --branch master --limit 3`. Both **Build** and **Test** must pass. Test also runs the emulator tests, which are not run locally.
 - [ ] **Add a branch ruleset or protection rule for `master`.** Settings → Rules → Rulesets, or edit the existing "Copilot review for default branch" ruleset.
-  - Turn on **Require status checks to pass** and add `build` (Build workflow) and `build (29, default, x86)` (Test workflow).
+  - Turn on **Require status checks to pass** and add `build` (Build workflow) and `test (API 29)` (Test workflow). Add `test (API 37)` later; see P4.
   - Leave **Require approvals at 0**. GitHub never lets you approve your own PR, so as the only developer you would block yourself. If you ever turn approvals on, add yourself under "Bypass list".
   - Without this, `gh pr merge --auto` in `dependabot-auto-merge.yml` merges right away, even when CI is red. That is how #371–#378 broke master.
 - [ ] Check it works: on the next Dependabot PR, the merge box should say "waiting for status checks".
@@ -63,15 +63,20 @@ This is the single tracking file. The old `docs/REVIEW-2026-11.md` from the firs
 - [x] The AGP and navigation3 bumps cleared the GradleDependency warnings.
 - [x] `AppConstant` is now an `object`.
 
-## P4: CI workflows (`.github/workflows/`) — OPEN
+## P4: CI workflows (`.github/workflows/`) — DONE (#382), one follow-up
 
-- [ ] **Run lint in CI.** Add `./gradlew lintDebug` to Test or Build and upload the report.
-- [ ] **Fix the Test timeout.** In `test.yml`, `timeout-minutes: 15` sits under `env:`, so it does nothing. Move it to the job level.
-- [ ] **Make the two workflows consistent.** Build uses `zulu` and Test uses `temurin`, and only Test uses `gradle/actions/setup-gradle`. Pick one setup for both.
-- [ ] **Keep CI history longer.** `delete.yml` deletes runs older than 7 days on every push to master. That removed the history that would have shown when master broke. Run it on a weekly schedule and/or keep runs for 30 days.
-- [ ] Run the emulator tests on API 37 (targetSdk) as well as API 29. CI on API 29 alone missed the espresso 3.5.0 crash that only shows on API 37. Optionally add API 26 (minSdk) too.
-- [x] Third-party actions are pinned to commit SHAs (done in #382, see P6).
-- [ ] Optional: `assembleRelease` in CI has no `NYT_API_KEY` and no signing config, so it only proves the build compiles. Add release signing from secrets only if you plan to publish.
+- [x] **Lint in CI.** The Test workflow runs `testDebugUnitTest lintDebug`, and the lint report is uploaded with the test reports.
+- [x] **Timeouts work.** They're now set at job level: Test 75 min, Build 30 min, Delete 15 min. Before, `timeout-minutes` sat under `env:`, where it had no effect.
+- [x] **Consistent setup.** Build and Test both use Temurin JDK 21 with `gradle/actions/setup-gradle` for caching. The old `SKIP_*` env vars and the leftover commented-out steps are gone.
+- [x] **Longer CI history.** `delete.yml` now runs weekly (Mondays 03:30 UTC) instead of on every push, and keeps 30 days of runs instead of 7.
+- [x] **Emulator tests on API 37 as well as API 29.** The API 37 leg (google_apis, x86_64) is `continue-on-error` for now.
+- [x] **Docs-only PRs aren't blocked.** PR triggers no longer use `paths-ignore`, so required checks always run.
+- [x] **Least privilege.** Build and Test run with `permissions: contents: read`.
+- [x] **Third-party actions are pinned** to commit SHAs (see P6).
+- [x] Build passes `NYT_API_KEY` from the repo secret if one exists. There is no such secret yet, so the build logs a warning and still succeeds.
+- [ ] **Follow-up:** once the API 37 leg has been green a few times, remove `experimental: true` for it in `test.yml` and add `test (API 37)` to the required checks.
+- [ ] Optional: release signing from secrets, only if the app will be published. Release APKs are unsigned today.
+- [ ] Optional: an API 26 (minSdk) emulator leg.
 
 ## P5: Test coverage — DONE (10 → 26 unit tests)
 

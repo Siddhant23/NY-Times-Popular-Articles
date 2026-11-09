@@ -74,7 +74,11 @@ Open work is tracked in `REMAINING_WORK.md`.
 
 ## CI & dependency gotchas
 
-- Workflows: `build.yml` (release APK), `test.yml` (unit tests + instrumentation on API 29), `dependabot-auto-merge.yml`, `delete.yml` (prunes old runs).
+- Workflows:
+  - `build.yml`: release APK
+  - `test.yml`: unit tests and lint, plus instrumented tests on API 29 (required check `test (API 29)`) and on API 37 (non-blocking for now)
+  - `dependabot-auto-merge.yml`
+  - `delete.yml`: runs weekly and keeps 30 days of runs
 - `dependabot-auto-merge.yml` auto-merges only patch and minor bumps. `--auto` waits for CI only if `master`'s branch protection requires the Build and Test checks (`REMAINING_WORK.md` P0). Until that's in place, check that the latest Build and Test runs passed before trusting `master`.
 - Third-party actions are pinned to commit SHAs with a `# vX.Y.Z` comment. Keep that format when you edit a workflow.
 - Library bumps can raise the effective `minSdk` (currently 26). On a manifest-merger "minSdkVersion … cannot be smaller" error, raise `minSdk`; don't use `tools:overrideLibrary`.
