@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -67,6 +68,17 @@ fun PopularListScreen(
             }
             is Resource.Success -> {
                 val items = state.data.orEmpty()
+                val itemKeys = remember(items) {
+                    val seen = mutableSetOf<String>()
+                    items.mapIndexed { index, item ->
+                        val baseKey = item.listKey(index)
+                        if (seen.add(baseKey)) {
+                            baseKey
+                        } else {
+                            "position:$index"
+                        }
+                    }
+                }
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -74,7 +86,7 @@ fun PopularListScreen(
                 ) {
                     itemsIndexed(
                         items = items,
-                        key = { index, item -> item.listKey(index) },
+                        key = { index, _ -> itemKeys[index] },
                     ) { _, item ->
                         ArticleCard(
                             item = item,

@@ -19,4 +19,12 @@ class ResultsItemTest {
 
         assertNotEquals(first.listKey(index = 0), second.listKey(index = 1))
     }
+
+    @Test
+    fun `listKey remains unique for zero id duplicate articles`() {
+        val first = ResultsItem(id = 0L, title = "Same", abstract = "Body")
+        val second = ResultsItem(id = 0L, title = "Same", abstract = "Body")
+
+        assertNotEquals(first.listKey(index = 0), second.listKey(index = 1))
+    }
 }
