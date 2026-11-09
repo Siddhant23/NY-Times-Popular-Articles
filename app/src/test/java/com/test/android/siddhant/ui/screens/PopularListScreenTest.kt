@@ -3,6 +3,7 @@ package com.test.android.siddhant.ui.screens
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.test.android.siddhant.R
 import com.test.android.siddhant.model.data.ResultsItem
 import com.test.android.siddhant.ui.theme.NYTimesTheme
 import com.test.android.siddhant.utils.Resource
@@ -48,7 +49,7 @@ class PopularListScreenTest {
         composeRule.setContent {
             NYTimesTheme {
                 PopularListScreen(
-                    uiState = Resource.Error("network down"),
+                    uiState = Resource.Error(R.string.error_internet),
                     onArticleClick = {},
                     onRetry = { retried = true },
                 )
@@ -56,8 +57,32 @@ class PopularListScreenTest {
         }
 
         composeRule.onNodeWithText("Unable to load articles").assertExists()
+        composeRule.onNodeWithText("Please check your internet connection").assertExists()
         composeRule.onNodeWithText("Retry").performClick()
 
         assertTrue(retried)
+    }
+
+    @Test
+    fun `duplicate or zero ids do not crash list rendering`() {
+        val first = ResultsItem(id = 0L, title = "First zero id")
+        val second = ResultsItem(id = 0L, title = "Second zero id")
+        val third = ResultsItem(id = 42L, title = "Duplicate id 1")
+        val fourth = ResultsItem(id = 42L, title = "Duplicate id 2")
+
+        composeRule.setContent {
+            NYTimesTheme {
+                PopularListScreen(
+                    uiState = Resource.Success(listOf(first, second, third, fourth)),
+                    onArticleClick = {},
+                    onRetry = {},
+                )
+            }
+        }
+
+        composeRule.onNodeWithText("First zero id").assertExists()
+        composeRule.onNodeWithText("Second zero id").assertExists()
+        composeRule.onNodeWithText("Duplicate id 1").assertExists()
+        composeRule.onNodeWithText("Duplicate id 2").assertExists()
     }
 }

@@ -3,10 +3,8 @@
     <!--
       Base application theme.
       This is kept minimal to allow Jetpack Compose to take full control
-      over all visuals, colors, and system bar behaviors.
+      over all visuals, colors, and system bar behaviors
+      (MainActivity calls enableEdgeToEdge()).
     -->
-    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
+    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

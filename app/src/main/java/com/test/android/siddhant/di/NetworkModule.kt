@@ -4,7 +4,9 @@ import android.content.Context
 import com.test.android.siddhant.BuildConfig
 import com.test.android.siddhant.model.api.ApiService
 import com.test.android.siddhant.model.api.CustomInterceptor
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.test.android.siddhant.utils.AppConstant
+import com.test.android.siddhant.utils.Util
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,20 +58,29 @@ object NetworkModule {
             .retryOnConnectionFailure(true)
 
         if (BuildConfig.DEBUG) {
-            val logging = HttpLoggingInterceptor()
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-            logging.redactQueryParams("api-key")
-            builder.addInterceptor(logging)
+            builder.addInterceptor(debugLoggingInterceptor())
         }
 
         return builder.build()
     }
 
+    /** Logs full requests/responses in debug builds, with the API key redacted from URLs. */
+    internal fun debugLoggingInterceptor(
+        logger: HttpLoggingInterceptor.Logger = HttpLoggingInterceptor.Logger.DEFAULT,
+    ): HttpLoggingInterceptor =
+        HttpLoggingInterceptor(logger).apply {
+            level = HttpLoggingInterceptor.Level.BODY
+            redactQueryParams(AppConstant.KEY_API)
+        }
+
     @Singleton
     @Provides
     fun providesInterceptor(
         @ApplicationContext context: Context,
-    ) = CustomInterceptor(context)
+    ) = CustomInterceptor(
+        isOnline = { Util.isNetworkAvailable(context) },
+        apiKey = BuildConfig.API_KEY,
+    )
 
     @Singleton
     @Provides
