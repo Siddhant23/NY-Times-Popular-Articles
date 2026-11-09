@@ -24,11 +24,12 @@ class TestCoroutineRule : TestRule {
             @Throws(Throwable::class)
             override fun evaluate() {
                 Dispatchers.setMain(testCoroutineDispatcher)
-
-                // everything above this happens before the test
-                base.evaluate()
-                // everything below this happens after the test
-                Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
+                try {
+                    base.evaluate()
+                } finally {
+                    // Always restore Main, even when the test fails, so later tests are not polluted.
+                    Dispatchers.resetMain()
+                }
             }
         }
 
