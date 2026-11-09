@@ -83,7 +83,6 @@ This is the single tracking file. The old `docs/REVIEW-2026-11.md` from the firs
 
 ## P6: Follow-ups from the November review — DONE (#382)
 
-- [x] **Accessibility:** the error block is a polite live region, so TalkBack announces a failed load. That announcement was lost when the snackbar was removed.
 - [x] **Retry guard:** `retry()` is ignored while a fetch is already running, so double taps no longer start parallel requests.
 - [x] **`ArticleCard`:**
   - uses `Card(onClick)`, so the ripple is clipped to the card and the card gets button semantics
