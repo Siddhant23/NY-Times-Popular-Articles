@@ -17,4 +17,4 @@ data class ResultsItem(
     val publishedDate: String? = null,
 )
 
-fun ResultsItem.listKey(index: Int): String = id?.let { "id:$it" } ?: "position:$index"
+fun ResultsItem.listKey(index: Int): String = id?.takeIf { it != 0L }?.let { "id:$it" } ?: "position:$index"

@@ -62,4 +62,27 @@ class PopularListScreenTest {
 
         assertTrue(retried)
     }
+
+    @Test
+    fun `duplicate or zero ids do not crash list rendering`() {
+        val first = ResultsItem(id = 0L, title = "First zero id")
+        val second = ResultsItem(id = 0L, title = "Second zero id")
+        val third = ResultsItem(id = 42L, title = "Duplicate id 1")
+        val fourth = ResultsItem(id = 42L, title = "Duplicate id 2")
+
+        composeRule.setContent {
+            NYTimesTheme {
+                PopularListScreen(
+                    uiState = Resource.Success(listOf(first, second, third, fourth)),
+                    onArticleClick = {},
+                    onRetry = {},
+                )
+            }
+        }
+
+        composeRule.onNodeWithText("First zero id").assertExists()
+        composeRule.onNodeWithText("Second zero id").assertExists()
+        composeRule.onNodeWithText("Duplicate id 1").assertExists()
+        composeRule.onNodeWithText("Duplicate id 2").assertExists()
+    }
 }
