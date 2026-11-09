@@ -7,13 +7,6 @@ plugins {
     alias(libs.plugins.ksp) apply false
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
 tasks.register<Delete>("clean") {
     delete(layout.buildDirectory)
 }

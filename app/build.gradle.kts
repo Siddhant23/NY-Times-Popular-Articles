@@ -10,6 +10,10 @@ val nytApiKey: String =
         ?: System.getenv("NYT_API_KEY")
         ?: ""
 
+if (nytApiKey.isBlank()) {
+    logger.warn("w: NYT_API_KEY is not set in local.properties or the environment; API calls will fail with HTTP 401.")
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
@@ -121,10 +125,7 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    androidTestImplementation(libs.espressoCore)
     androidTestImplementation(libs.androidxTestRunner)
-    androidTestImplementation(libs.androidxTestCore)
-    androidTestImplementation(libs.junitKtx)
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
 
