@@ -10,6 +10,10 @@ val nytApiKey: String =
         ?: System.getenv("NYT_API_KEY")
         ?: ""
 
+if (nytApiKey.isBlank()) {
+    logger.warn("w: NYT_API_KEY is not set in local.properties or the environment; API calls will fail with HTTP 401.")
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
@@ -94,7 +98,6 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
-    implementation(libs.compose.material.icons.extended)
     implementation(libs.compose.material3)
 
     androidTestImplementation(libs.compose.ui.test.junit4)
@@ -122,10 +125,10 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    // Explicit: compose ui-test-junit4 only brings espresso-core 3.5.0, which crashes on API 37
+    // (InputManager.getInstance was removed).
     androidTestImplementation(libs.espressoCore)
     androidTestImplementation(libs.androidxTestRunner)
-    androidTestImplementation(libs.androidxTestCore)
-    androidTestImplementation(libs.junitKtx)
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
 

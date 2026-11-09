@@ -31,13 +31,11 @@ retrofit = "3.0.0"
 okhttp = "5.5.1"
 
 # Testing Dependencies
-espresso = "3.7.0"
 androidxTest = "1.7.0"
-androidxCoreTest = "1.7.0"
+espresso = "3.7.0"
 mockito = "5.24.0"
 mockitoKotlin = "6.4.0"
 robolectric = "4.17"
-androidxTestExtJunit = "1.3.0"
 jUnit = "4.13.2"
 
 [libraries]
@@ -50,7 +48,6 @@ compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling
 compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
 # Activity & Lifecycle
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -91,8 +88,6 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 junit = { module = "junit:junit", version.ref = "jUnit" }
 espressoCore = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 androidxTestRunner = { module = "androidx.test:runner", version.ref = "androidxTest" }
-androidxTestCore = { module = "androidx.test:core", version.ref = "androidxCoreTest" }
-junitKtx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExtJunit" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 mockitoCore = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockitoKotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }

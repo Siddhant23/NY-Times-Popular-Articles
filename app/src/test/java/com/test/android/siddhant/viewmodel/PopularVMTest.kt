@@ -116,4 +116,21 @@ class PopularVMTest {
             assertTrue("Expected Error, got $state", state is Resource.Error)
             assertEquals(R.string.error_api_key, (state as Resource.Error).messageRes)
         }
+
+    @Test
+    fun `retry while a fetch is in flight does not start a second request`() =
+        testCoroutineRule.runBlockingTest {
+            // Given — the init{} fetch is queued but has not completed yet.
+            whenever(repo.getPopularData()).thenReturn(emptyList())
+            val viewModel = PopularVM(repo)
+
+            // When — the user taps Retry twice before the first fetch finishes.
+            viewModel.retry()
+            viewModel.retry()
+            advanceUntilIdle()
+
+            // Then
+            verify(repo, times(1)).getPopularData()
+            assertTrue(viewModel.uiState.value is Resource.Success)
+        }
 }

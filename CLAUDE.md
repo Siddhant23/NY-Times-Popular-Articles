@@ -40,12 +40,16 @@ ui (Compose screens) → viewmodel (StateFlow<Resource<T>>) → model/repository
 | `ui/screens/`, `ui/components/`, `ui/theme/` | Compose UI; each screen has a stateless overload used by tests |
 | `viewmodel/PopularVM.kt` | `@HiltViewModel`, exposes `uiState: StateFlow<Resource<List<ResultsItem>>>` |
 | `model/repository/PopularRepo.kt` | Calls API on `@IoDispatcher` |
-| `model/api/` | `ApiService` + `CustomInterceptor` (adds `api-key` query param, connectivity check, error mapping) |
+| `model/api/` | `ApiService` + `CustomInterceptor(isOnline, apiKey)`: adds the `api-key` query param, throws `NoConnectivityException` when offline, and maps non-2xx to typed `ApiException`s after closing the response |
 | `model/data/` | Network DTOs (also used directly by UI and navigation today) |
 | `di/` | `NetworkModule`, `CoroutinesDispatchersModule`, qualifiers |
-| `utils/` | `Resource`, exceptions, constants, connectivity helper |
+| `utils/` | `Resource` (`Error` carries a `@StringRes messageRes`), exceptions plus `Throwable.toMessageRes()`, constants, connectivity helper |
 
-Tests: `app/src/test` (Robolectric, Compose UI tests, ViewModel tests with `TestCoroutineRule`) and `app/src/androidTest` (Compose instrumentation, `HiltTestRunner`).
+Tests:
+- `app/src/test`: Robolectric, Compose UI tests, ViewModel tests with `TestCoroutineRule`, and network tests with `mockwebserver3`
+- `app/src/androidTest`: Compose instrumentation with `HiltTestRunner`
+
+Open work is tracked in `REMAINING_WORK.md`.
 
 ## Conventions
 
@@ -54,7 +58,8 @@ Tests: `app/src/test` (Robolectric, Compose UI tests, ViewModel tests with `Test
 - Inject dispatchers via `@IoDispatcher`; never hardcode `Dispatchers.IO` in classes.
 - Collect flows in UI with `collectAsStateWithLifecycle()`.
 - In coroutines, don't swallow `CancellationException` (avoid bare `runCatching` around suspend calls; rethrow cancellation).
-- User-visible text goes in `res/values/strings.xml`, not string literals (existing hardcoded strings are tech debt).
+- User-visible text goes in `res/values/strings.xml`, never in string literals. Error text reaches the UI as a string resource ID, not as an exception message.
+- Icons are vector drawables in `res/drawable/`. Don't add `material-icons-extended`.
 - Use theme colors (`MaterialTheme.colorScheme.*`), not `Color.Gray` and the like.
 - New dependencies go through `libs.versions.toml`, never inline coordinates in `build.gradle.kts`.
 - Every bug fix or behaviour change adds or updates a unit test in `app/src/test`.
@@ -69,10 +74,25 @@ Tests: `app/src/test` (Robolectric, Compose UI tests, ViewModel tests with `Test
 
 ## CI & dependency gotchas
 
-- Workflows: `build.yml` (release APK), `test.yml` (unit tests + instrumentation on API 29), `dependabot-auto-merge.yml`, `delete.yml` (prunes old runs).
-- `dependabot-auto-merge.yml` enables auto-merge on **every** Dependabot PR, and master has no required checks, so PRs with red CI get merged. Before trusting master, check that the latest Build/Test runs passed.
-- Library bumps can raise the effective `minSdk` (e.g. `androidx.navigationevent` 1.2.0 needs 24). On a manifest-merger "minSdkVersion … cannot be smaller" error, raise `minSdk`; don't use `tools:overrideLibrary`.
-- Known outdated or redundant artifacts (Nov 2026 review): `hilt-navigation-compose` (pulls in Nav2; use `hilt-lifecycle-viewmodel-compose`), `com.jakewharton…retrofit2-kotlinx-serialization-converter` (use the official `com.squareup.retrofit2:converter-kotlinx-serialization`), `com.nhaarman.mockitokotlin2`, `mockito-inline`, `lifecycle-viewmodel-ktx`, the unused espresso/`core-testing` deps, and `material-icons-extended`.
+- Workflows:
+  - `build.yml`: release APK
+  - `test.yml`: unit tests and lint, plus instrumented tests on API 29 (required check `test (API 29)`) and on API 37 (non-blocking for now)
+  - `dependabot-auto-merge.yml`: triggered on `pull_request` by Dependabot PRs. Don't switch it back to `pull_request_target`; GitHub blocks that trigger by default on public repos.
+  - `delete.yml`: runs weekly and keeps 30 days of runs
+- `dependabot-auto-merge.yml` auto-merges only patch and minor bumps. `--auto` waits for CI only if `master`'s branch protection requires the Build and Test checks (`REMAINING_WORK.md` P0). Until that's in place, check that the latest Build and Test runs passed before trusting `master`.
+- Third-party actions are pinned to commit SHAs with a `# vX.Y.Z` comment. Keep that format when you edit a workflow.
+- Library bumps can raise the effective `minSdk` (currently 26). On a manifest-merger "minSdkVersion … cannot be smaller" error, raise `minSdk`; don't use `tools:overrideLibrary`.
+- Keep `espresso-core` 3.7.0+ as an explicit `androidTestImplementation`. Without it, Compose ui-test resolves espresso-core 3.5.0, which crashes every instrumented test on API 37 (`NoSuchMethodException: InputManager.getInstance`).
+- The Gradle configuration cache is on. Build-script code must not capture script objects in task actions or providers.
+- Don't reintroduce these artifacts, removed in the Nov 2026 cleanup:
+  - `hilt-navigation-compose` (it pulls in Nav2)
+  - the JakeWharton serialization converter
+  - `com.nhaarman.mockitokotlin2`
+  - `mockito-inline`
+  - `lifecycle-viewmodel-ktx`
+  - `espresso-intents`, `core-testing`
+  - `material-icons-extended`
+  - `kotlin-parcelize`
 
 ## Claude Code setup in this repo
 

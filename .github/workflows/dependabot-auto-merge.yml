@@ -1,7 +1,11 @@
 name: Dependabot Auto Merge
 
+# `pull_request` (not `pull_request_target`): GitHub now blocks `pull_request_target`
+# by default on public repos, and it ran with write access on PR events from anyone.
+# For PRs opened by Dependabot, the `permissions` below are granted to GITHUB_TOKEN
+# even on `pull_request`, which is the pattern GitHub documents for auto-merge.
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - synchronize
@@ -13,13 +17,16 @@ permissions:
 
 jobs:
   auto-merge:
-    if: github.actor == 'dependabot[bot]'
+    # Check the PR author, not github.actor: a human re-running the job would
+    # otherwise skip it, and the actor can differ from who opened the PR.
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Fetch Dependabot metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v3
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
