@@ -23,7 +23,7 @@ env:
 jobs:
   build:
     # Check name used by branch protection: "test (API 29)".
-    name: test (API ${{ matrix.api-level }})
+    name: test (API ${{ matrix.label }})
     runs-on: ubuntu-latest
     timeout-minutes: 75
     # API 37 (targetSdk) is new on hosted emulators, so it is non-blocking until it
@@ -34,10 +34,15 @@ jobs:
       matrix:
         include:
           - api-level: 29
+            label: 29
             target: default
             arch: x86
             experimental: false
-          - api-level: 37
+          # Android 17 SDK packages use minor-version names (platforms;android-37.0,
+          # system-images;android-37.0;google_apis;x86_64). Keep it quoted: unquoted,
+          # YAML turns 37.0 into 37 and sdkmanager can't find 'platforms;android-37'.
+          - api-level: '37.0'
+            label: 37
             target: google_apis
             arch: x86_64
             experimental: true
@@ -66,7 +71,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Instrumentation tests (API ${{ matrix.api-level }})
+      - name: Instrumentation tests (API ${{ matrix.label }})
         timeout-minutes: 60
         uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
         with:
@@ -85,7 +90,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: reports-api${{ matrix.api-level }}-${{ matrix.target }}
+          name: reports-api${{ matrix.label }}-${{ matrix.target }}
           path: |
             **/build/reports/*
             **/build/outputs/*/connected/*
