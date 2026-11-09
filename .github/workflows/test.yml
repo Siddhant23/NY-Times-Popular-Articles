@@ -38,7 +38,7 @@ jobs:
           cache: gradle
 
       - name: Gradle cache
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
 
       - name: Output target
         run: echo "The TARGET is ${{ matrix.target }}"
@@ -55,7 +55,7 @@ jobs:
 
       - name: Instrumentation tests
         timeout-minutes: 60
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
         with:
           api-level: ${{ matrix.api-level }}
           target: ${{ matrix.target }}
