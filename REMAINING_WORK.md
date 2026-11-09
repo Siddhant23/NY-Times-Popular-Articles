@@ -72,6 +72,7 @@ This is the single tracking file. The old `docs/REVIEW-2026-11.md` from the firs
 - [x] **Emulator tests on API 37 as well as API 29.** The API 37 leg (google_apis, x86_64) is `continue-on-error` for now.
 - [x] **Docs-only PRs aren't blocked.** PR triggers no longer use `paths-ignore`, so required checks always run.
 - [x] **Least privilege.** Build and Test run with `permissions: contents: read`.
+- [x] **Auto-merge uses `pull_request`, not `pull_request_target`.** GitHub now blocks `pull_request_target` by default on public repos; a scheduled brownout on 2026-11-09 already stopped it from starting. The job only runs when the PR author is `dependabot[bot]`. PRs from forks still get a read-only token.
 - [x] **Third-party actions are pinned** to commit SHAs (see P6).
 - [x] Build passes `NYT_API_KEY` from the repo secret if one exists. There is no such secret yet, so the build logs a warning and still succeeds.
 - [ ] **Follow-up:** once the API 37 leg has been green a few times, remove `experimental: true` for it in `test.yml` and add `test (API 37)` to the required checks.

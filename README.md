@@ -72,7 +72,7 @@ Dependency versions are kept in [`gradle/libs.versions.toml`](gradle/libs.versio
 |---|---|---|
 | **Build** (`build.yml`) | push to `master`, PRs | Builds the unsigned release APK with R8 |
 | **Test** (`test.yml`) | push to `master`, PRs | Unit tests and lint, then instrumented tests on an API 29 emulator (`test (API 29)`) and an API 37 emulator (`test (API 37)`, non-blocking for now). Reports are uploaded as artifacts. |
-| **Dependabot Auto Merge** | Dependabot PRs | Auto-merges patch and minor bumps. Major bumps need a manual review. |
+| **Dependabot Auto Merge** | Dependabot PRs (`pull_request`) | Auto-merges patch and minor bumps. Major bumps need a manual review. |
 | **Delete old workflow runs** | weekly, or manually | Keeps the last 30 days of CI history |
 
 Third-party actions are pinned to commit SHAs, and Dependabot keeps them updated.
