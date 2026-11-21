@@ -68,15 +68,16 @@ Dependency versions are kept in [`gradle/libs.versions.toml`](gradle/libs.versio
 
 ## CI/CD
 
-| Workflow | Runs on | What it does |
+| Workflow | Triggers | What it does |
 |---|---|---|
-| **Build** (`build.yml`) | push to `master`, PRs | Builds the unsigned release APK with R8 |
-| **Test** (`test.yml`) | push to `master`, PRs | Unit tests and lint, then instrumented tests on an API 29 emulator (`test (API 29)`) and an API 37 emulator (`test (API 37)`, non-blocking for now). Reports are uploaded as artifacts. |
-| **Dependabot Auto Merge** | Dependabot PRs (`pull_request`) | Auto-merges patch and minor bumps. Major bumps need a manual review. |
-| **Delete old workflow runs** | weekly, or manually | Keeps the last 30 days of CI history |
+| **Build** (`build.yml`) | Push to `master` or `workflow-github` (except Markdown-only changes); pull requests targeting `master` | Builds the unsigned release APK with R8. `NYT_API_KEY` is optional for building. |
+| **Test** (`test.yml`) | Push to `master` or `workflow-github` (except Markdown-only changes); pull requests targeting `master` | Runs unit tests and lint once, then instrumented tests on API 29 (required check `test (API 29)`) and API 37 (`test (API 37)`, currently non-blocking). |
+| **Dependabot Auto Merge** | Dependabot pull requests | Auto-merges patch and minor bumps. Major bumps need a manual review. |
+| **Delete old workflow runs** | Weekly, or manually | Keeps the last 30 days of CI history. |
 
-Third-party actions are pinned to commit SHAs, and Dependabot keeps them updated.
-Auto-merge waits for CI only when `master` requires the `build` and `test (API 29)` checks in its branch protection.
+The badges above show the latest run for each workflow on `master`. A documentation-only **push** (for example, a README-only commit) does not start either workflow because their push triggers ignore `*.md`; the badge therefore won't update for that push. Pull requests targeting `master` are not filtered by file path, so they still run for documentation-only changes. If a badge says **No status**, check the workflow's Actions page and confirm that it has at least one eligible run on `master`; the badge link takes you to that page. Changes pushed to other branches will not trigger these workflows unless the branch is added to their configuration.
+
+Third-party actions are pinned to commit SHAs, and Dependabot keeps them updated. Auto-merge waits for CI only when `master` requires the `build` and `test (API 29)` checks in its branch protection.
 
 ## Contributing
 
